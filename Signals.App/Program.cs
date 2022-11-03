@@ -1,9 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-
-app.MapGet("/test", () => new { Test = "test" });
+app.MapControllers();
 
 app.Run();
