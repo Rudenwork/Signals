@@ -4,7 +4,7 @@ using Signals.App.Database;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SignalsContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SignalsContext))));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
 
 builder.Services.AddControllers();
 
