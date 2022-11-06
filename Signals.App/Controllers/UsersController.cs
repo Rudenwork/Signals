@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Signals.App.Database;
+using Signals.App.Identity;
 using Signals.App.Models;
 
 namespace Signals.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = IdentityConstants.Roles.Admin)]
     public class UsersController : ControllerBase
     {
         private SignalsContext SignalsContext { get; set; }

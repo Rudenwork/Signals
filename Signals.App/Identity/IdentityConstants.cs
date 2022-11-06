@@ -4,7 +4,7 @@
     {
         public static class Roles
         {
-            public static string Admin = nameof(Admin).ToLower();
+            public const string Admin = "admin";
         }
     }
 }
