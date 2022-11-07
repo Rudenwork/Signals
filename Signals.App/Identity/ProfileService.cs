@@ -23,6 +23,8 @@ namespace Signals.App.Identity
             var user = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
 
+            context.IssuedClaims.Add(new Claim(JwtClaimTypes.PreferredUserName, user.Username));
+
             if (user.IsAdmin)
             {
                 context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, IdentityConstants.Roles.Admin));
