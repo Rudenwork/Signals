@@ -27,7 +27,7 @@ namespace Signals.App.Identity
 
             if (user.IsAdmin)
             {
-                context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, IdentityConstants.Roles.Admin));
+                context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, IdentityRoles.Admin));
             } 
         }
 
