@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Identity;
 using Signals.App.Models;
-using System.Net;
 
 namespace Signals.App.Controllers
 {
@@ -15,28 +15,30 @@ namespace Signals.App.Controllers
     public class UsersController : ControllerBase
     {
         private SignalsContext SignalsContext { get; set; }
+        private IPasswordHasher<UserEntity> PasswordHasher { get; set; }
 
-        public UsersController(SignalsContext context)
+        public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher)
         {
             SignalsContext = context;
+            PasswordHasher = passwordHasher;
+
+            TypeAdapterConfig<UserModel.Update, UserEntity>
+                .NewConfig()
+                .IgnoreNullValues(true);
         }
 
         [HttpGet]
-        public List<UserModel.Read> GetAll()
+        public ActionResult<List<UserModel.Read>> GetAll()
         {
-            return SignalsContext.Users
-                .Select(e => new UserModel.Read
-                {
-                    Id = e.Id,
-                    Username = e.Username,
-                    IsAdmin = e.IsAdmin,
-                    IsDisabled = e.IsDisabled
-                })
+            var result = SignalsContext.Users
+                .ProjectToType<UserModel.Read>()
                 .ToList();
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public ActionResult<UserModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
@@ -44,17 +46,13 @@ namespace Signals.App.Controllers
             if (entity == null)
                 return NoContent();
 
-            return Ok(new UserModel.Read
-            {
-                Id = entity.Id,
-                Username = entity.Username,
-                IsAdmin = entity.IsAdmin,
-                IsDisabled = entity.IsDisabled
-            });
+            var result = entity.Adapt<UserModel.Read>();
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Create(UserModel.Create model)
+        public ActionResult<UserModel.Read> Create(UserModel.Create model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Username == model.Username);
@@ -62,31 +60,19 @@ namespace Signals.App.Controllers
             if (entity is not null)
                 return BadRequest($"{nameof(model.Username)} '{model.Username}' already taken");
 
-            var hasher = new PasswordHasher<UserModel.Create>();
-            var passwordHash = hasher.HashPassword(model, model.Password);
-
-            entity = new UserEntity
-            {
-                Username = model.Username,
-                PasswordHash = passwordHash,
-                IsAdmin = model.IsAdmin.HasValue ? model.IsAdmin.Value : false,
-                IsDisabled = model.IsDisabled.HasValue ? model.IsDisabled.Value : false,
-            };
+            entity = model.Adapt<UserEntity>();
+            entity.PasswordHash = PasswordHasher.HashPassword(entity, model.Password);
 
             SignalsContext.Users.Add(entity);
             SignalsContext.SaveChanges();
 
-            return Ok(new UserModel.Read
-            {
-                Id = entity.Id,
-                Username = entity.Username,
-                IsAdmin = entity.IsAdmin,
-                IsDisabled = entity.IsDisabled
-            });
+            var result = entity.Adapt<UserModel.Read>();
+
+            return Ok(result);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Update(Guid id, UserModel.Update model)
+        public ActionResult<UserModel.Read> Update(Guid id, UserModel.Update model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
@@ -94,37 +80,21 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NotFound();
 
-            if (model.Username is not null)
-                entity.Username = model.Username;
+            model.Adapt(entity);
 
             if (model.Password is not null)
-            {
-                var hasher = new PasswordHasher<UserModel.Update>();
-                var passwordHash = hasher.HashPassword(model, model.Password);
-
-                entity.PasswordHash = passwordHash;
-            }
-
-            if (model.IsAdmin is not null)
-                entity.IsAdmin = model.IsAdmin.Value;
-
-            if (model.IsDisabled is not null)
-                entity.IsDisabled = model.IsDisabled.Value;
+                entity.PasswordHash = PasswordHasher.HashPassword(entity, model.Password);
 
             SignalsContext.Users.Update(entity);
             SignalsContext.SaveChanges();
 
-            return Accepted(new UserModel.Read
-            {
-                Id = entity.Id,
-                Username = entity.Username,
-                IsAdmin = entity.IsAdmin,
-                IsDisabled = entity.IsDisabled
-            });
+            var result = entity.Adapt<UserModel.Read>();
+
+            return Accepted(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
