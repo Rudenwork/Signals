@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Signals.App.Models
+namespace Signals.App.Controllers.Models
 {
     public class UserModel
     {
