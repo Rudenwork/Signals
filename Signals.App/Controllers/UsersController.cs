@@ -28,7 +28,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<UserModel.Read>> GetAll(int? offset = null, int? limit = null)
+        public ActionResult<List<UserModel.Read>> GetAll(int? offset = null, int? limit = null, bool? isDisabled = null, string? username = null)
         {
             var query = SignalsContext.Users.AsQueryable();
 
@@ -37,6 +37,12 @@ namespace Signals.App.Controllers
 
             if (limit is not null)
                 query = query.Take(limit.Value);
+
+            if (isDisabled is not null)
+                query = query.Where(u => u.IsDisabled == isDisabled.Value);
+
+            if (username is not null)
+                query = query.Where(u => u.Username.Contains(username));
 
             var result = query
                 .ProjectToType<UserModel.Read>()
