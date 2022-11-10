@@ -28,9 +28,18 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<UserModel.Read>> GetAll()
+        public ActionResult<List<UserModel.Read>> GetAll(int? pageSize = null, int pageIndex = 0)
         {
-            var result = SignalsContext.Users
+            var query = SignalsContext.Users.AsQueryable();
+
+            if (pageSize is not null)
+            {
+                query = query
+                    .Skip(pageIndex * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            var result = query
                 .ProjectToType<UserModel.Read>()
                 .ToList();
 
