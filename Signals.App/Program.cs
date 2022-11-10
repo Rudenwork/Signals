@@ -6,6 +6,7 @@ using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Signals.App.Database.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,5 +66,7 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.PrepareDatabase();
 
 app.Run();
