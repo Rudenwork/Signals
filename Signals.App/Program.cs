@@ -7,6 +7,7 @@ using Signals.App.Database.Entities;
 using Signals.App.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Signals.App.Database.Extentions;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,11 @@ builder.Services.AddIdentityServer()
     .AddAspNetIdentity<UserEntity>()
     .AddProfileService<ProfileService>();
 
+var authority = builder.Configuration["ASPNETCORE_URLS"]
+    .Split(";")
+    .First(u => u.Contains("https"))
+    .Replace("*", "localhost");
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -48,18 +54,45 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["ASPNETCORE_URLS"]
-           .Split(";")
-           .First(u => u.Contains("https"))
-           .Replace("*", "localhost");
-
+        options.Authority = authority;
         options.TokenValidationParameters.ValidateAudience = false;
     });
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(nameof(SecuritySchemeType.OpenIdConnect), new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OpenIdConnect,
+        OpenIdConnectUrl = new Uri($"{authority}/.well-known/openid-configuration")
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = nameof(SecuritySchemeType.OpenIdConnect)
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseIdentityServer();

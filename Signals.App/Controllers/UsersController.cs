@@ -11,6 +11,9 @@ namespace Signals.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Roles = IdentityRoles.Admin)]
     public class UsersController : ControllerBase
     {
@@ -28,7 +31,8 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<UserModel.Read>> GetAll(int? offset = null, int? limit = null, bool? isDisabled = null, string? username = null)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<List<UserModel.Read>> Get(int? offset = null, int? limit = null, bool? isDisabled = null, string? username = null)
         {
             var query = SignalsContext.Users.AsQueryable();
 
@@ -52,13 +56,15 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UserModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
 
             if (entity == null)
-                return NoContent();
+                return NotFound();
 
             var result = entity.Adapt<UserModel.Read>();
 
@@ -66,7 +72,8 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserModel.Read> Create(UserModel.Create model)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<UserModel.Read> Post(UserModel.Create model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Username == model.Username);
@@ -82,11 +89,13 @@ namespace Signals.App.Controllers
 
             var result = entity.Adapt<UserModel.Read>();
 
-            return Ok(result);
+            return Created(result.Id.ToString(), result);
         }
 
         [HttpPatch("{id}")]
-        public ActionResult<UserModel.Read> Update(Guid id, UserModel.Update model)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UserModel.Read> Patch(Guid id, UserModel.Update model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(u => u.Id == id);
@@ -104,10 +113,12 @@ namespace Signals.App.Controllers
 
             var result = entity.Adapt<UserModel.Read>();
 
-            return Accepted(result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(Guid id)
         {
             var entity = SignalsContext.Users
