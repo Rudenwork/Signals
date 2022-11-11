@@ -1,5 +1,5 @@
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,16 +20,8 @@ builder.Services.AddDbContext<SignalsContext>(options =>
 builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
-        new IdentityResource()
-        {
-            Name = "api",
-            UserClaims =
-            { 
-                JwtClaimTypes.Subject, 
-                JwtClaimTypes.PreferredUserName, 
-                JwtClaimTypes.Role 
-            }
-        }
+        new IdentityResources.OpenId(),
+        new IdentityResources.Profile()
     })
     .AddInMemoryClients(new List<Client>
     {
@@ -37,7 +29,11 @@ builder.Services.AddIdentityServer()
         {
             ClientId = nameof(Client).ToLower(),
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-            AllowedScopes = { "api" },
+            AllowedScopes =
+            {
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile
+            },
             AllowOfflineAccess = true,
             RequireClientSecret = false
         }
