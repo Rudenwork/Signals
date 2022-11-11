@@ -17,10 +17,6 @@ var settings = builder.Configuration.Get<Settings>();
 builder.Services.AddDbContext<SignalsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
 
-builder.Services.AddIdentityCore<UserEntity>()
-    .AddSignInManager<SignInManager<UserEntity>>()
-    .AddUserStore<UserStore>();
-
 builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
@@ -46,7 +42,7 @@ builder.Services.AddIdentityServer()
             RequireClientSecret = false
         }
     })
-    .AddAspNetIdentity<UserEntity>()
+    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
     .AddProfileService<ProfileService>();
 
 builder.Services.AddAuthentication(options =>
@@ -93,6 +89,8 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
 var app = builder.Build();
 
