@@ -89,7 +89,7 @@ namespace Signals.App.Controllers
 
             var result = entity.Adapt<UserModel.Read>();
 
-            return Created(result.Id.ToString(), result);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{result.Id}", result);
         }
 
         [HttpPatch("{id}")]
