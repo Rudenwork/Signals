@@ -17,7 +17,7 @@ var settings = builder.Configuration.Get<Settings>();
 builder.Services.AddDbContext<SignalsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(options => options.KeyManagement.KeyPath = $"{AppContext.BaseDirectory}/keys")
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
         new IdentityResources.OpenId(),
