@@ -68,8 +68,14 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(nameof(SecuritySchemeType.OpenIdConnect), new OpenApiSecurityScheme
     {
-        Type = SecuritySchemeType.OpenIdConnect,
-        OpenIdConnectUrl = new Uri($"{settings.Identity.Authority}/.well-known/openid-configuration")
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            Password = new OpenApiOAuthFlow
+            {
+                TokenUrl = new Uri($"{settings.Identity.Authority}/connect/token")
+            }
+        }
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement()
