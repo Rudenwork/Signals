@@ -1,13 +1,13 @@
 using Duende.IdentityServer.Models;
-using Duende.IdentityServer;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
-using Signals.App.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Signals.App.Database.Extentions;
-using Microsoft.OpenApi.Models;
+using Signals.App.Identity;
 using Signals.App.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +24,16 @@ builder.Services.AddIdentityCore<UserEntity>()
 builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
-        new IdentityResources.OpenId(),
-        new IdentityResources.Profile()
+        new IdentityResource()
+        {
+            Name = "api",
+            UserClaims =
+            { 
+                JwtClaimTypes.Subject, 
+                JwtClaimTypes.PreferredUserName, 
+                JwtClaimTypes.Role 
+            }
+        }
     })
     .AddInMemoryClients(new List<Client>
     {
@@ -33,11 +41,7 @@ builder.Services.AddIdentityServer()
         {
             ClientId = nameof(Client).ToLower(),
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-            AllowedScopes =
-            {
-                IdentityServerConstants.StandardScopes.OpenId,
-                IdentityServerConstants.StandardScopes.Profile
-            },
+            AllowedScopes = { "api" },
             AllowOfflineAccess = true,
             RequireClientSecret = false
         }
