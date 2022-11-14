@@ -11,10 +11,10 @@ namespace Signals.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = IdentityRoles.Admin)]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Authorize(Roles = IdentityRoles.Admin)]
     public class UsersController : ControllerBase
     {
         private SignalsContext SignalsContext { get; set; }
@@ -75,13 +75,13 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<UserModel.Read> Post(UserModel.Create model)
         {
-            var entity = SignalsContext.Users
-                .FirstOrDefault(u => u.Username == model.Username);
+            if (SignalsContext.Users.Any(u => u.Username == model.Username))
+            {
+                ModelState.AddModelError(nameof(model.Username), "Already taken");
+                return ValidationProblem();
+            }
 
-            if (entity is not null)
-                return BadRequest($"{nameof(model.Username)} '{model.Username}' already taken");
-
-            entity = model.Adapt<UserEntity>();
+            var entity = model.Adapt<UserEntity>();
             entity.PasswordHash = PasswordHasher.HashPassword(entity, model.Password);
 
             SignalsContext.Users.Add(entity);
@@ -102,6 +102,12 @@ namespace Signals.App.Controllers
 
             if (entity is null)
                 return NotFound();
+
+            if (SignalsContext.Users.Any(u => u.Username == model.Username))
+            {
+                ModelState.AddModelError(nameof(model.Username), "Already taken");
+                return ValidationProblem();
+            }
 
             model.Adapt(entity);
 
