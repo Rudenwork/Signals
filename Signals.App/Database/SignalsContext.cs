@@ -6,6 +6,7 @@ namespace Signals.App.Database
     public class SignalsContext : DbContext
     {
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<ChannelEntity> Channels { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
     }
