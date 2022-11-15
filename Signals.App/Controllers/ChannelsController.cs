@@ -45,8 +45,8 @@ namespace Signals.App.Controllers
                 query = query.Take(limit.Value);
 
             var result = query
-                .ProjectToType<ChannelModel.Read>()
-                .ToList();
+                .ToList()
+                .Adapt<List<ChannelModel.Read>>();
 
             return Ok(result);
         }

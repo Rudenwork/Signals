@@ -49,8 +49,8 @@ namespace Signals.App.Controllers
                 query = query.Where(u => u.Username.Contains(username));
 
             var result = query
-                .ProjectToType<UserModel.Read>()
-                .ToList();
+                .ToList()
+                .Adapt<List<UserModel.Read>>();
 
             return Ok(result);
         }
