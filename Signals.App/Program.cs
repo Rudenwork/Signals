@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Extentions;
+using Signals.App.Extensions;
 using Signals.App.Identity;
 using Signals.App.Settings;
 using System.Text.Json.Serialization;
@@ -93,11 +94,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+builder.Services.AddMapster(options =>
+{
+    options.MapEnumByName = true;
+    options.IgnoreNullValues = true;
+});
 
-TypeAdapterConfig.GlobalSettings.Default
-    .EnumMappingStrategy(EnumMappingStrategy.ByName)
-    .IgnoreNullValues(true);
+builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
 var app = builder.Build();
 

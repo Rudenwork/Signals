@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
 {
@@ -9,8 +8,11 @@ namespace Signals.App.Controllers.Models
         {
             [Required]
             public ChannelType Type { get; set; }
-            [Required]
+
+            [Required, MaxLength(100)]
             public string Destination { get; set; }
+
+            [MaxLength(100)]
             public string? Description { get; set; }
         }
 
@@ -27,8 +29,20 @@ namespace Signals.App.Controllers.Models
         public class Update 
         {
             public ChannelType? Type { get; set; }
+
+            [MaxLength(100)]
+            public string? Destination { get; set; }
+
+            [MaxLength(100)]
+            public string? Description { get; set; }
+        }
+
+        public class Filter
+        {
+            public ChannelType? Type { get; set; }
             public string? Destination { get; set; }
             public string? Description { get; set; }
+            public bool? IsVerified { get; set; }
         }
 
         public enum ChannelType

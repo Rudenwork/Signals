@@ -38,6 +38,13 @@ namespace Signals.App.Controllers.Models
             public bool? IsDisabled { get; set; }
         }
 
+        public class Filter
+        {
+            public string? Username { get; set; }
+            public bool? IsAdmin { get; set; }
+            public bool? IsDisabled { get; set; }
+        }
+
         private static class Constants
         {
             public static class Username

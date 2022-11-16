@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Signals.App.Controllers.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Extensions;
 using System.Data;
-using System.Security.Claims;
 
 namespace Signals.App.Controllers
 {
@@ -26,21 +26,13 @@ namespace Signals.App.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<ChannelModel.Read>> Get(int? offset = null, int? limit = null)
+        public ActionResult<List<ChannelModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Filter filter)
         {
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            
-            var query = SignalsContext.Channels.AsQueryable()
-                .Where(c => c.UserId == userId);
-
-            if (offset is not null)
-                query = query.Skip(offset.Value);
-
-            if (limit is not null)
-                query = query.Take(limit.Value);
-
-            var result = query
-                .ToList()
+            ///TODO: Filtering
+            var result = SignalsContext.Channels
+                .Where(c => c.UserId == User.GetId())
+                //.Filter(filter)
+                .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<ChannelModel.Read>>();
 
             return Ok(result);
@@ -58,9 +50,7 @@ namespace Signals.App.Controllers
             if (entity == null)
                 return NotFound();
 
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
-            if (entity.UserId != userId)
+            if (entity.UserId != User.GetId())
                 return Forbid();
 
             var result = entity.Adapt<ChannelModel.Read>();
@@ -72,10 +62,8 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<ChannelModel.Read> Post(ChannelModel.Create model)
         {
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
             var entity = model.Adapt<ChannelEntity>();
-            entity.UserId = userId;
+            entity.UserId = User.GetId();
 
             SignalsContext.Channels.Add(entity);
             SignalsContext.SaveChanges();
@@ -97,9 +85,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NotFound();
 
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
-            if (entity.UserId != userId)
+            if (entity.UserId != User.GetId())
                 return Forbid();
 
             model.Adapt(entity);
@@ -124,9 +110,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NotFound();
 
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
-            if (entity.UserId != userId)
+            if (entity.UserId != User.GetId())
                 return Forbid();
 
             SignalsContext.Channels.Remove(entity);

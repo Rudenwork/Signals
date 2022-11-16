@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Signals.App.Controllers.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Extensions;
 using Signals.App.Identity;
 
 namespace Signals.App.Controllers
@@ -28,24 +29,20 @@ namespace Signals.App.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<UserModel.Read>> Get(int? offset = null, int? limit = null, bool? isDisabled = null, string? username = null)
+        public ActionResult<List<UserModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Filter filter)
         {
             var query = SignalsContext.Users.AsQueryable();
 
-            if (offset is not null)
-                query = query.Skip(offset.Value);
+            if (filter.IsDisabled is not null)
+                query = query.Where(u => u.IsDisabled == filter.IsDisabled.Value);
 
-            if (limit is not null)
-                query = query.Take(limit.Value);
+            if (filter.Username is not null)
+                query = query.Where(u => u.Username.Contains(filter.Username));
 
-            if (isDisabled is not null)
-                query = query.Where(u => u.IsDisabled == isDisabled.Value);
-
-            if (username is not null)
-                query = query.Where(u => u.Username.Contains(username));
-
+            ///TODO: Filtering
             var result = query
-                .ToList()
+                //.Filter(filter)
+                .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<UserModel.Read>>();
 
             return Ok(result);
