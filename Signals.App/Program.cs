@@ -96,7 +96,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
 TypeAdapterConfig.GlobalSettings.Default
-    .EnumMappingStrategy(EnumMappingStrategy.ByName);
+    .EnumMappingStrategy(EnumMappingStrategy.ByName)
+    .IgnoreNullValues(true);
 
 var app = builder.Build();
 

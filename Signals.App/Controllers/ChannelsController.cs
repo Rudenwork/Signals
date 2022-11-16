@@ -1,5 +1,4 @@
-﻿using Duende.IdentityServer.Extensions;
-using Mapster;
+﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Signals.App.Controllers.Models;
@@ -23,10 +22,6 @@ namespace Signals.App.Controllers
         public ChannelsController(SignalsContext signalsContext)
         {
             SignalsContext = signalsContext;
-
-            TypeAdapterConfig<ChannelModel.Update, ChannelEntity>
-                .NewConfig()
-                .IgnoreNullValues(true);
         }
 
         [HttpGet]

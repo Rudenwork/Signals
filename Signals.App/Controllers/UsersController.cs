@@ -24,10 +24,6 @@ namespace Signals.App.Controllers
         {
             SignalsContext = context;
             PasswordHasher = passwordHasher;
-
-            TypeAdapterConfig<UserModel.Update, UserEntity>
-                .NewConfig()
-                .IgnoreNullValues(true);
         }
 
         [HttpGet]
