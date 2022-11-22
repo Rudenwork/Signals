@@ -1,6 +1,7 @@
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -101,6 +102,8 @@ builder.Services.AddMapster(options =>
 });
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+
+builder.Services.AddMediatR(typeof(Program));
 
 var app = builder.Build();
 

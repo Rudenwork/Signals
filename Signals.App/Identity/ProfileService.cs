@@ -3,26 +3,28 @@ using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityModel;
-using Signals.App.Database;
+using MediatR;
+using Signals.App.Queries.User;
 using System.Security.Claims;
 
 namespace Signals.App.Identity
 {
     public class ProfileService : IProfileService
     {
-        private SignalsContext SignalsContext { get; set; }
+        private IMediator Mediator { get; }
 
-        public ProfileService(SignalsContext context)
+        public ProfileService(IMediator mediator)
         {
-            SignalsContext = context;
+            Mediator = mediator;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var id = Guid.Parse(context.Subject.GetSubjectId());
 
-            var user = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+            var result = await Mediator.Send(new GetQuery.Request { Id = id });
+
+            var user = result.Value;
 
             if (user.IsAdmin)
             {
@@ -41,8 +43,9 @@ namespace Signals.App.Identity
         {
             var id = Guid.Parse(context.Subject.GetSubjectId());
 
-            var user = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+            var result = await Mediator.Send(new GetQuery.Request { Id = id });
+
+            var user = result.Value;
 
             context.IsActive = !user.IsDisabled;
         }

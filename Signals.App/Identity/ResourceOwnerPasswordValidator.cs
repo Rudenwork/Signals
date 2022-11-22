@@ -1,33 +1,31 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Validation;
-using Microsoft.AspNetCore.Identity;
-using Signals.App.Database;
-using Signals.App.Database.Entities;
+using MediatR;
+using Signals.App.Commands.User;
 
 namespace Signals.App.Identity
 {
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
-        private SignalsContext SignalsContext { get; set; }
-        private IPasswordHasher<UserEntity> PasswordHasher { get; set; }
+        private IMediator Mediator { get; }
 
-        public ResourceOwnerPasswordValidator(SignalsContext signalsContext, IPasswordHasher<UserEntity> passwordHasher)
+        public ResourceOwnerPasswordValidator(IMediator mediator)
         {
-            SignalsContext = signalsContext;
-            PasswordHasher = passwordHasher;
+            Mediator = mediator;
         }
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            var user = SignalsContext.Users.FirstOrDefault(u => u.Username == context.UserName);
+            var result = await Mediator.Send(new ValidateCommand.Request 
+            { 
+                Username = context.UserName, 
+                Password = context.Password 
+            });
 
-            if (user is null)
-                return;
-
-            var verifyResult = PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, context.Password);
-
-            if (verifyResult is not PasswordVerificationResult.Failed)
-                context.Result = new GrantValidationResult(user.Id.ToString(), GrantType.ResourceOwnerPassword);
+            if (result.Problems is null)
+            {
+                context.Result = new GrantValidationResult(result.Value.UserId.ToString(), GrantType.ResourceOwnerPassword);
+            }
         }
     }
 }
