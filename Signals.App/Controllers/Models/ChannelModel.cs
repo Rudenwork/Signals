@@ -1,34 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+﻿using FluentValidation;
 
 namespace Signals.App.Controllers.Models
 {
     public class ChannelModel
     {
-        public class Create : IValidatableObject
+        public class Create
         {
-            [Required]
             public Type? Type { get; set; }
-
-            [Required, MaxLength(100)]
             public string? Destination { get; set; }
-
-            [MaxLength(100)]
             public string? Description { get; set; }
 
-            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            public class Validator : AbstractValidator<Create>
             {
-                switch (Type)
+                public Validator()
                 {
-                    case ChannelModel.Type.Email:
-                    {
-                        if (!Regex.IsMatch(Destination, Constants.Destination.Email.Regex))
-                        {
-                            yield return new ValidationResult(Constants.Destination.Email.ErrorMessage, new[] { nameof(Destination) });
-                        }
+                    RuleFor(x => x.Type).NotNull();
 
-                        break;
-                    }
+                    RuleFor(x => x.Destination)
+                        .NotNull()
+                        .MaximumLength(100);
+
+                    RuleFor(x => x.Destination)
+                        .EmailAddress()
+                        .When(x => x.Type == ChannelModel.Type.Email);
+
+                    RuleFor(x => x.Description)
+                        .MaximumLength(100);
                 }
             }
         }
@@ -43,41 +40,33 @@ namespace Signals.App.Controllers.Models
             public bool IsVerified { get; set; }
         }
 
-        public class Update : IValidatableObject
+        public class Update
         {
             public Type? Type { get; set; }
-
-            [MaxLength(100)]
             public string? Destination { get; set; }
-
-            [MaxLength(100)]
             public string? Description { get; set; }
 
-            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            public class Validator : AbstractValidator<Update>
             {
-                if (Type is null && Destination is not null)
+                public Validator()
                 {
-                    yield return new ValidationResult($"Can't be sent without {nameof(Type)}", new[] { nameof(Destination) });
-                    yield break;
-                }
+                    RuleFor(x => x.Type)
+                        .NotNull()
+                        .When(x => x.Destination is not null);
 
-                if (Destination is null)
-                {
-                    yield return new ValidationResult($"Should be sent together with {nameof(Type)}", new[] { nameof(Destination) });
-                    yield break;
-                }
+                    RuleFor(x => x.Destination)
+                        .NotNull()
+                        .When(x => x.Type is not null);
 
-                switch (Type)
-                {
-                    case ChannelModel.Type.Email:
-                    {
-                        if (!Regex.IsMatch(Destination, Constants.Destination.Email.Regex))
-                        {
-                            yield return new ValidationResult(Constants.Destination.Email.ErrorMessage, new[] { nameof(Destination) });
-                        }
+                    RuleFor(x => x.Destination)
+                        .MaximumLength(100);
 
-                        break;
-                    }
+                    RuleFor(x => x.Destination)
+                        .EmailAddress()
+                        .When(x => x.Type == ChannelModel.Type.Email);
+
+                    RuleFor(x => x.Description)
+                        .MaximumLength(100);
                 }
             }
         }
@@ -93,18 +82,6 @@ namespace Signals.App.Controllers.Models
         public enum Type
         {
             Email
-        }
-
-        private static class Constants
-        {
-            public static class Destination
-            {
-                public static class Email
-                {
-                    public const string Regex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
-                    public const string ErrorMessage = "Incorrect format, email address expected";
-                }
-            }
         }
     }
 }

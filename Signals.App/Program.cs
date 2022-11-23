@@ -1,5 +1,7 @@
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -59,6 +61,9 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 

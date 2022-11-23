@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
 
 namespace Signals.App.Controllers.Models
 {
@@ -6,16 +6,26 @@ namespace Signals.App.Controllers.Models
     {
         public class Create
         {
-            [Required]
-            [RegularExpression(Constants.Username.Regex, ErrorMessage = Constants.Username.ErrorMessage)]
             public string Username { get; set; }
-
-            [Required]
-            [RegularExpression(Constants.Password.Regex, ErrorMessage = Constants.Password.ErrorMessage)]
             public string Password { get; set; }
-
             public bool? IsAdmin { get; set; }
             public bool? IsDisabled { get; set; }
+
+            public class Validator : AbstractValidator<Create>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Username)
+                        .NotNull()
+                        .Matches(Constants.Username.Regex)
+                        .WithMessage(Constants.Username.ErrorMessage);
+
+                    RuleFor(x => x.Password)
+                        .NotNull()
+                        .Matches(Constants.Password.Regex)
+                        .WithMessage(Constants.Password.ErrorMessage);
+                }
+            }
         }
 
         public class Read
@@ -28,14 +38,24 @@ namespace Signals.App.Controllers.Models
 
         public class Update
         {
-            [RegularExpression(Constants.Username.Regex, ErrorMessage = Constants.Username.ErrorMessage)]
             public string? Username { get; set; }
-
-            [RegularExpression(Constants.Password.Regex, ErrorMessage = Constants.Password.ErrorMessage)]
             public string? Password { get; set; }
-
             public bool? IsAdmin { get; set; }
             public bool? IsDisabled { get; set; }
+
+            public class Validator : AbstractValidator<Update>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Username)
+                        .Matches(Constants.Username.Regex)
+                        .WithMessage(Constants.Username.ErrorMessage);
+
+                    RuleFor(x => x.Password)
+                        .Matches(Constants.Password.Regex)
+                        .WithMessage(Constants.Password.ErrorMessage);
+                }
+            }
         }
 
         public class Filter
