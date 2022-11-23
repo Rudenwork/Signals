@@ -33,15 +33,16 @@ namespace Signals.App.Controllers
         {
             var query = SignalsContext.Users.AsQueryable();
 
-            if (filter.IsDisabled is not null)
-                query = query.Where(u => u.IsDisabled == filter.IsDisabled.Value);
-
             if (filter.Username is not null)
                 query = query.Where(u => u.Username.Contains(filter.Username));
 
-            ///TODO: Filtering
+            if (filter.IsAdmin is not null)
+                query = query.Where(u => u.IsAdmin == filter.IsAdmin);
+
+            if (filter.IsDisabled is not null)
+                query = query.Where(u => u.IsDisabled == filter.IsDisabled.Value);
+
             var result = query
-                //.Filter(filter)
                 .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<UserModel.Read>>();
 

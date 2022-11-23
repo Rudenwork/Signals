@@ -22,7 +22,7 @@ namespace Signals.App.Controllers.Models
 
                     RuleFor(x => x.Destination)
                         .EmailAddress()
-                        .When(x => x.Type == ChannelModel.Type.Email);
+                        .When(x => x.Type is ChannelModel.Type.Email);
 
                     RuleFor(x => x.Description)
                         .MaximumLength(100);
@@ -63,7 +63,7 @@ namespace Signals.App.Controllers.Models
 
                     RuleFor(x => x.Destination)
                         .EmailAddress()
-                        .When(x => x.Type == ChannelModel.Type.Email);
+                        .When(x => x.Type is ChannelModel.Type.Email);
 
                     RuleFor(x => x.Description)
                         .MaximumLength(100);

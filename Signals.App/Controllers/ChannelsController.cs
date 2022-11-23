@@ -28,10 +28,25 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<ChannelModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Filter filter)
         {
-            ///TODO: Filtering
-            var result = SignalsContext.Channels
+            var query = SignalsContext.Channels.AsQueryable();
+
+            if (filter.Type is not null)
+            {
+                var channelType = filter.Type.Adapt<ChannelEntity.ChannelType>();
+                query = query.Where(c => c.Type == channelType);
+            }
+
+            if (filter.Destination is not null)
+                query = query.Where(c => c.Destination.Contains(filter.Destination));
+
+            if (filter.Description is not null)
+                query = query.Where(c => c.Description.Contains(filter.Description));
+
+            if (filter.IsVerified is not null)
+                query = query.Where(c => c.IsVerified == filter.IsVerified.Value);
+
+            var result = query
                 .Where(c => c.UserId == User.GetId())
-                //.Filter(filter)
                 .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<ChannelModel.Read>>();
 
