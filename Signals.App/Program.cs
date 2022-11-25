@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Extentions;
@@ -104,6 +105,9 @@ builder.Services.AddMapster(options =>
     options.MapEnumByName = true;
     options.IgnoreNullValues = true;
 });
+
+builder.Services.AddQuartz();
+builder.Services.AddQuartzServer();
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
