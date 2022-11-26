@@ -1,27 +1,71 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Core.Jobs;
+using Signals.App.Database;
+using Signals.App.Database.Entities;
+using Signals.App.Extensions;
+using Signals.App.Identity;
 
 namespace Signals.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = IdentityRoles.Admin)]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class TestController : ControllerBase
     {
+        private SignalsContext SignalsContext { get; set; }
         private ISchedulerFactory SchedulerFactory { get; }
 
-        public TestController(ISchedulerFactory schedulerFactory)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory)
         {
+            SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
+        {
+            var stages = SignalsContext.Stages.ToList();
+
+            return Ok(stages);
+        }
+
+        [HttpPost("seed")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Seed()
+        {
+            var signal = new SignalEntity
+            {
+                UserId = User.GetId(),
+                Name = "Test Signal",
+                Schedule = "0 0/5 * * * ?"
+            };
+
+            SignalsContext.Signals.Add(signal);
+
+            var stage = new WaitingStageEntity
+            {
+                SignalId = signal.Id,
+                Name = "Test Waiting Stage",
+                Period = TimeSpan.FromMinutes(5)
+            };
+
+            SignalsContext.Stages.Add(stage);
+
+            await SignalsContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("schedule")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> ScheduleJob()
         {
             var key = Guid.NewGuid();
 
