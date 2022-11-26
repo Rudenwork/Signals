@@ -100,6 +100,10 @@ namespace Signals.App.Database.Migrations
                     b.Property<Guid>("SignalId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NextStageId");
@@ -109,11 +113,9 @@ namespace Signals.App.Database.Migrations
                     b.HasIndex("SignalId");
 
                     b.ToTable("Stages");
-
-                    b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.StageExecution", b =>
+            modelBuilder.Entity("Signals.App.Database.Entities.StageExecutionEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +135,39 @@ namespace Signals.App.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SignalId")
+                        .IsUnique();
+
+                    b.HasIndex("StageId")
+                        .IsUnique();
+
                     b.ToTable("StageExecutions");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.StageParameterEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("StageParameters");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.UserEntity", b =>
@@ -160,48 +194,6 @@ namespace Signals.App.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.ConditionStageEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
-
-                    b.Property<int?>("RetryCount")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan?>("RetryDelay")
-                        .HasColumnType("time");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.ToTable("ConditionStages", (string)null);
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.NotificationStageEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
-
-                    b.Property<Guid>("ChannelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.ToTable("NotificationStages", (string)null);
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.WaitingStageEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
-
-                    b.Property<TimeSpan>("Period")
-                        .HasColumnType("time");
-
-                    b.ToTable("WaitingStages", (string)null);
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
@@ -239,31 +231,33 @@ namespace Signals.App.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.ConditionStageEntity", b =>
+            modelBuilder.Entity("Signals.App.Database.Entities.StageExecutionEntity", b =>
                 {
+                    b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.StageExecutionEntity", "SignalId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
                         .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.ConditionStageEntity", "Id")
+                        .HasForeignKey("Signals.App.Database.Entities.StageExecutionEntity", "StageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.NotificationStageEntity", b =>
+            modelBuilder.Entity("Signals.App.Database.Entities.StageParameterEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.NotificationStageEntity", "Id")
+                        .WithMany("Parameters")
+                        .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.WaitingStageEntity", b =>
+            modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.WaitingStageEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Parameters");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,25 +9,26 @@ namespace Signals.App.Database
         public DbSet<ChannelEntity> Channels { get; set; }
         public DbSet<SignalEntity> Signals { get; set; }
         public DbSet<StageEntity> Stages { get; set; }
-        public DbSet<StageExecution> StageExecutions { get; set; }
+        public DbSet<StageParameterEntity> StageParameters { get; set; }
+        public DbSet<StageExecutionEntity> StageExecutions { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Channel Entity
+            //Channel
             modelBuilder.Entity<ChannelEntity>()
                 .HasOne<UserEntity>()
                 .WithMany()
                 .HasForeignKey(c => c.UserId);
 
-            //Signal Entity
+            //Signal
             modelBuilder.Entity<SignalEntity>()
                 .HasOne<UserEntity>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
 
-            //Stage Entity
+            //Stage
             modelBuilder.Entity<StageEntity>()
                 .HasOne<SignalEntity>()
                 .WithMany()
@@ -43,17 +44,23 @@ namespace Signals.App.Database
                 .WithMany()
                 .HasForeignKey(x => x.NextStageId);
 
-            //Notification Stage Entity
-            modelBuilder.Entity<NotificationStageEntity>()
-                .ToTable("NotificationStages");
+            //Stage Parameter
+            modelBuilder.Entity<StageParameterEntity>()
+                .HasOne<StageEntity>()
+                .WithMany(x => x.Parameters)
+                .HasForeignKey(x => x.StageId);
 
-            //Condition Stage Entity
-            modelBuilder.Entity<ConditionStageEntity>()
-                .ToTable("ConditionStages");
+            //Stage Execution
+            modelBuilder.Entity<StageExecutionEntity>()
+                .HasOne<StageEntity>()
+                .WithOne()
+                .HasForeignKey<StageExecutionEntity>(x => x.StageId);
 
-            //Waiting Stage Entity
-            modelBuilder.Entity<WaitingStageEntity>()
-                .ToTable("WaitingStages");
+            modelBuilder.Entity<StageExecutionEntity>()
+                .HasOne<SignalEntity>()
+                .WithOne()
+                .HasForeignKey<StageExecutionEntity>(x => x.SignalId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

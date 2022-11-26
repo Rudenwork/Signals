@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Signals.App.Database.Entities
 {
-    public class StageExecution
+    public class StageExecutionEntity
     {
         [Key]
         public Guid Id { get; set; }

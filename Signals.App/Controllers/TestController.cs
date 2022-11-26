@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Core.Jobs;
@@ -31,7 +32,9 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
-            var stages = SignalsContext.Stages.ToList();
+            var stages = SignalsContext.Stages
+                .Include(x => x.Parameters)
+                .ToList();
 
             return Ok(stages);
         }
@@ -49,11 +52,19 @@ namespace Signals.App.Controllers
 
             SignalsContext.Signals.Add(signal);
 
-            var stage = new WaitingStageEntity
+            var stage = new StageEntity
             {
                 SignalId = signal.Id,
+                Type = StageEntity.StageType.Waiting,
                 Name = "Test Waiting Stage",
-                Period = TimeSpan.FromMinutes(5)
+                Parameters =
+                {
+                    new StageParameterEntity
+                    {
+                        Key = "Period",
+                        Value = TimeSpan.FromMinutes(5).ToString()
+                    }
+                }
             };
 
             SignalsContext.Stages.Add(stage);
