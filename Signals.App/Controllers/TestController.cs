@@ -107,9 +107,9 @@ namespace Signals.App.Controllers
             var triggerKeys = await scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
 
             var jobs = triggerKeys
-                .Select(x => 
+                .Select(triggerKey => 
                 {
-                    var trigger = scheduler.GetTrigger(x).Result;
+                    var trigger = scheduler.GetTrigger(triggerKey).Result;
 
                     return new
                     {

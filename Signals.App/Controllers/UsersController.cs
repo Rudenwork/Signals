@@ -34,13 +34,13 @@ namespace Signals.App.Controllers
             var query = SignalsContext.Users.AsQueryable();
 
             if (filter.Username is not null)
-                query = query.Where(u => u.Username.Contains(filter.Username));
+                query = query.Where(x => x.Username.Contains(filter.Username));
 
             if (filter.IsAdmin is not null)
-                query = query.Where(u => u.IsAdmin == filter.IsAdmin);
+                query = query.Where(x => x.IsAdmin == filter.IsAdmin);
 
             if (filter.IsDisabled is not null)
-                query = query.Where(u => u.IsDisabled == filter.IsDisabled.Value);
+                query = query.Where(x => x.IsDisabled == filter.IsDisabled.Value);
 
             var result = query
                 .Subset(subset.Offset, subset.Limit)
@@ -55,7 +55,7 @@ namespace Signals.App.Controllers
         public ActionResult<UserModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity == null)
                 return NotFound();
@@ -69,7 +69,7 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<UserModel.Read> Post(UserModel.Create model)
         {
-            if (SignalsContext.Users.Any(u => u.Username == model.Username))
+            if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
                 return ValidationProblem();
@@ -92,12 +92,12 @@ namespace Signals.App.Controllers
         public ActionResult<UserModel.Read> Patch(Guid id, UserModel.Update model)
         {
             var entity = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
                 return NotFound();
 
-            if (SignalsContext.Users.Any(u => u.Username == model.Username))
+            if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
                 return ValidationProblem();
@@ -122,7 +122,7 @@ namespace Signals.App.Controllers
         public ActionResult Delete(Guid id)
         {
             var entity = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
                 return NotFound();

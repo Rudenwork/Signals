@@ -13,7 +13,7 @@ namespace Signals.App.Database.Extentions
 
             signalsContext.Database.Migrate();
 
-            if (signalsContext.Users.Any(u => u.IsAdmin))
+            if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
 
             var passwordHasher = scope.ServiceProvider.GetService<IPasswordHasher<UserEntity>>();

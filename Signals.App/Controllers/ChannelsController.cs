@@ -33,20 +33,20 @@ namespace Signals.App.Controllers
             if (filter.Type is not null)
             {
                 var channelType = filter.Type.Adapt<ChannelEntity.ChannelType>();
-                query = query.Where(c => c.Type == channelType);
+                query = query.Where(x => x.Type == channelType);
             }
 
             if (filter.Destination is not null)
-                query = query.Where(c => c.Destination.Contains(filter.Destination));
+                query = query.Where(x => x.Destination.Contains(filter.Destination));
 
             if (filter.Description is not null)
-                query = query.Where(c => c.Description.Contains(filter.Description));
+                query = query.Where(x => x.Description.Contains(filter.Description));
 
             if (filter.IsVerified is not null)
-                query = query.Where(c => c.IsVerified == filter.IsVerified.Value);
+                query = query.Where(x => x.IsVerified == filter.IsVerified.Value);
 
             var result = query
-                .Where(c => c.UserId == User.GetId())
+                .Where(x => x.UserId == User.GetId())
                 .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<ChannelModel.Read>>();
 
@@ -60,7 +60,7 @@ namespace Signals.App.Controllers
         public ActionResult<ChannelModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Channels
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity == null)
                 return NotFound();
@@ -95,7 +95,7 @@ namespace Signals.App.Controllers
         public ActionResult<ChannelModel.Read> Patch(Guid id, ChannelModel.Update model)
         {
             var entity = SignalsContext.Channels
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
                 return NotFound();
@@ -120,7 +120,7 @@ namespace Signals.App.Controllers
         public ActionResult Delete(Guid id)
         {
             var entity = SignalsContext.Channels
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
                 return NotFound();

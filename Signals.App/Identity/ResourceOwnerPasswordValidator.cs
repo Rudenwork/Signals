@@ -19,7 +19,7 @@ namespace Signals.App.Identity
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            var user = SignalsContext.Users.FirstOrDefault(u => u.Username == context.UserName);
+            var user = SignalsContext.Users.FirstOrDefault(x => x.Username == context.UserName);
 
             if (user is null)
                 return;

@@ -20,7 +20,7 @@ namespace Signals.App.Database
             modelBuilder.Entity<ChannelEntity>()
                 .HasOne<UserEntity>()
                 .WithMany()
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(x => x.UserId);
 
             //Signal
             modelBuilder.Entity<SignalEntity>()

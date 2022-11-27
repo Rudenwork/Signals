@@ -22,7 +22,7 @@ namespace Signals.App.Identity
             var id = Guid.Parse(context.Subject.GetSubjectId());
 
             var user = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (user.IsAdmin)
             {
@@ -42,7 +42,7 @@ namespace Signals.App.Identity
             var id = Guid.Parse(context.Subject.GetSubjectId());
 
             var user = SignalsContext.Users
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefault(x => x.Id == id);
 
             context.IsActive = !user.IsDisabled;
         }
