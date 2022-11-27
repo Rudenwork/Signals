@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221126230707_Initial")]
+    [Migration("20221127003505_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -111,10 +111,6 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NextStageId");
-
-                    b.HasIndex("PreviousStageId");
 
                     b.HasIndex("SignalId");
 
@@ -222,14 +218,6 @@ namespace Signals.App.Database.Migrations
 
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("NextStageId");
-
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("PreviousStageId");
-
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
                         .WithMany()
                         .HasForeignKey("SignalId")

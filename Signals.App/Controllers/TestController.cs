@@ -52,22 +52,41 @@ namespace Signals.App.Controllers
 
             SignalsContext.Signals.Add(signal);
 
-            var stage = new StageEntity
+            var stage1 = new StageEntity
             {
                 SignalId = signal.Id,
                 Type = StageEntity.StageType.Waiting,
-                Name = "Test Waiting Stage",
+                Name = "Test Waiting Stage 1",
                 Parameters = new List<StageParameterEntity>
                 {
                     new StageParameterEntity
                     {
                         Key = "Period",
-                        Value = TimeSpan.FromMinutes(5).ToString()
+                        Value = TimeSpan.FromSeconds(10).ToString()
                     }
                 }
             };
 
-            SignalsContext.Stages.Add(stage);
+            var stage2 = new StageEntity
+            {
+                SignalId = signal.Id,
+                Type = StageEntity.StageType.Waiting,
+                Name = "Test Waiting Stage 2",
+                Parameters = new List<StageParameterEntity>
+                {
+                    new StageParameterEntity
+                    {
+                        Key = "Period",
+                        Value = TimeSpan.FromSeconds(5).ToString()
+                    }
+                }
+            };
+
+            SignalsContext.Stages.Add(stage1);
+            SignalsContext.Stages.Add(stage2);
+
+            stage1.NextStageId = stage2.Id;
+            stage2.PreviousStageId = stage1.Id;
 
             await SignalsContext.SaveChangesAsync();
 

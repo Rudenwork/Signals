@@ -109,10 +109,6 @@ namespace Signals.App.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NextStageId");
-
-                    b.HasIndex("PreviousStageId");
-
                     b.HasIndex("SignalId");
 
                     b.ToTable("Stages");
@@ -219,14 +215,6 @@ namespace Signals.App.Database.Migrations
 
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("NextStageId");
-
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("PreviousStageId");
-
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
                         .WithMany()
                         .HasForeignKey("SignalId")

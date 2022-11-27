@@ -34,16 +34,6 @@ namespace Signals.App.Database
                 .WithMany()
                 .HasForeignKey(x => x.SignalId);
 
-            modelBuilder.Entity<StageEntity>()
-                .HasOne<StageEntity>()
-                .WithMany()
-                .HasForeignKey(x => x.PreviousStageId);
-
-            modelBuilder.Entity<StageEntity>()
-                .HasOne<StageEntity>()
-                .WithMany()
-                .HasForeignKey(x => x.NextStageId);
-
             //Stage Parameter
             modelBuilder.Entity<StageParameterEntity>()
                 .HasOne<StageEntity>()

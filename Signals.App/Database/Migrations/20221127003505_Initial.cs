@@ -89,16 +89,6 @@ namespace Signals.App.Database.Migrations
                         principalTable: "Signals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Stages_Stages_NextStageId",
-                        column: x => x.NextStageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Stages_Stages_PreviousStageId",
-                        column: x => x.PreviousStageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -173,16 +163,6 @@ namespace Signals.App.Database.Migrations
                 name: "IX_StageParameters_StageId",
                 table: "StageParameters",
                 column: "StageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stages_NextStageId",
-                table: "Stages",
-                column: "NextStageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stages_PreviousStageId",
-                table: "Stages",
-                column: "PreviousStageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stages_SignalId",
