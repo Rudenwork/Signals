@@ -1,5 +1,4 @@
 ﻿using Quartz;
-using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Jobs;
 
@@ -7,12 +6,10 @@ namespace Signals.App.Services
 {
     public class JobService
     {
-        public SignalsContext SignalsContext { get; }
         public IScheduler Scheduler { get; }
 
-        public JobService(SignalsContext signalsContext, IScheduler scheduler)
+        public JobService(IScheduler scheduler)
         {
-            SignalsContext = signalsContext;
             Scheduler = scheduler;
         }
 
@@ -38,6 +35,33 @@ namespace Signals.App.Services
                 .Create()
                 .WithIdentity(signalId)
                 .WithCronSchedule(signal.Schedule)
+                .Build();
+
+            await Scheduler.ScheduleJob(job, trigger);
+        }
+
+        public async Task ScheduleStageExecutions(List<StageExecutionEntity> stageExecutions)
+        {
+            foreach (var stageExecution in stageExecutions)
+            {
+                await ScheduleStageExecution(stageExecution);
+            }
+        }
+
+        public async Task ScheduleStageExecution(StageExecutionEntity stageExecution)
+        {
+            var stageExecutionId = stageExecution.Id.ToString();
+
+            var job = JobBuilder
+                .Create<StageExecutionJob>()
+                .WithIdentity(stageExecutionId)
+                .UsingJobData(nameof(StageExecutionEntity.Id), stageExecutionId)
+                .Build();
+
+            var trigger = TriggerBuilder
+                .Create()
+                .WithIdentity(stageExecutionId)
+                .StartAt(stageExecution.ScheduledOn)
                 .Build();
 
             await Scheduler.ScheduleJob(job, trigger);

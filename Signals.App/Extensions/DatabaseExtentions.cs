@@ -14,6 +14,12 @@ namespace Signals.App.Extensions
 
             signalsContext.Database.Migrate();
 
+            signalsContext.StageExecutions
+                .Where(x => x.ScheduledOn.AddMinutes(1) < DateTime.UtcNow)
+                .ExecuteDelete();
+
+            signalsContext.SaveChanges();
+
             if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
 

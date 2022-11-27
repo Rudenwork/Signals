@@ -1,6 +1,4 @@
-﻿using Quartz;
-using Signals.App.Database;
-using Signals.App.Database.Entities;
+﻿using Signals.App.Database;
 using Signals.App.Services;
 
 namespace Signals.App.Extensions
@@ -18,6 +16,9 @@ namespace Signals.App.Extensions
                 .ToList();
 
             jobService.ScheduleSignals(signals).Wait();
+
+            var stageExecutions = signalsContext.StageExecutions.ToList();
+            jobService.ScheduleStageExecutions(stageExecutions).Wait();
         }
     }
 }
