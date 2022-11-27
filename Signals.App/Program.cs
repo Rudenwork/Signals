@@ -2,19 +2,18 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
-using Signals.App.Core.Extensions;
-using Signals.App.Core.Jobs;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Extentions;
 using Signals.App.Extensions;
 using Signals.App.Identity;
+using Signals.App.Jobs.Extensions;
+using Signals.App.Services;
 using Signals.App.Settings;
 using System.Text.Json.Serialization;
 
@@ -113,6 +112,8 @@ builder.Services.AddQuartz(options => options.UseMicrosoftDependencyInjectionJob
 builder.Services.AddQuartzServer();
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+builder.Services.AddScoped(x => x.GetService<ISchedulerFactory>().GetScheduler().Result);
+builder.Services.AddScoped<JobService>();
 
 var app = builder.Build();
 

@@ -3,7 +3,7 @@ using Quartz;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 
-namespace Signals.App.Core.Jobs
+namespace Signals.App.Jobs
 {
     public class SignalJob : IJob
     {
