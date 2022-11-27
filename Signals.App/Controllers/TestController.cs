@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Controllers.Extensions;
-using Signals.App.Core.Jobs;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Identity;
@@ -28,7 +27,7 @@ namespace Signals.App.Controllers
             SchedulerFactory = schedulerFactory;
         }
 
-        [HttpGet]
+        [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
@@ -91,30 +90,6 @@ namespace Signals.App.Controllers
             await SignalsContext.SaveChangesAsync();
 
             return Ok();
-        }
-
-        [HttpPost("schedule")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> ScheduleJob()
-        {
-            var key = Guid.NewGuid();
-
-            var job = JobBuilder
-                .Create<TestJob>()
-                //.WithIdentity("name")
-                .UsingJobData("key", key)
-                .Build();
-
-            var trigger = TriggerBuilder
-                .Create()
-                .StartAt(DateTime.UtcNow.AddSeconds(10))
-                //.WithCronSchedule("0 52 18 25 11 ?")
-                .Build();
-
-            var scheduler = await SchedulerFactory.GetScheduler();
-            await scheduler.ScheduleJob(job, trigger);
-
-            return Ok(new { Key = key });
         }
 
         [HttpGet("jobs")]
