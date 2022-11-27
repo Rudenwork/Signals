@@ -53,7 +53,7 @@ namespace Signals.App.Services
             var stageExecutionId = stageExecution.Id.ToString();
 
             var job = JobBuilder
-                .Create<StageExecutionJob>()
+                .Create<StageJob>()
                 .WithIdentity(stageExecutionId)
                 .UsingJobData(nameof(StageExecutionEntity.Id), stageExecutionId)
                 .Build();
