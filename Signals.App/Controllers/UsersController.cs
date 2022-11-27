@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Signals.App.Controllers.Extensions;
 using Signals.App.Controllers.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Extensions;
 using Signals.App.Identity;
 
 namespace Signals.App.Controllers

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Signals.App.Database;
 using Signals.App.Database.Entities;
 
-namespace Signals.App.Database.Extentions
+namespace Signals.App.Extensions
 {
     public static class DatabaseExtentions
     {

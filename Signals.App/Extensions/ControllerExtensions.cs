@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Signals.App.Controllers.Extensions
+namespace Signals.App.Extensions
 {
     public static class ControllerExtensions
     {

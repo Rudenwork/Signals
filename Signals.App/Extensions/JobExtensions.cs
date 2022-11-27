@@ -3,7 +3,7 @@ using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;
 
-namespace Signals.App.Jobs.Extensions
+namespace Signals.App.Extensions
 {
     public static class JobExtensions
     {
