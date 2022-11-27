@@ -55,7 +55,8 @@ namespace Signals.App.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Schedule = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Schedule = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsDisabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

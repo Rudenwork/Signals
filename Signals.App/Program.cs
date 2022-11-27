@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
+using Signals.App.Core.Extensions;
+using Signals.App.Core.Jobs;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Extentions;
@@ -106,7 +108,7 @@ builder.Services.AddMapster(options =>
     options.IgnoreNullValues = true;
 });
 
-builder.Services.AddQuartz();
+builder.Services.AddQuartz(options => options.UseMicrosoftDependencyInjectionJobFactory());
 builder.Services.AddQuartzServer();
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
@@ -127,5 +129,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.PrepareDatabase();
+app.ScheduleJobs();
 
 app.Run();

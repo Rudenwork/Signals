@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
+using Signals.App.Controllers.Extensions;
 using Signals.App.Core.Jobs;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
-using Signals.App.Extensions;
 using Signals.App.Identity;
 
 namespace Signals.App.Controllers
@@ -57,7 +57,7 @@ namespace Signals.App.Controllers
                 SignalId = signal.Id,
                 Type = StageEntity.StageType.Waiting,
                 Name = "Test Waiting Stage",
-                Parameters =
+                Parameters = new List<StageParameterEntity>
                 {
                     new StageParameterEntity
                     {
@@ -104,11 +104,23 @@ namespace Signals.App.Controllers
         {
             var scheduler = await SchedulerFactory.GetScheduler();
 
-            return Ok(new 
-            { 
-                Jobs = await scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()),
-                Triggers = await scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup())
-            });
+            var triggerKeys = await scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
+
+            var jobs = triggerKeys
+                .Select(x => 
+                {
+                    var trigger = scheduler.GetTrigger(x).Result;
+
+                    return new
+                    {
+                        Key = trigger.JobKey,
+                        PreviousFireTime = trigger.GetPreviousFireTimeUtc(),
+                        NextFireTime = trigger.GetNextFireTimeUtc() 
+                    };
+                })
+                .ToList();
+
+            return Ok(jobs);
         }
     }
 }

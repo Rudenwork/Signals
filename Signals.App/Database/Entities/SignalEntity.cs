@@ -15,5 +15,7 @@ namespace Signals.App.Database.Entities
 
         [MaxLength(50)]
         public string Schedule { get; set; }
+
+        public bool IsDisabled { get; set; }
     }
 }
