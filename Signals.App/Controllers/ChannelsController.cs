@@ -17,7 +17,7 @@ namespace Signals.App.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ChannelsController : ControllerBase
     {
-        private SignalsContext SignalsContext { get; set; }
+        private SignalsContext SignalsContext { get; }
 
         public ChannelsController(SignalsContext signalsContext)
         {

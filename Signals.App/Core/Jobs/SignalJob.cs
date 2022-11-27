@@ -7,7 +7,7 @@ namespace Signals.App.Core.Jobs
 {
     public class SignalJob : IJob
     {
-        private SignalsContext SignalsContext { get; set; }
+        private SignalsContext SignalsContext { get; }
 
         public SignalJob(SignalsContext signalsContext)
         {

@@ -10,7 +10,7 @@ namespace Signals.App.Identity
 {
     public class ProfileService : IProfileService
     {
-        private SignalsContext SignalsContext { get; set; }
+        private SignalsContext SignalsContext { get; }
 
         public ProfileService(SignalsContext context)
         {

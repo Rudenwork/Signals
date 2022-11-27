@@ -18,8 +18,8 @@ namespace Signals.App.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class UsersController : ControllerBase
     {
-        private SignalsContext SignalsContext { get; set; }
-        private IPasswordHasher<UserEntity> PasswordHasher { get; set; }
+        private SignalsContext SignalsContext { get; }
+        private IPasswordHasher<UserEntity> PasswordHasher { get; }
 
         public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher)
         {

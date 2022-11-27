@@ -8,8 +8,8 @@ namespace Signals.App.Identity
 {
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
-        private SignalsContext SignalsContext { get; set; }
-        private IPasswordHasher<UserEntity> PasswordHasher { get; set; }
+        private SignalsContext SignalsContext { get; }
+        private IPasswordHasher<UserEntity> PasswordHasher { get; }
 
         public ResourceOwnerPasswordValidator(SignalsContext signalsContext, IPasswordHasher<UserEntity> passwordHasher)
         {
