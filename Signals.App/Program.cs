@@ -2,6 +2,7 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -108,6 +109,8 @@ builder.Services.AddMapster(options =>
 
 builder.Services.AddQuartz(options => options.UseMicrosoftDependencyInjectionJobFactory());
 builder.Services.AddQuartzServer();
+
+builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped(x => x.GetService<ISchedulerFactory>().GetScheduler().Result);
