@@ -113,7 +113,6 @@ builder.Services.AddQuartzServer();
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
-builder.Services.AddScoped(x => x.GetService<ISchedulerFactory>().GetScheduler().Result);
 builder.Services.AddScoped<JobService>();
 
 var app = builder.Build();

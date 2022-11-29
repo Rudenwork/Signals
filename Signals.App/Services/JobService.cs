@@ -1,68 +1,59 @@
 ﻿using Quartz;
-using Signals.App.Database.Entities;
-using Signals.App.Jobs;
+using Quartz.Impl.Matchers;
 
 namespace Signals.App.Services
 {
     public class JobService
     {
-        public IScheduler Scheduler { get; }
+        private IScheduler Scheduler { get; }
 
-        public JobService(IScheduler scheduler)
+        public JobService(ISchedulerFactory schedulerFactory)
         {
-            Scheduler = scheduler;
+            Scheduler = schedulerFactory.GetScheduler().Result;
         }
 
-        public async Task ScheduleSignals(List<SignalEntity> signals)
+        public async Task Schedule<TJob>(Guid id, string cron) where TJob : IJob
         {
-            foreach (var signal in signals)
-            {
-                await ScheduleSignal(signal);
-            }
+            await Schedule<TJob>(id, cron, null);
         }
 
-        public async Task ScheduleSignal(SignalEntity signal)
+        public async Task Schedule<TJob>(Guid id, DateTime startAt) where TJob : IJob
         {
-            var signalId = signal.Id.ToString();
+            await Schedule<TJob>(id, null, startAt);
+        }
+
+        public async Task Schedule<TJob>(Guid id) where TJob : IJob
+        {
+            await Schedule<TJob>(id, null, null);
+        }
+
+        private async Task Schedule<TJob>(Guid id, string cron = null, DateTime? startAt = null) where TJob: IJob
+        {
+            var jobId = id.ToString();
 
             var job = JobBuilder
-                .Create<SignalJob>()
-                .WithIdentity(signalId)
-                .UsingJobData(nameof(SignalEntity.Id), signalId)
+                .Create<TJob>()
+                .WithIdentity(jobId, typeof(TJob).Name)
                 .Build();
 
-            var trigger = TriggerBuilder
+            var triggerBuilder = TriggerBuilder
                 .Create()
-                .WithIdentity(signalId)
-                .WithCronSchedule(signal.Schedule)
-                .Build();
+                .WithIdentity(jobId, typeof(TJob).Name);
 
-            await Scheduler.ScheduleJob(job, trigger);
-        }
-
-        public async Task ScheduleStageExecutions(List<StageExecutionEntity> stageExecutions)
-        {
-            foreach (var stageExecution in stageExecutions)
+            if (cron is not null)
             {
-                await ScheduleStageExecution(stageExecution);
+                triggerBuilder.WithCronSchedule(cron);
             }
-        }
+            else if (startAt is not null)
+            {
+                triggerBuilder.StartAt(startAt.Value);
+            }
+            else
+            {
+                triggerBuilder.StartNow();
+            }
 
-        public async Task ScheduleStageExecution(StageExecutionEntity stageExecution)
-        {
-            var stageExecutionId = stageExecution.Id.ToString();
-
-            var job = JobBuilder
-                .Create<StageJob>()
-                .WithIdentity(stageExecutionId)
-                .UsingJobData(nameof(StageExecutionEntity.Id), stageExecutionId)
-                .Build();
-
-            var trigger = TriggerBuilder
-                .Create()
-                .WithIdentity(stageExecutionId)
-                .StartAt(stageExecution.ScheduledOn)
-                .Build();
+            var trigger = triggerBuilder.Build();
 
             await Scheduler.ScheduleJob(job, trigger);
         }

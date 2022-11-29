@@ -4,14 +4,14 @@ namespace Signals.App.Commands
 {
     public class ScheduleStage
     {
-        public class Request : IRequest
+        public class Command : IRequest
         {
             public Guid SignalId { get; set; }
         }
 
-        private class Handler : IRequestHandler<Request>
+        private class Handler : IRequestHandler<Command>
         {
-            public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            public Task<Unit> Handle(Command command, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

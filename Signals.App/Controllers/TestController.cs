@@ -7,6 +7,8 @@ using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
 using Signals.App.Identity;
+using Signals.App.Jobs;
+using Signals.App.Services;
 
 namespace Signals.App.Controllers
 {
@@ -20,22 +22,20 @@ namespace Signals.App.Controllers
     {
         private SignalsContext SignalsContext { get; }
         private ISchedulerFactory SchedulerFactory { get; }
+        private JobService JobService { get; }
 
-        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, JobService jobService)
         {
             SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
+            JobService = jobService;
         }
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
-            var stages = SignalsContext.Stages
-                .Include(x => x.Parameters)
-                .ToList();
-
-            return Ok(stages);
+            return Ok();
         }
 
         [HttpPost("seed")]

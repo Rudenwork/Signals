@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221127003505_Initial")]
+    [Migration("20221129231825_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -86,6 +86,38 @@ namespace Signals.App.Database.Migrations
                     b.ToTable("Signals");
                 });
 
+            modelBuilder.Entity("Signals.App.Database.Entities.SignalExecutionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SignalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("StageRetryAttempt")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StageScheduledOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SignalId")
+                        .IsUnique();
+
+                    b.HasIndex("StageId")
+                        .IsUnique();
+
+                    b.ToTable("SignalExecutions");
+                });
+
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -115,35 +147,6 @@ namespace Signals.App.Database.Migrations
                     b.HasIndex("SignalId");
 
                     b.ToTable("Stages");
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.StageExecutionEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RetryAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ScheduledOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SignalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("StageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SignalId")
-                        .IsUnique();
-
-                    b.HasIndex("StageId")
-                        .IsUnique();
-
-                    b.ToTable("StageExecutions");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.StageParameterEntity", b =>
@@ -216,26 +219,26 @@ namespace Signals.App.Database.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Signals.App.Database.Entities.SignalExecutionEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.SignalExecutionEntity", "SignalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.SignalExecutionEntity", "StageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
                         .WithMany()
                         .HasForeignKey("SignalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.StageExecutionEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.StageExecutionEntity", "SignalId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.StageExecutionEntity", "StageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

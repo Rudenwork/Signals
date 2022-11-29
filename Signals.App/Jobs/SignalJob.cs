@@ -1,39 +1,24 @@
-﻿using Quartz;
-using Signals.App.Database;
-using Signals.App.Database.Entities;
-using Signals.App.Services;
+﻿using MediatR;
+using Quartz;
+using Signals.App.Commands;
 
 namespace Signals.App.Jobs
 {
     public class SignalJob : IJob
     {
-        private SignalsContext SignalsContext { get; }
-        private JobService JobService { get; }
+        private IMediator Mediator { get; }
 
-        public SignalJob(SignalsContext signalsContext, JobService jobService)
+        public SignalJob(IMediator mediator)
         {
-            SignalsContext = signalsContext;
-            JobService = jobService;
+            Mediator = mediator;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var signalId = Guid.Parse(context.MergedJobDataMap[nameof(SignalEntity.Id)].ToString());
-            Console.WriteLine($"[{nameof(SignalJob)}] - {signalId}");
-
-            var stage = SignalsContext.Stages.First(x => x.PreviousStageId == null);
-
-            var stageExecution = new StageExecutionEntity
-            {
-                StageId = stage.Id,
-                SignalId = signalId,
-                ScheduledOn = DateTime.UtcNow
-            };
-
-            SignalsContext.StageExecutions.Add(stageExecution);
-            SignalsContext.SaveChanges();
-
-            await JobService.ScheduleStageExecution(stageExecution);
+            await Mediator.Send(new StartSignal.Command
+            { 
+                SignalId = Guid.Parse(context.JobDetail.Key.Name)
+            });
         }
     }
 }
