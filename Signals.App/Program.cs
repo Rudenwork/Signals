@@ -113,7 +113,7 @@ builder.Services.AddQuartzServer();
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
-builder.Services.AddScoped<JobService>();
+builder.Services.AddScoped<CommandService>();
 
 var app = builder.Build();
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Signals.App.Database.Entities;
-using Signals.App.Database;
 using Microsoft.EntityFrameworkCore;
+using Signals.App.Commands;
+using Signals.App.Database;
+using Signals.App.Database.Entities;
 using Signals.App.Services;
-using Signals.App.Jobs;
 
 namespace Signals.App.Extensions
 {
@@ -44,7 +44,7 @@ namespace Signals.App.Extensions
         {
             using var scope = app.Services.CreateScope();
             var signalsContext = scope.ServiceProvider.GetService<SignalsContext>();
-            var jobService = scope.ServiceProvider.GetService<JobService>();
+            var commandService = scope.ServiceProvider.GetService<CommandService>();
 
             var signals = signalsContext.Signals
                 .Where(x => !x.IsDisabled)
@@ -52,14 +52,15 @@ namespace Signals.App.Extensions
 
             foreach (var signal in signals)
             {
-                jobService.Schedule<SignalJob>(signal.Id, signal.Schedule).Wait();
+                commandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id).Wait();
             }
 
             var signalExecutions = signalsContext.SignalExecutions.ToList();
 
             foreach (var signalExecution in signalExecutions)
             {
-                jobService.Schedule<StageJob>(signalExecution.SignalId, signalExecution.StageScheduledOn).Wait();
+                var command = new ExecuteStage.Command { SignalId = signalExecution.Id };
+                commandService.Schedule(command, signalExecution.StageScheduledOn, signalExecution.SignalId).Wait();
             }
         }
     }

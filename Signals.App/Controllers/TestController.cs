@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
+using Signals.App.Commands;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
 using Signals.App.Identity;
-using Signals.App.Jobs;
 using Signals.App.Services;
 
 namespace Signals.App.Controllers
@@ -22,19 +21,23 @@ namespace Signals.App.Controllers
     {
         private SignalsContext SignalsContext { get; }
         private ISchedulerFactory SchedulerFactory { get; }
-        private JobService JobService { get; }
+        private CommandService CommandService { get; }
 
-        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, JobService jobService)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService)
         {
             SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
-            JobService = jobService;
+            CommandService = commandService;
         }
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
+            var id = Guid.NewGuid();
+
+            await CommandService.Schedule(new StartSignal.Command { SignalId = id });
+
             return Ok();
         }
 
