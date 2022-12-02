@@ -52,6 +52,7 @@ namespace Signals.App.Services
 
         private async Task Schedule<TCommand>(TCommand command, string cron = null, DateTime? startAt = null, string group = null) where TCommand : IRequest
         {
+            group = group ?? Guid.NewGuid().ToString();
             var json = JsonSerializer.Serialize(command);
 
             var job = JobBuilder

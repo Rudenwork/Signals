@@ -63,7 +63,6 @@ namespace Signals.App.Commands
                     await CommandService.Execute(new RescheduleStage.Command { SignalId = stage.SignalId, ScheduleOn = scheduledOn });
 
                     return Unit.Value;
-
                 }
                 else if (stage.Type == StageEntity.StageType.Notification)
                 {

@@ -55,8 +55,7 @@ namespace Signals.App.Extensions
 
             foreach (var signalExecution in signalExecutions)
             {
-                var command = new ExecuteStage.Command { SignalId = signalExecution.Id };
-                commandService.Schedule(command, signalExecution.StageScheduledOn, signalExecution.SignalId).Wait();
+                commandService.Schedule(new ExecuteStage.Command { SignalId = signalExecution.SignalId }).Wait();
             }
         }
     }
