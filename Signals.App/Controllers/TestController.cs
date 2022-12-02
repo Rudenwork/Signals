@@ -34,10 +34,6 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
-            var id = Guid.NewGuid();
-
-            await CommandService.Execute(new StartSignal.Command { SignalId = id });
-
             return Ok();
         }
 
@@ -91,6 +87,8 @@ namespace Signals.App.Controllers
             stage2.PreviousStageId = stage1.Id;
 
             await SignalsContext.SaveChangesAsync();
+
+            await CommandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id);
 
             return Ok();
         }
