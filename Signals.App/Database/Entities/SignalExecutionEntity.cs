@@ -12,7 +12,5 @@ namespace Signals.App.Database.Entities
         public Guid StageId { get; set; }
         public DateTime StageScheduledOn { get; set; }
         public int StageRetryAttempt { get; set; }
-        ///TODO: Set to false on recover
-        public bool IsActive { get; set; }
     }
 }

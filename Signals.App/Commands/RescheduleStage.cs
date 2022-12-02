@@ -5,11 +5,12 @@ using Signals.App.Services;
 
 namespace Signals.App.Commands
 {
-    public class StartSignal
+    public class RescheduleStage
     {
         public class Command : IRequest
         {
             public Guid SignalId { get; set; }
+            public DateTime ScheduleOn { get; set; }
         }
 
         private class Handler : IRequestHandler<Command>
@@ -25,21 +26,18 @@ namespace Signals.App.Commands
 
             public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
             {
-                if (SignalsContext.SignalExecutions.Any(x => x.SignalId == command.SignalId))
+                var signalExecution = SignalsContext.SignalExecutions.FirstOrDefault(x => x.SignalId == command.SignalId);
+
+                if (signalExecution is null)
                     return Unit.Value;
 
-                var firstStage = SignalsContext.Stages.FirstOrDefault(x => x.SignalId == command.SignalId && x.PreviousStageId == null);
+                signalExecution.StageScheduledOn = command.ScheduleOn;
+                signalExecution.StageRetryAttempt++;
 
-                SignalsContext.SignalExecutions.Add(new SignalExecutionEntity
-                {
-                    SignalId = command.SignalId,
-                    StageId = firstStage.Id,
-                    StageScheduledOn = DateTime.UtcNow
-                });
-
+                SignalsContext.Update(signalExecution);
                 SignalsContext.SaveChanges();
 
-                await CommandService.Schedule(new ExecuteStage.Command { SignalId = command.SignalId });
+                await CommandService.Schedule(new ExecuteStage.Command { SignalId = command.SignalId }, command.ScheduleOn, command.SignalId);
 
                 return Unit.Value;
             }

@@ -20,10 +20,6 @@ namespace Signals.App.Extensions
                 .Where(x => x.StageScheduledOn.AddMinutes(1) < DateTime.UtcNow)
                 .ExecuteDelete();
 
-            signalsContext.SignalExecutions
-                .Where(x => x.IsActive)
-                .ExecuteUpdate(x => x.SetProperty(x => x.IsActive, false));
-
             if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
 

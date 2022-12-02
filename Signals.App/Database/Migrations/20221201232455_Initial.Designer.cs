@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221129231825_Initial")]
+    [Migration("20221201232455_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -92,9 +92,6 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("SignalId")
                         .HasColumnType("uniqueidentifier");
 
@@ -157,8 +154,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<Guid>("StageId")
                         .HasColumnType("uniqueidentifier");

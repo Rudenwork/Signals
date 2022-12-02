@@ -36,7 +36,7 @@ namespace Signals.App.Controllers
         {
             var id = Guid.NewGuid();
 
-            await CommandService.Schedule(new StartSignal.Command { SignalId = id });
+            await CommandService.Execute(new StartSignal.Command { SignalId = id });
 
             return Ok();
         }
@@ -63,7 +63,7 @@ namespace Signals.App.Controllers
                 {
                     new StageParameterEntity
                     {
-                        Key = "Period",
+                        Key = StageParameterEntity.ParameterKey.Period,
                         Value = TimeSpan.FromSeconds(10).ToString()
                     }
                 }
@@ -78,7 +78,7 @@ namespace Signals.App.Controllers
                 {
                     new StageParameterEntity
                     {
-                        Key = "Period",
+                        Key = StageParameterEntity.ParameterKey.Period,
                         Value = TimeSpan.FromSeconds(5).ToString()
                     }
                 }

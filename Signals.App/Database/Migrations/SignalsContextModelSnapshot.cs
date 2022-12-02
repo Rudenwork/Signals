@@ -89,9 +89,6 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("SignalId")
                         .HasColumnType("uniqueidentifier");
 
@@ -154,8 +151,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<Guid>("StageId")
                         .HasColumnType("uniqueidentifier");

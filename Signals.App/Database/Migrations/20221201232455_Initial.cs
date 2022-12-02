@@ -99,8 +99,7 @@ namespace Signals.App.Database.Migrations
                     SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StageScheduledOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StageRetryAttempt = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    StageRetryAttempt = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,7 +123,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(25)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>

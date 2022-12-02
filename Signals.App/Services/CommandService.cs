@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Quartz;
+using Quartz.Impl.Matchers;
 using System.Text.Json;
 
 namespace Signals.App.Services
@@ -15,14 +16,14 @@ namespace Signals.App.Services
             Mediator = mediator;
         }
 
-        public async Task ScheduleRecurring<TCommand>(TCommand command, string cron, Guid? id = null) where TCommand : IRequest
+        public async Task ScheduleRecurring<TCommand>(TCommand command, string cron, Guid groupId) where TCommand : IRequest
         {
-            await Schedule(command, cron, null, id);
+            await Schedule(command, cron, null, $"R:{groupId}");
         }
 
-        public async Task Schedule<TCommand>(TCommand command, DateTime? startAt = null, Guid? id = null) where TCommand : IRequest
+        public async Task Schedule<TCommand>(TCommand command, DateTime? startAt = null, Guid? groupId = null) where TCommand : IRequest
         {
-            await Schedule(command, null, startAt, id);
+            await Schedule(command, null, startAt, groupId?.ToString());
         }
 
         public async Task Execute<TCommand>(TCommand command) where TCommand : IRequest
@@ -30,20 +31,38 @@ namespace Signals.App.Services
             await Mediator.Send(command);
         }
 
-        private async Task Schedule<TCommand>(TCommand command, string cron = null, DateTime? startAt = null, Guid? id = null) where TCommand : IRequest
+        public async Task UnscheduleRecurring(Guid groupId)
         {
-            var jobId = (id ?? Guid.NewGuid()).ToString();
+            Unschedule($"R:{groupId}");
+        }
+
+        public async Task Unschedule(Guid groupId)
+        {
+            Unschedule(groupId.ToString());
+        }
+
+        private async Task Unschedule(string group)
+        {
+            var jobKeys = await Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(group));
+            var triggerKeys = await Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.GroupEquals(group));
+
+            await Scheduler.UnscheduleJobs(triggerKeys);
+            await Scheduler.DeleteJobs(jobKeys);
+        }
+
+        private async Task Schedule<TCommand>(TCommand command, string cron = null, DateTime? startAt = null, string group = null) where TCommand : IRequest
+        {
             var json = JsonSerializer.Serialize(command);
 
             var job = JobBuilder
                 .Create<CommandJob>()
-                .WithIdentity(jobId, typeof(TCommand).FullName)
+                .WithIdentity(typeof(TCommand).FullName, group)
                 .UsingJobData(CommandJob.Json, json)
                 .Build();
 
             var triggerBuilder = TriggerBuilder
                 .Create()
-                .WithIdentity(jobId, typeof(TCommand).FullName);
+                .WithIdentity(typeof(TCommand).FullName, group);
 
             if (cron is not null)
             {
@@ -77,7 +96,7 @@ namespace Signals.App.Services
             public async Task Execute(IJobExecutionContext context)
             {
                 var json = context.MergedJobDataMap[Json].ToString();
-                var type = Type.GetType(context.JobDetail.Key.Group);
+                var type = Type.GetType(context.JobDetail.Key.Name);
 
                 var command = JsonSerializer.Deserialize(json, type);
 

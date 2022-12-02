@@ -11,10 +11,17 @@ namespace Signals.App.Database.Entities
 
         public Guid StageId { get; set; }
 
-        [MaxLength(100)]
-        public string Key { get; set; }
+        [Column(TypeName = "nvarchar(25)")]
+        public ParameterKey Key { get; set; }
 
         [MaxLength(100)]
         public string Value { get; set; }
+
+        public enum ParameterKey
+        {
+            Period,
+            RetryCount,
+            RetryDelay
+        }
     }
 }
