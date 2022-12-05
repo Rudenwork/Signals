@@ -26,9 +26,9 @@ namespace Signals.App.Services
             await Schedule(command, null, startAt, groupId?.ToString());
         }
 
-        public async Task Execute<TCommand>(TCommand command) where TCommand : IRequest
+        public async Task<Unit> Execute<TCommand>(TCommand command) where TCommand : IRequest
         {
-            await Mediator.Send(command);
+            return await Mediator.Send(command);
         }
 
         public async Task UnscheduleRecurring(Guid groupId)

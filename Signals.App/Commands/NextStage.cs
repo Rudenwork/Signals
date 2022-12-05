@@ -33,8 +33,7 @@ namespace Signals.App.Commands
 
                 if (nextStage is null)
                 {
-                    await CommandService.Execute(new StopSignal.Command { SignalId = command.SignalId });
-                    return Unit.Value;
+                    return await CommandService.Execute(new StopSignal.Command { SignalId = command.SignalId });
                 }
 
                 signalExecution.StageId = nextStage.Id;
