@@ -6,7 +6,7 @@ namespace Signals.App.Commands.Stage
 {
     public class ExecuteConditionStage
     {
-        public class Command : IRequest
+        public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
             public int RetryAttempt { get; set; }

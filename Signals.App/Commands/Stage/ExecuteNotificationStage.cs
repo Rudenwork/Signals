@@ -6,7 +6,7 @@ namespace Signals.App.Commands.Stage
 {
     public class ExecuteNotificationStage
     {
-        public class Command : IRequest
+        public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
         }

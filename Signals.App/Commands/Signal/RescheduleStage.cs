@@ -7,7 +7,7 @@ namespace Signals.App.Commands.Signal
 {
     public class RescheduleStage
     {
-        public class Command : IRequest
+        public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
             public DateTime ScheduleOn { get; set; }

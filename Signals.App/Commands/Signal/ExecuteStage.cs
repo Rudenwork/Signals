@@ -9,7 +9,7 @@ namespace Signals.App.Commands.Signal
 {
     public class ExecuteStage
     {
-        public class Command : IRequest
+        public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
         }
@@ -45,6 +45,7 @@ namespace Signals.App.Commands.Signal
                         return await CommandService.Execute(new ExecuteConditionStage.Command
                         {
                             SignalId = stage.SignalId,
+                            StageId = stage.Id,
                             RetryAttempt = signalExecution.StageRetryAttempt,
                             RetryCount = int.Parse(parameters[StageParameterEntity.ParameterKey.RetryCount]),
                             RetryDelay = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.RetryDelay])

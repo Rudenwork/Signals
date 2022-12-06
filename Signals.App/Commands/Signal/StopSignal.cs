@@ -7,7 +7,7 @@ namespace Signals.App.Commands.Signal
 {
     public class StopSignal
     {
-        public class Command : IRequest
+        public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
         }

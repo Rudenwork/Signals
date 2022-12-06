@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Azure;
+using MediatR;
 using Quartz;
 using Quartz.Impl.Matchers;
 using System.Text.Json;
@@ -16,17 +17,17 @@ namespace Signals.App.Services
             Mediator = mediator;
         }
 
-        public async Task ScheduleRecurring<TCommand>(TCommand command, string cron, Guid groupId) where TCommand : IRequest
+        public async Task ScheduleRecurring<TResponse>(IRequest<TResponse> command, string cron, Guid groupId)
         {
             await Schedule(command, cron, null, $"R:{groupId}");
         }
 
-        public async Task Schedule<TCommand>(TCommand command, DateTime? startAt = null, Guid? groupId = null) where TCommand : IRequest
+        public async Task Schedule<TResponse>(IRequest<TResponse> command, DateTime? startAt = null, Guid? groupId = null)
         {
             await Schedule(command, null, startAt, groupId?.ToString());
         }
 
-        public async Task<Unit> Execute<TCommand>(TCommand command) where TCommand : IRequest
+        public async Task<TResponse> Execute<TResponse>(IRequest<TResponse> command)
         {
             return await Mediator.Send(command);
         }
@@ -50,20 +51,20 @@ namespace Signals.App.Services
             await Scheduler.DeleteJobs(jobKeys);
         }
 
-        private async Task Schedule<TCommand>(TCommand command, string cron = null, DateTime? startAt = null, string group = null) where TCommand : IRequest
+        private async Task Schedule<TResponse>(IRequest<TResponse> command, string cron = null, DateTime? startAt = null, string group = null)
         {
             group = group ?? Guid.NewGuid().ToString();
             var json = JsonSerializer.Serialize(command);
 
             var job = JobBuilder
                 .Create<CommandJob>()
-                .WithIdentity(typeof(TCommand).FullName, group)
+                .WithIdentity(command.GetType().FullName, group)
                 .UsingJobData(CommandJob.Json, json)
                 .Build();
 
             var triggerBuilder = TriggerBuilder
                 .Create()
-                .WithIdentity(typeof(TCommand).FullName, group);
+                .WithIdentity(command.GetType().FullName, group);
 
             if (cron is not null)
             {
