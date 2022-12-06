@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Signals.App.Commands.Stage;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;
 
-namespace Signals.App.Commands
+namespace Signals.App.Commands.Signal
 {
     public class ExecuteStage
     {
@@ -41,8 +42,8 @@ namespace Signals.App.Commands
                 switch (stage.Type)
                 {
                     case StageEntity.StageType.Condition:
-                        return await CommandService.Execute(new ExecuteConditionStage.Command 
-                        { 
+                        return await CommandService.Execute(new ExecuteConditionStage.Command
+                        {
                             SignalId = stage.SignalId,
                             RetryAttempt = signalExecution.StageRetryAttempt,
                             RetryCount = int.Parse(parameters[StageParameterEntity.ParameterKey.RetryCount]),
@@ -56,8 +57,8 @@ namespace Signals.App.Commands
                             Period = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.Period])
                         });
                     case StageEntity.StageType.Notification:
-                        return await CommandService.Execute(new ExecuteNotificationStage.Command 
-                        { 
+                        return await CommandService.Execute(new ExecuteNotificationStage.Command
+                        {
                             SignalId = stage.SignalId
                         });
                     default:

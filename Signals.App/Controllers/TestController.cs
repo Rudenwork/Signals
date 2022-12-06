@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
-using Signals.App.Commands;
+using Signals.App.Commands.Signal;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;

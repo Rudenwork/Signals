@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Signals.App.Commands;
+using Signals.App.Commands.Signal;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;

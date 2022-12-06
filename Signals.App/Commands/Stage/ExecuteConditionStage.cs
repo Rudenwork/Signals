@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using Signals.App.Commands.Signal;
 using Signals.App.Services;
 
-namespace Signals.App.Commands
+namespace Signals.App.Commands.Stage
 {
     public class ExecuteConditionStage
     {
@@ -30,8 +31,8 @@ namespace Signals.App.Commands
                 {
                     if (command.RetryCount > command.RetryAttempt)
                     {
-                        return await CommandService.Execute(new RescheduleStage.Command 
-                        { 
+                        return await CommandService.Execute(new RescheduleStage.Command
+                        {
                             SignalId = command.SignalId,
                             ScheduleOn = DateTime.UtcNow + command.RetryDelay
                         });

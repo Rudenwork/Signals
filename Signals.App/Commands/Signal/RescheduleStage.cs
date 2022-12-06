@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Signals.App.Database;
+using Signals.App.Database.Entities;
 using Signals.App.Services;
 
-namespace Signals.App.Commands
+namespace Signals.App.Commands.Signal
 {
-    public class NextStage
+    public class RescheduleStage
     {
         public class Command : IRequest
         {
             public Guid SignalId { get; set; }
+            public DateTime ScheduleOn { get; set; }
         }
 
         private class Handler : IRequestHandler<Command>
@@ -29,21 +31,13 @@ namespace Signals.App.Commands
                 if (signalExecution is null)
                     return Unit.Value;
 
-                var nextStage = SignalsContext.Stages.FirstOrDefault(x => x.PreviousStageId == signalExecution.StageId);
-
-                if (nextStage is null)
-                {
-                    return await CommandService.Execute(new StopSignal.Command { SignalId = command.SignalId });
-                }
-
-                signalExecution.StageId = nextStage.Id;
-                signalExecution.StageRetryAttempt = 0;
-                signalExecution.StageScheduledOn = DateTime.UtcNow;
+                signalExecution.StageScheduledOn = command.ScheduleOn;
+                signalExecution.StageRetryAttempt++;
 
                 SignalsContext.Update(signalExecution);
                 SignalsContext.SaveChanges();
 
-                await CommandService.Schedule(new ExecuteStage.Command { SignalId = command.SignalId });
+                await CommandService.Schedule(new ExecuteStage.Command { SignalId = command.SignalId }, command.ScheduleOn, command.SignalId);
 
                 return Unit.Value;
             }
