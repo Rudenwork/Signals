@@ -10,6 +10,8 @@ namespace Signals.App.Database
         public DbSet<SignalEntity> Signals { get; set; }
         public DbSet<StageEntity> Stages { get; set; }
         public DbSet<StageParameterEntity> StageParameters { get; set; }
+        public DbSet<BlockEntity> Blocks { get; set; }
+        public DbSet<BlockParameterEntity> BlockParameters { get; set; }
         public DbSet<SignalExecutionEntity> SignalExecutions { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
@@ -39,6 +41,18 @@ namespace Signals.App.Database
                 .HasOne<StageEntity>()
                 .WithMany(x => x.Parameters)
                 .HasForeignKey(x => x.StageId);
+
+            //Block
+            modelBuilder.Entity<BlockEntity>()
+                .HasOne<StageEntity>()
+                .WithMany()
+                .HasForeignKey(x => x.StageId);
+
+            //Block Parameter
+            modelBuilder.Entity<BlockParameterEntity>()
+                .HasOne<BlockEntity>()
+                .WithMany(x => x.Parameters)
+                .HasForeignKey(x => x.BlockId);
 
             //Signal Execution
             modelBuilder.Entity<SignalExecutionEntity>()

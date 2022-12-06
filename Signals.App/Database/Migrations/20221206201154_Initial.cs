@@ -92,6 +92,26 @@ namespace Signals.App.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Blocks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blocks_Stages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SignalExecutions",
                 columns: table => new
                 {
@@ -137,6 +157,36 @@ namespace Signals.App.Database.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BlockParameters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlockParameters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlockParameters_Blocks_BlockId",
+                        column: x => x.BlockId,
+                        principalTable: "Blocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlockParameters_BlockId",
+                table: "BlockParameters",
+                column: "BlockId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blocks_StageId",
+                table: "Blocks",
+                column: "StageId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Channels_UserId",
                 table: "Channels",
@@ -174,6 +224,9 @@ namespace Signals.App.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BlockParameters");
+
+            migrationBuilder.DropTable(
                 name: "Channels");
 
             migrationBuilder.DropTable(
@@ -181,6 +234,9 @@ namespace Signals.App.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "StageParameters");
+
+            migrationBuilder.DropTable(
+                name: "Blocks");
 
             migrationBuilder.DropTable(
                 name: "Stages");

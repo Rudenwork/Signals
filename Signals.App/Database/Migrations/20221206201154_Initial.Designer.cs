@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221201232455_Initial")]
+    [Migration("20221206201154_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,54 @@ namespace Signals.App.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParentBlockId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("Blocks");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.BlockParameterEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlockId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockId");
+
+                    b.ToTable("BlockParameters");
+                });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
                 {
@@ -197,6 +245,24 @@ namespace Signals.App.Database.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
+                        .WithMany()
+                        .HasForeignKey("StageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.BlockParameterEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.BlockEntity", null)
+                        .WithMany("Parameters")
+                        .HasForeignKey("BlockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.UserEntity", null)
@@ -246,6 +312,11 @@ namespace Signals.App.Database.Migrations
                         .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
+                {
+                    b.Navigation("Parameters");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
