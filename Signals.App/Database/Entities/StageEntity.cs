@@ -20,6 +20,7 @@ namespace Signals.App.Database.Entities
         public Guid? PreviousStageId { get; set; }
         public Guid? NextStageId { get; set; }
 
+        //Related Entities
         public List<StageParameterEntity> Parameters { get; set; }
 
         public enum StageType

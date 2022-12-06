@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;
@@ -30,11 +31,12 @@ namespace Signals.App.Commands
                 if (signalExecution is null)
                     return Unit.Value;
 
-                var stage = SignalsContext.Stages.Find(signalExecution.StageId);
+                var stage = SignalsContext.Stages
+                    .Where(x => x.Id == signalExecution.StageId)
+                    .Include(x => x.Parameters)
+                    .FirstOrDefault();
 
-                var stageParameters = SignalsContext.StageParameters
-                    .Where(x => x.StageId == stage.Id)
-                    .ToDictionary(x => x.Key, x => x.Value);
+                var parameters = stage.Parameters.ToDictionary(x => x.Key, x => x.Value);
 
                 switch (stage.Type)
                 {
@@ -43,15 +45,15 @@ namespace Signals.App.Commands
                         { 
                             SignalId = stage.SignalId,
                             RetryAttempt = signalExecution.StageRetryAttempt,
-                            RetryCount = int.Parse(stageParameters[StageParameterEntity.ParameterKey.RetryCount]),
-                            RetryDelay = TimeSpan.Parse(stageParameters[StageParameterEntity.ParameterKey.RetryDelay])
+                            RetryCount = int.Parse(parameters[StageParameterEntity.ParameterKey.RetryCount]),
+                            RetryDelay = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.RetryDelay])
                         });
                     case StageEntity.StageType.Waiting:
                         return await CommandService.Execute(new ExecuteWaitingStage.Command
                         {
                             SignalId = stage.SignalId,
                             IsBeginning = signalExecution.StageRetryAttempt is 0,
-                            Period = TimeSpan.Parse(stageParameters[StageParameterEntity.ParameterKey.Period])
+                            Period = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.Period])
                         });
                     case StageEntity.StageType.Notification:
                         return await CommandService.Execute(new ExecuteNotificationStage.Command 
