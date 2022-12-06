@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Signals.App.Commands.Block;
 using Signals.App.Commands.Signal;
+using Signals.App.Database;
 using Signals.App.Services;
 
 namespace Signals.App.Commands.Stage
@@ -9,6 +11,7 @@ namespace Signals.App.Commands.Stage
         public class Command : IRequest<Unit>
         {
             public Guid SignalId { get; set; }
+            public Guid StageId { get; set; }
             public int RetryAttempt { get; set; }
             public int RetryCount { get; set; }
             public TimeSpan RetryDelay { get; set; }
@@ -16,32 +19,38 @@ namespace Signals.App.Commands.Stage
 
         private class Handler : IRequestHandler<Command>
         {
+            private SignalsContext SignalsContext { get; }
             private CommandService CommandService { get; }
 
-            public Handler(CommandService commandService)
+            public Handler(SignalsContext signalsContext, CommandService commandService)
             {
+                SignalsContext = signalsContext;
                 CommandService = commandService;
             }
 
             public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
             {
-                ///TODO: Condition Stage Logic
+                var rootBlock = SignalsContext.Blocks
+                    .Where(x => x.StageId == command.StageId && x.ParentBlockId == null)
+                    .FirstOrDefault();
 
-                if (false/*condition result is false*/)
+                var isBlockSucceded = await CommandService.Execute(new EvaluateBlock.Command { BlockId = rootBlock.Id });
+
+                if (isBlockSucceded)
                 {
-                    if (command.RetryCount > command.RetryAttempt)
-                    {
-                        return await CommandService.Execute(new RescheduleStage.Command
-                        {
-                            SignalId = command.SignalId,
-                            ScheduleOn = DateTime.UtcNow + command.RetryDelay
-                        });
-                    }
+                    return await CommandService.Execute(new NextStage.Command { SignalId = command.SignalId });
+                }
 
+                if (command.RetryAttempt >= command.RetryCount)
+                {
                     return await CommandService.Execute(new StopSignal.Command { SignalId = command.SignalId });
                 }
 
-                return await CommandService.Execute(new NextStage.Command { SignalId = command.SignalId });
+                return await CommandService.Execute(new RescheduleStage.Command
+                {
+                    SignalId = command.SignalId,
+                    ScheduleOn = DateTime.UtcNow + command.RetryDelay
+                });
             }
         }
     }
