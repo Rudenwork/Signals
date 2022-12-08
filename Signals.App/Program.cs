@@ -2,18 +2,21 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
+using Signals.App.Controllers;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
 using Signals.App.Identity;
 using Signals.App.Services;
 using Signals.App.Settings;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -105,6 +108,25 @@ builder.Services.AddMapster(options =>
 {
     options.MapEnumByName = true;
     options.IgnoreNullValues = true;
+});
+
+builder.Services.AddMassTransit(options =>
+{
+    options.AddMessageScheduler(new Uri("queue:quartz"));
+    options.AddQuartzConsumers();
+
+    options.AddConsumers(Assembly.GetExecutingAssembly());
+    EndpointConvention.Map<TestMessage>(new Uri("queue:test"));
+
+    options.UsingInMemory((context, config) =>
+    {
+        config.ConfigureEndpoints(context);
+    });
+});
+
+builder.Services.AddMediator(options =>
+{
+    options.AddConsumers(Assembly.GetExecutingAssembly());
 });
 
 builder.Services.AddQuartz(options => options.UseMicrosoftDependencyInjectionJobFactory());

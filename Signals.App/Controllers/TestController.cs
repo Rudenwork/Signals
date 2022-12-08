@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MassTransit;
+using MassTransit.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -11,6 +13,19 @@ using Signals.App.Services;
 
 namespace Signals.App.Controllers
 {
+    public class TestMessage
+    {
+        public DateTime Start { get; set; }
+    }
+
+    public class TestConsumer : IConsumer<TestMessage>
+    {
+        public async Task Consume(ConsumeContext<TestMessage> context)
+        {
+            Console.WriteLine($"[{(DateTime.UtcNow - context.Message.Start).Milliseconds}]");
+        }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = IdentityRoles.Admin)]
@@ -22,18 +37,28 @@ namespace Signals.App.Controllers
         private SignalsContext SignalsContext { get; }
         private ISchedulerFactory SchedulerFactory { get; }
         private CommandService CommandService { get; }
+        private IBus Bus { get; }
+        private IMediator Mediator { get; }
+        private IMessageScheduler Scheduler { get; }
 
-        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService, IBus bus, IMediator mediator, IMessageScheduler scheduler)
         {
             SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
             CommandService = commandService;
+            Bus = bus;
+            Mediator = mediator;
+            Scheduler = scheduler;
         }
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
+            var start = DateTime.UtcNow.AddSeconds(1);
+
+            await Scheduler.ScheduleSend(new Uri("queue:test"), start, new TestMessage { Start = start });
+
             return Ok();
         }
 
