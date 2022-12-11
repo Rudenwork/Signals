@@ -38,19 +38,34 @@ namespace Signals.App.Controllers
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> Get(bool shouldCancelPublish = false)
+        public async Task<ActionResult> Get()
         {
-            var groupId = Guid.Parse("4C6187CB-2496-4144-BD1C-5EA099D5FF8E");
+            return Ok();
+        }
 
-            if (shouldCancelPublish) 
-            {
-                //await Scheduler.CancelPublish(groupId);
-            }
-            else
-            {
-                //await Scheduler.RecurringPublish(new Test.Message { Text = "XXX" }, "0/1 * * * * ?", groupId);
-                await Scheduler.Publish(new Test.Message { Text = "XXX" }, DateTime.UtcNow.AddSeconds(5));
-            }
+        [HttpPost("cancelRecurring")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> CancelRecurring(Guid groupId)
+        {
+            await Scheduler.CancelPublish(groupId);
+
+            return Ok();
+        }
+
+        [HttpPost("scheduleRecurring")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> ScheduleRecurring(string text, string cron, Guid groupId)
+        {
+            await Scheduler.RecurringPublish(new Test.Message { Text = text }, cron, groupId);
+
+            return Ok();
+        }
+
+        [HttpPost("schedule")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Schedule(string text, int delaySeconds)
+        {
+            await Scheduler.Publish(new Test.Message { Text = text }, DateTime.UtcNow.AddSeconds(delaySeconds));
 
             return Ok();
         }

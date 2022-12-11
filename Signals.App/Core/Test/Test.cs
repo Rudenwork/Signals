@@ -14,7 +14,7 @@ namespace Signals.App.Core.Test
             public async Task Consume(ConsumeContext<Message> context)
             {
                 Console.WriteLine($"[{context.Message.Text}]");
-                throw new Exception("TEST");
+                //throw new Exception("TEST");
             }
         }
 
