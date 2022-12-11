@@ -54,7 +54,7 @@ namespace Signals.App.Services
 
             if (cron is not null)
             {
-                triggerBuilder.WithCronSchedule(cron);
+                triggerBuilder.WithCronSchedule(cron, x => x.WithMisfireHandlingInstructionDoNothing());
             }
             else if (publishAt is not null)
             {

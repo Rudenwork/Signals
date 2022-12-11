@@ -139,6 +139,7 @@ builder.Services.AddQuartz(options =>
         config.UseJsonSerializer();
     });
 
+    options.MisfireThreshold = TimeSpan.FromMinutes(1);
     options.UseMicrosoftDependencyInjectionJobFactory();
 });
 
