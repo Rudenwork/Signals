@@ -131,7 +131,17 @@ builder.Services.AddMediator(options =>
     options.AddConsumers(Assembly.GetExecutingAssembly());
 });
 
-builder.Services.AddQuartz(options => options.UseMicrosoftDependencyInjectionJobFactory());
+builder.Services.AddQuartz(options =>
+{
+    options.UsePersistentStore(config =>
+    {
+        config.UseSqlServer(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}"));
+        config.UseJsonSerializer();
+    });
+
+    options.UseMicrosoftDependencyInjectionJobFactory();
+});
+
 builder.Services.AddQuartzServer();
 
 builder.Services.AddMediatR(typeof(Program));
