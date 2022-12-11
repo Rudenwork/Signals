@@ -1,10 +1,10 @@
 ﻿using MassTransit;
-using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Commands.Signal;
+using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
@@ -13,19 +13,6 @@ using Signals.App.Services;
 
 namespace Signals.App.Controllers
 {
-    public class TestMessage
-    {
-        public DateTime Start { get; set; }
-    }
-
-    public class TestConsumer : IConsumer<TestMessage>
-    {
-        public async Task Consume(ConsumeContext<TestMessage> context)
-        {
-            Console.WriteLine($"[{(DateTime.UtcNow - context.Message.Start).Milliseconds}]");
-        }
-    }
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = IdentityRoles.Admin)]
@@ -38,26 +25,32 @@ namespace Signals.App.Controllers
         private ISchedulerFactory SchedulerFactory { get; }
         private CommandService CommandService { get; }
         private IBus Bus { get; }
-        private IMediator Mediator { get; }
-        private IMessageScheduler Scheduler { get; }
+        private Scheduler Scheduler { get; }
 
-        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService, IBus bus, IMediator mediator, IMessageScheduler scheduler)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService, IBus bus, Scheduler scheduler)
         {
             SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
             CommandService = commandService;
             Bus = bus;
-            Mediator = mediator;
             Scheduler = scheduler;
         }
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get(bool shouldCancelPublish = false)
         {
-            var start = DateTime.UtcNow.AddSeconds(1);
+            var groupId = Guid.Parse("4C6187CB-2496-4144-BD1C-5EA099D5FF8E");
 
-            await Scheduler.ScheduleSend(new Uri("queue:test"), start, new TestMessage { Start = start });
+            if (shouldCancelPublish) 
+            {
+                //await Scheduler.CancelPublish(groupId);
+            }
+            else
+            {
+                //await Scheduler.RecurringPublish(new Test.Message { Text = "XXX" }, "0/1 * * * * ?", groupId);
+                await Scheduler.Publish(new Test.Message { Text = "XXX" }, DateTime.UtcNow.AddSeconds(5));
+            }
 
             return Ok();
         }

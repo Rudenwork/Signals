@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
-using Signals.App.Controllers;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
@@ -112,14 +111,17 @@ builder.Services.AddMapster(options =>
 
 builder.Services.AddMassTransit(options =>
 {
-    options.AddMessageScheduler(new Uri("queue:quartz"));
-    options.AddQuartzConsumers();
-
+    options.SetNetEndpointNameFormatter();
     options.AddConsumers(Assembly.GetExecutingAssembly());
-    EndpointConvention.Map<TestMessage>(new Uri("queue:test"));
 
-    options.UsingInMemory((context, config) =>
+    options.UsingRabbitMq((context, config) =>
     {
+        config.Host("localhost", "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+
         config.ConfigureEndpoints(context);
     });
 });
@@ -136,6 +138,7 @@ builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<CommandService>();
+builder.Services.AddScoped<Scheduler>();
 
 var app = builder.Build();
 
