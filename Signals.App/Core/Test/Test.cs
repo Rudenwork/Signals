@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Signals.App.Extensions;
 
 namespace Signals.App.Core.Test
 {
@@ -13,7 +14,7 @@ namespace Signals.App.Core.Test
         {
             public async Task Consume(ConsumeContext<Message> context)
             {
-                Console.WriteLine($"[{context.Message.Text}]");
+                Console.WriteLine($"[{context.GetScheduledTime()}] - [{DateTime.UtcNow}] [{context.Message.Text}]");
                 //throw new Exception("TEST");
             }
         }

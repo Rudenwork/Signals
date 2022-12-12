@@ -4,9 +4,21 @@ namespace Signals.App.Extensions
 {
     public static class MassTransitExtensions
     {
+        private const string ScheduledTime = nameof(ScheduledTime);
+
         public static void SetNetEndpointNameFormatter(this IBusRegistrationConfigurator config)
         {
             config.SetEndpointNameFormatter(new NetEndpointNameFormatter());
+        }
+
+        public static async Task Publish<TMessage>(this IBus bus, TMessage message, DateTime? scheduledTime)
+        {
+            await bus.Publish(message, x => x.Headers.Set(ScheduledTime, scheduledTime));
+        }
+
+        public static DateTime GetScheduledTime<TMessage>(this ConsumeContext<TMessage> context) where TMessage : class
+        {
+            return context.Headers.Get<DateTime>(ScheduledTime, DateTime.UtcNow).Value;
         }
     }
 

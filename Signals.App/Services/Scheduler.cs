@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Quartz;
 using Quartz.Impl.Matchers;
+using Signals.App.Extensions;
 using System.Text.Json;
 
 namespace Signals.App.Services
@@ -112,8 +113,8 @@ namespace Signals.App.Services
                 var json = context.MergedJobDataMap[MessageJson].ToString();
 
                 var message = JsonSerializer.Deserialize(json, type);
-
-                await Bus.Publish(message);
+                
+                await Bus.Publish(message, context.ScheduledFireTimeUtc?.UtcDateTime);
             }
         }
     }
