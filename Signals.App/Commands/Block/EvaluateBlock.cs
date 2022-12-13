@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using MediatR;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;
@@ -26,20 +26,16 @@ namespace Signals.App.Commands.Block
 
             public async Task<bool> Handle(Command command, CancellationToken cancellationToken)
             {
-                var block = SignalsContext.Blocks
-                    .Where(x => x.Id == command.BlockId)
-                    .Include(x => x.Parameters)
-                    .FirstOrDefault();
-
-                var parameters = block.Parameters.ToDictionary(x => x.Key, x => x.Value);
+                var block = SignalsContext.Blocks.Find(command.BlockId);
 
                 switch (block.Type)
                 {
                     case BlockEntity.BlockType.Group:
+                        var groupBlock = SignalsContext.GroupBlocks.Find(command.BlockId);
                         return await CommandService.Execute(new EvaluateGroupBlock.Command
                         {
-                            BlockId = command.BlockId,
-                            Type = Enum.Parse<EvaluateGroupBlock.Command.GroupType>(parameters[BlockParameterEntity.ParameterKey.GroupType])
+                            BlockId = groupBlock.Id,
+                            Type = groupBlock.GroupType.Adapt<EvaluateGroupBlock.Command.GroupType>()
                         });
                     case BlockEntity.BlockType.Change:
                         ///TODO: Execute EvaluateChangeBlock command

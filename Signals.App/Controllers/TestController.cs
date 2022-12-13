@@ -7,6 +7,7 @@ using Signals.App.Commands.Signal;
 using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Identity;
 using Signals.App.Services;
@@ -83,34 +84,20 @@ namespace Signals.App.Controllers
 
             SignalsContext.Signals.Add(signal);
 
-            var stage1 = new StageEntity
+            var stage1 = new WaitingStageEntity
             {
                 SignalId = signal.Id,
                 Type = StageEntity.StageType.Waiting,
                 Name = "Test Waiting Stage 1",
-                Parameters = new List<StageParameterEntity>
-                {
-                    new StageParameterEntity
-                    {
-                        Key = StageParameterEntity.ParameterKey.Period,
-                        Value = TimeSpan.FromSeconds(10).ToString()
-                    }
-                }
+                Period = TimeSpan.FromSeconds(10)
             };
 
-            var stage2 = new StageEntity
+            var stage2 = new WaitingStageEntity
             {
                 SignalId = signal.Id,
                 Type = StageEntity.StageType.Waiting,
                 Name = "Test Waiting Stage 2",
-                Parameters = new List<StageParameterEntity>
-                {
-                    new StageParameterEntity
-                    {
-                        Key = StageParameterEntity.ParameterKey.Period,
-                        Value = TimeSpan.FromSeconds(5).ToString()
-                    }
-                }
+                Period = TimeSpan.FromSeconds(5)
             };
 
             SignalsContext.Stages.Add(stage1);
@@ -121,6 +108,7 @@ namespace Signals.App.Controllers
 
             await SignalsContext.SaveChangesAsync();
 
+            ///TODO: Change to Scheduler.RecurringPublish(...)
             await CommandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id);
 
             return Ok();

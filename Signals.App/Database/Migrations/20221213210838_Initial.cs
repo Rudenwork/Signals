@@ -78,7 +78,13 @@ namespace Signals.App.Database.Migrations
                     Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PreviousStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: true),
+                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true),
+                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Period = table.Column<TimeSpan>(type: "time", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,7 +104,9 @@ namespace Signals.App.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,51 +145,6 @@ namespace Signals.App.Database.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "StageParameters",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(25)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StageParameters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StageParameters_Stages_StageId",
-                        column: x => x.StageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BlockParameters",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(25)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlockParameters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BlockParameters_Blocks_BlockId",
-                        column: x => x.BlockId,
-                        principalTable: "Blocks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BlockParameters_BlockId",
-                table: "BlockParameters",
-                column: "BlockId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks_StageId",
                 table: "Blocks",
@@ -210,11 +173,6 @@ namespace Signals.App.Database.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StageParameters_StageId",
-                table: "StageParameters",
-                column: "StageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Stages_SignalId",
                 table: "Stages",
                 column: "SignalId");
@@ -224,19 +182,13 @@ namespace Signals.App.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BlockParameters");
+                name: "Blocks");
 
             migrationBuilder.DropTable(
                 name: "Channels");
 
             migrationBuilder.DropTable(
                 name: "SignalExecutions");
-
-            migrationBuilder.DropTable(
-                name: "StageParameters");
-
-            migrationBuilder.DropTable(
-                name: "Blocks");
 
             migrationBuilder.DropTable(
                 name: "Stages");

@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221206201154_Initial")]
+    [Migration("20221213210838_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -31,6 +31,10 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("ParentBlockId")
                         .HasColumnType("uniqueidentifier");
 
@@ -46,31 +50,10 @@ namespace Signals.App.Database.Migrations
                     b.HasIndex("StageId");
 
                     b.ToTable("Blocks");
-                });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.BlockParameterEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BlockEntity");
 
-                    b.Property<Guid>("BlockId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlockId");
-
-                    b.ToTable("BlockParameters");
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
@@ -169,6 +152,10 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -192,31 +179,10 @@ namespace Signals.App.Database.Migrations
                     b.HasIndex("SignalId");
 
                     b.ToTable("Stages");
-                });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.StageParameterEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StageEntity");
 
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<Guid>("StageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StageId");
-
-                    b.ToTable("StageParameters");
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.UserEntity", b =>
@@ -245,20 +211,73 @@ namespace Signals.App.Database.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Signals.App.Database.Entities.Blocks.ChangeBlockEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
+
+                    b.HasDiscriminator().HasValue("ChangeBlockEntity");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Blocks.GroupBlockEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
+
+                    b.Property<int>("GroupType")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("GroupBlockEntity");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Blocks.ValueBlockEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
+
+                    b.HasDiscriminator().HasValue("ValueBlockEntity");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Stages.ConditionStageEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
+
+                    b.Property<int?>("RetryCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan?>("RetryDelay")
+                        .HasColumnType("time");
+
+                    b.HasDiscriminator().HasValue("ConditionStageEntity");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Stages.NotificationStageEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
+
+                    b.Property<Guid>("ChannelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasDiscriminator().HasValue("NotificationStageEntity");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Stages.WaitingStageEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.StageEntity");
+
+                    b.Property<TimeSpan>("Period")
+                        .HasColumnType("time");
+
+                    b.HasDiscriminator().HasValue("WaitingStageEntity");
+                });
+
             modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
                         .WithMany()
                         .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.BlockParameterEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.BlockEntity", null)
-                        .WithMany("Parameters")
-                        .HasForeignKey("BlockId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -303,25 +322,6 @@ namespace Signals.App.Database.Migrations
                         .HasForeignKey("SignalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.StageParameterEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany("Parameters")
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
-                {
-                    b.Navigation("Parameters");
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
-                {
-                    b.Navigation("Parameters");
                 });
 #pragma warning restore 612, 618
         }

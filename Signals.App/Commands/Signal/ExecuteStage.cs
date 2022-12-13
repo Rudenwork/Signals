@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Signals.App.Commands.Stage;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
@@ -32,35 +31,33 @@ namespace Signals.App.Commands.Signal
                 if (signalExecution is null)
                     return Unit.Value;
 
-                var stage = SignalsContext.Stages
-                    .Where(x => x.Id == signalExecution.StageId)
-                    .Include(x => x.Parameters)
-                    .FirstOrDefault();
-
-                var parameters = stage.Parameters.ToDictionary(x => x.Key, x => x.Value);
+                var stage = SignalsContext.Stages.Find(signalExecution.StageId);
 
                 switch (stage.Type)
                 {
                     case StageEntity.StageType.Condition:
+                        var conditionStage = SignalsContext.ConditionStages.Find(stage.Id);
                         return await CommandService.Execute(new ExecuteConditionStage.Command
                         {
-                            SignalId = stage.SignalId,
-                            StageId = stage.Id,
+                            SignalId = conditionStage.SignalId,
+                            StageId = conditionStage.Id,
                             RetryAttempt = signalExecution.StageRetryAttempt,
-                            RetryCount = int.Parse(parameters[StageParameterEntity.ParameterKey.RetryCount]),
-                            RetryDelay = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.RetryDelay])
+                            RetryCount = conditionStage.RetryCount ?? 0,
+                            RetryDelay = conditionStage.RetryDelay ?? TimeSpan.Zero
                         });
                     case StageEntity.StageType.Waiting:
+                        var waitingStage = SignalsContext.WaitingStages.Find(stage.Id);
                         return await CommandService.Execute(new ExecuteWaitingStage.Command
                         {
-                            SignalId = stage.SignalId,
+                            SignalId = waitingStage.SignalId,
                             IsBeginning = signalExecution.StageRetryAttempt is 0,
-                            Period = TimeSpan.Parse(parameters[StageParameterEntity.ParameterKey.Period])
+                            Period = waitingStage.Period
                         });
                     case StageEntity.StageType.Notification:
+                        var notificationStage = SignalsContext.NotificationStages.Find(stage.Id);
                         return await CommandService.Execute(new ExecuteNotificationStage.Command
                         {
-                            SignalId = stage.SignalId
+                            SignalId = notificationStage.SignalId
                         });
                     default:
                         return Unit.Value;

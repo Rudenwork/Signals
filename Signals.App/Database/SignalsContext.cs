@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Blocks;
+using Signals.App.Database.Entities.Stages;
 
 namespace Signals.App.Database
 {
@@ -8,10 +10,19 @@ namespace Signals.App.Database
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ChannelEntity> Channels { get; set; }
         public DbSet<SignalEntity> Signals { get; set; }
+
+        //Stages
         public DbSet<StageEntity> Stages { get; set; }
-        public DbSet<StageParameterEntity> StageParameters { get; set; }
+        public DbSet<WaitingStageEntity> WaitingStages { get; set; }
+        public DbSet<ConditionStageEntity> ConditionStages { get; set; }
+        public DbSet<NotificationStageEntity> NotificationStages { get; set; }
+
+        //Blocks
         public DbSet<BlockEntity> Blocks { get; set; }
-        public DbSet<BlockParameterEntity> BlockParameters { get; set; }
+        public DbSet<GroupBlockEntity> GroupBlocks { get; set; }
+        public DbSet<ValueBlockEntity> ValueBlocks { get; set; }
+        public DbSet<ChangeBlockEntity> ChangeBlocks { get; set; }
+
         public DbSet<SignalExecutionEntity> SignalExecutions { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
@@ -36,23 +47,11 @@ namespace Signals.App.Database
                 .WithMany()
                 .HasForeignKey(x => x.SignalId);
 
-            //Stage Parameter
-            modelBuilder.Entity<StageParameterEntity>()
-                .HasOne<StageEntity>()
-                .WithMany(x => x.Parameters)
-                .HasForeignKey(x => x.StageId);
-
             //Block
             modelBuilder.Entity<BlockEntity>()
                 .HasOne<StageEntity>()
                 .WithMany()
                 .HasForeignKey(x => x.StageId);
-
-            //Block Parameter
-            modelBuilder.Entity<BlockParameterEntity>()
-                .HasOne<BlockEntity>()
-                .WithMany(x => x.Parameters)
-                .HasForeignKey(x => x.BlockId);
 
             //Signal Execution
             modelBuilder.Entity<SignalExecutionEntity>()

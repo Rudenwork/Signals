@@ -40,6 +40,7 @@ namespace Signals.App.Extensions
         {
             using var scope = app.Services.CreateScope();
             var signalsContext = scope.ServiceProvider.GetService<SignalsContext>();
+            ///TODO: Remove?
             var commandService = scope.ServiceProvider.GetService<CommandService>();
 
             var signals = signalsContext.Signals
@@ -48,6 +49,7 @@ namespace Signals.App.Extensions
 
             foreach (var signal in signals)
             {
+                ///TODO: Remove?
                 commandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id).Wait();
             }
 
@@ -55,6 +57,7 @@ namespace Signals.App.Extensions
 
             foreach (var signalExecution in signalExecutions)
             {
+                ///TODO: Remove?
                 commandService.Schedule(new ExecuteStage.Command { SignalId = signalExecution.SignalId }).Wait();
             }
         }
