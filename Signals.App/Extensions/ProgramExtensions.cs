@@ -50,7 +50,7 @@ namespace Signals.App.Extensions
             foreach (var signal in signals)
             {
                 ///TODO: Remove?
-                commandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id).Wait();
+                //commandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id).Wait();
             }
 
             var signalExecutions = signalsContext.SignalExecutions.ToList();
@@ -58,7 +58,7 @@ namespace Signals.App.Extensions
             foreach (var signalExecution in signalExecutions)
             {
                 ///TODO: Remove?
-                commandService.Schedule(new ExecuteStage.Command { SignalId = signalExecution.SignalId }).Wait();
+                //commandService.Schedule(new ExecuteStage.Command { SignalId = signalExecution.SignalId }).Wait();
             }
         }
     }

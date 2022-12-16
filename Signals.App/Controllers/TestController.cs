@@ -109,7 +109,7 @@ namespace Signals.App.Controllers
             await SignalsContext.SaveChangesAsync();
 
             ///TODO: Change to Scheduler.RecurringPublish(...)
-            await CommandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id);
+            //await CommandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id);
 
             return Ok();
         }
