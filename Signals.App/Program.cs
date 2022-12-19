@@ -148,7 +148,6 @@ builder.Services.AddQuartzServer();
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
-builder.Services.AddScoped<CommandService>();
 builder.Services.AddScoped<Scheduler>();
 
 var app = builder.Build();
@@ -167,6 +166,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.PrepareDatabase();
-app.ScheduleJobs();
 
 app.Run();

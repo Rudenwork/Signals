@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
-using Signals.App.Commands.Signal;
+using Signals.App.Core.Execution;
 using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
@@ -24,15 +24,13 @@ namespace Signals.App.Controllers
     {
         private SignalsContext SignalsContext { get; }
         private ISchedulerFactory SchedulerFactory { get; }
-        private CommandService CommandService { get; }
         private IBus Bus { get; }
         private Scheduler Scheduler { get; }
 
-        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, CommandService commandService, IBus bus, Scheduler scheduler)
+        public TestController(SignalsContext signalsContext, ISchedulerFactory schedulerFactory, IBus bus, Scheduler scheduler)
         {
             SignalsContext = signalsContext;
             SchedulerFactory = schedulerFactory;
-            CommandService = commandService;
             Bus = bus;
             Scheduler = scheduler;
         }
@@ -41,6 +39,10 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
+            var signal = SignalsContext.Signals.FirstOrDefault();
+
+            await Bus.Publish(new Start.Message { SignalId = signal.Id });
+
             return Ok();
         }
 
@@ -108,8 +110,7 @@ namespace Signals.App.Controllers
 
             await SignalsContext.SaveChangesAsync();
 
-            ///TODO: Change to Scheduler.RecurringPublish(...)
-            //await CommandService.ScheduleRecurring(new StartSignal.Command { SignalId = signal.Id }, signal.Schedule, signal.Id);
+            await Scheduler.RecurringPublish(new Start.Message { SignalId = signal.Id }, signal.Schedule, signal.Id);
 
             return Ok();
         }

@@ -23,7 +23,7 @@ namespace Signals.App.Database
         public DbSet<ValueBlockEntity> ValueBlocks { get; set; }
         public DbSet<ChangeBlockEntity> ChangeBlocks { get; set; }
 
-        public DbSet<SignalExecutionEntity> SignalExecutions { get; set; }
+        public DbSet<ExecutionEntity> Executions { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
 
@@ -53,16 +53,16 @@ namespace Signals.App.Database
                 .WithMany()
                 .HasForeignKey(x => x.StageId);
 
-            //Signal Execution
-            modelBuilder.Entity<SignalExecutionEntity>()
+            //Execution
+            modelBuilder.Entity<ExecutionEntity>()
                 .HasOne<SignalEntity>()
                 .WithOne()
-                .HasForeignKey<SignalExecutionEntity>(x => x.SignalId);
+                .HasForeignKey<ExecutionEntity>(x => x.SignalId);
 
-            modelBuilder.Entity<SignalExecutionEntity>()
+            modelBuilder.Entity<ExecutionEntity>()
                 .HasOne<StageEntity>()
                 .WithOne()
-                .HasForeignKey<SignalExecutionEntity>(x => x.StageId)
+                .HasForeignKey<ExecutionEntity>(x => x.StageId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

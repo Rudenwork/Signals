@@ -15,9 +15,9 @@ namespace Signals.App.Services
             JobScheduler = schedulerFactory.GetScheduler().Result;
         }
 
-        public async Task Publish<TMessage>(TMessage message, DateTime publishAt)
+        public async Task Publish<TMessage>(TMessage message, DateTime publishAt, Guid? groupId = null)
         {
-            await Publish(message, publishAt, cron:null, group: null);
+            await Publish(message, publishAt, cron:null, group: groupId?.ToString());
         }
 
         public async Task RecurringPublish<TMessage>(TMessage message, string cron, Guid groupId)

@@ -120,26 +120,24 @@ namespace Signals.App.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SignalExecutions",
+                name: "Executions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageScheduledOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StageRetryAttempt = table.Column<int>(type: "int", nullable: false)
+                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SignalExecutions", x => x.Id);
+                    table.PrimaryKey("PK_Executions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SignalExecutions_Signals_SignalId",
+                        name: "FK_Executions_Signals_SignalId",
                         column: x => x.SignalId,
                         principalTable: "Signals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SignalExecutions_Stages_StageId",
+                        name: "FK_Executions_Stages_StageId",
                         column: x => x.StageId,
                         principalTable: "Stages",
                         principalColumn: "Id");
@@ -156,16 +154,17 @@ namespace Signals.App.Database.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SignalExecutions_SignalId",
-                table: "SignalExecutions",
+                name: "IX_Executions_SignalId",
+                table: "Executions",
                 column: "SignalId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SignalExecutions_StageId",
-                table: "SignalExecutions",
+                name: "IX_Executions_StageId",
+                table: "Executions",
                 column: "StageId",
-                unique: true);
+                unique: true,
+                filter: "[StageId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Signals_UserId",
@@ -188,7 +187,7 @@ namespace Signals.App.Database.Migrations
                 name: "Channels");
 
             migrationBuilder.DropTable(
-                name: "SignalExecutions");
+                name: "Executions");
 
             migrationBuilder.DropTable(
                 name: "Stages");

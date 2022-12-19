@@ -16,9 +16,14 @@ namespace Signals.App.Extensions
             await bus.Publish(message, x => x.Headers.Set(ScheduledTime, scheduledTime));
         }
 
-        public static DateTime GetScheduledTime<TMessage>(this ConsumeContext<TMessage> context) where TMessage : class
+        public static void EnsureFresh<TMessage>(this ConsumeContext<TMessage> context) where TMessage : class
         {
-            return context.Headers.Get<DateTime>(ScheduledTime, DateTime.UtcNow).Value;
+            var scheduledTime = context.Headers.Get<DateTime>(ScheduledTime, DateTime.UtcNow).Value;
+
+            if ((DateTime.UtcNow - scheduledTime) > TimeSpan.FromMinutes(1))
+            {
+                throw new NotFreshException();
+            }
         }
     }
 
@@ -71,4 +76,6 @@ namespace Signals.App.Extensions
             throw new NotImplementedException();
         }
     }
+
+    public class NotFreshException : Exception { }
 }

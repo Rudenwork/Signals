@@ -14,7 +14,9 @@ namespace Signals.App.Core.Test
         {
             public async Task Consume(ConsumeContext<Message> context)
             {
-                Console.WriteLine($"[{context.GetScheduledTime()}] - [{DateTime.UtcNow}] [{context.Message.Text}]");
+                context.EnsureFresh();
+
+                Console.WriteLine($"[{context.Message.Text}]");
                 //throw new Exception("TEST");
             }
         }
