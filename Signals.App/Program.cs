@@ -3,7 +3,6 @@ using Duende.IdentityServer.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MassTransit;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -144,8 +143,6 @@ builder.Services.AddQuartz(options =>
 });
 
 builder.Services.AddQuartzServer();
-
-builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<Scheduler>();

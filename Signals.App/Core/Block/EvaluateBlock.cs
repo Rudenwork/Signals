@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
-using Signals.App.Database;
+using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Blocks;
 
 namespace Signals.App.Core.Block
 {
@@ -8,7 +9,7 @@ namespace Signals.App.Core.Block
     {
         public class Request : Request<Response>
         {
-            public Guid BlockId { get; set; }
+            public BlockEntity Block { get; set; }
         }
 
         public class Response
@@ -18,20 +19,23 @@ namespace Signals.App.Core.Block
 
         public class Consumer : IConsumer<Request>
         {
-            private ILogger<Consumer> Logger { get; }
-            private SignalsContext SignalsContext { get; }
             private IMediator Mediator { get; }
 
-            public Consumer(ILogger<Consumer> logger, SignalsContext signalsContext, IMediator mediator)
+            public Consumer(IMediator mediator)
             {
-                Logger = logger;
-                SignalsContext = signalsContext;
                 Mediator = mediator;
             }
 
             public async Task Consume(ConsumeContext<Request> context)
             {
-                await context.RespondAsync(new Response { Result = false });
+                var response = context.Message.Block switch
+                {
+                    GroupBlockEntity block => await Mediator.SendRequest(new EvaluateGroupBlock.Request { Block = block }),
+                    ValueBlockEntity block => await Mediator.SendRequest(new EvaluateValueBlock.Request { Block = block }),
+                    ChangeBlockEntity block => await Mediator.SendRequest(new EvaluateChangeBlock.Request { Block = block })
+                };
+
+                await context.RespondAsync(response);
             }
         }
     }

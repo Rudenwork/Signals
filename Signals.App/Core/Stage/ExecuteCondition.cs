@@ -50,7 +50,7 @@ namespace Signals.App.Core.Stage
                     .Where(x => x.StageId == message.StageId && x.ParentBlockId == null)
                     .FirstOrDefault();
 
-                var response = await Mediator.SendRequest(new EvaluateBlock.Request { BlockId = block.Id });
+                var response = await Mediator.SendRequest(new EvaluateBlock.Request { Block = block });
 
                 if (response.Result) 
                 {

@@ -102,19 +102,42 @@ namespace Signals.App.Controllers
                 Period = TimeSpan.FromSeconds(5)
             };
 
-            var groupBlock = new GroupBlockEntity
-            {
-                GroupType = GroupBlockEntity.GroupBlockType.And,
-            };
-
             SignalsContext.Stages.Add(conditionStage);
             SignalsContext.Stages.Add(waitingStage);
-            SignalsContext.Blocks.Add(groupBlock);
 
             conditionStage.NextStageId = waitingStage.Id;
             waitingStage.PreviousStageId = conditionStage.Id;
 
-            groupBlock.StageId = conditionStage.Id;
+            var rootGroupBlock = new GroupBlockEntity
+            {
+                StageId = conditionStage.Id,
+                GroupType = GroupBlockEntity.GroupBlockType.And
+            };
+
+            var valueBlock = new ValueBlockEntity
+            {
+                StageId = conditionStage.Id
+            };
+
+            var groupBlock = new GroupBlockEntity
+            {
+                StageId = conditionStage.Id,
+                GroupType = GroupBlockEntity.GroupBlockType.And
+            };
+
+            var changeBlock = new ChangeBlockEntity
+            {
+                StageId = conditionStage.Id
+            };
+
+            SignalsContext.Blocks.Add(rootGroupBlock);
+            SignalsContext.Blocks.Add(valueBlock);
+            SignalsContext.Blocks.Add(groupBlock);
+            SignalsContext.Blocks.Add(changeBlock);
+
+            valueBlock.ParentBlockId = rootGroupBlock.Id;
+            groupBlock.ParentBlockId = rootGroupBlock.Id;
+            changeBlock.ParentBlockId = groupBlock.Id;
 
             await SignalsContext.SaveChangesAsync();
 
