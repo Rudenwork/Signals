@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Signals.App.Core.Stage;
 using Signals.App.Database;
-using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 
 namespace Signals.App.Core.Execution
@@ -46,11 +46,11 @@ namespace Signals.App.Core.Execution
                 SignalsContext.Update(execution);
                 SignalsContext.SaveChanges();
 
-                object message = stage?.Type switch
+                object message = stage switch
                 {
-                    StageEntity.StageType.Waiting => new ExecuteWaiting.Message { ExecutionId = execution.Id, StageId = stage.Id },
-                    StageEntity.StageType.Condition => new ExecuteCondition.Message { ExecutionId = execution.Id, StageId = stage.Id },
-                    StageEntity.StageType.Notification => new ExecuteNotification.Message { ExecutionId = execution.Id, StageId = stage.Id },
+                    WaitingStageEntity => new ExecuteWaiting.Message { ExecutionId = execution.Id, StageId = stage.Id },
+                    ConditionStageEntity => new ExecuteCondition.Message { ExecutionId = execution.Id, StageId = stage.Id },
+                    NotificationStageEntity => new ExecuteNotification.Message { ExecutionId = execution.Id, StageId = stage.Id },
                     _ => new Stop.Message { ExecutionId = execution.Id }
                 };
 

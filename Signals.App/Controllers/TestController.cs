@@ -7,6 +7,7 @@ using Signals.App.Core.Execution;
 using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Blocks;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Identity;
@@ -46,9 +47,9 @@ namespace Signals.App.Controllers
             return Ok();
         }
 
-        [HttpPost("cancelRecurring")]
+        [HttpPost("cancel")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> CancelRecurring(Guid groupId)
+        public async Task<ActionResult> Cancel(Guid groupId)
         {
             await Scheduler.CancelPublish(groupId);
 
@@ -86,27 +87,34 @@ namespace Signals.App.Controllers
 
             SignalsContext.Signals.Add(signal);
 
-            var stage1 = new WaitingStageEntity
+            var conditionStage = new ConditionStageEntity
             {
                 SignalId = signal.Id,
-                Type = StageEntity.StageType.Waiting,
-                Name = "Test Waiting Stage 1",
-                Period = TimeSpan.FromSeconds(10)
+                Name = "Condition Stage",
+                RetryCount = 3,
+                RetryDelay = TimeSpan.FromSeconds(3)
             };
 
-            var stage2 = new WaitingStageEntity
+            var waitingStage = new WaitingStageEntity
             {
                 SignalId = signal.Id,
-                Type = StageEntity.StageType.Waiting,
-                Name = "Test Waiting Stage 2",
+                Name = "Waiting Stage",
                 Period = TimeSpan.FromSeconds(5)
             };
 
-            SignalsContext.Stages.Add(stage1);
-            SignalsContext.Stages.Add(stage2);
+            var groupBlock = new GroupBlockEntity
+            {
+                GroupType = GroupBlockEntity.GroupBlockType.And,
+            };
 
-            stage1.NextStageId = stage2.Id;
-            stage2.PreviousStageId = stage1.Id;
+            SignalsContext.Stages.Add(conditionStage);
+            SignalsContext.Stages.Add(waitingStage);
+            SignalsContext.Blocks.Add(groupBlock);
+
+            conditionStage.NextStageId = waitingStage.Id;
+            waitingStage.PreviousStageId = conditionStage.Id;
+
+            groupBlock.StageId = conditionStage.Id;
 
             await SignalsContext.SaveChangesAsync();
 

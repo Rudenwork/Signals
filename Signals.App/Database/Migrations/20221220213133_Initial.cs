@@ -75,16 +75,9 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PreviousStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RetryCount = table.Column<int>(type: "int", nullable: true),
-                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true),
-                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Period = table.Column<TimeSpan>(type: "time", nullable: true)
+                    NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,10 +96,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupType = table.Column<int>(type: "int", nullable: true)
+                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,6 +131,114 @@ namespace Signals.App.Database.Migrations
                         column: x => x.StageId,
                         principalTable: "Stages",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stages-Condition",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: true),
+                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stages-Condition", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stages-Condition_Stages_Id",
+                        column: x => x.Id,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stages-Notification",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stages-Notification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stages-Notification_Stages_Id",
+                        column: x => x.Id,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stages-Waiting",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Period = table.Column<TimeSpan>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stages-Waiting", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stages-Waiting_Stages_Id",
+                        column: x => x.Id,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blocks-Change",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocks-Change", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blocks-Change_Blocks_Id",
+                        column: x => x.Id,
+                        principalTable: "Blocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blocks-Group",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocks-Group", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blocks-Group_Blocks_Id",
+                        column: x => x.Id,
+                        principalTable: "Blocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blocks-Value",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocks-Value", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blocks-Value_Blocks_Id",
+                        column: x => x.Id,
+                        principalTable: "Blocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -181,13 +279,31 @@ namespace Signals.App.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Blocks");
+                name: "Blocks-Change");
+
+            migrationBuilder.DropTable(
+                name: "Blocks-Group");
+
+            migrationBuilder.DropTable(
+                name: "Blocks-Value");
 
             migrationBuilder.DropTable(
                 name: "Channels");
 
             migrationBuilder.DropTable(
                 name: "Executions");
+
+            migrationBuilder.DropTable(
+                name: "Stages-Condition");
+
+            migrationBuilder.DropTable(
+                name: "Stages-Notification");
+
+            migrationBuilder.DropTable(
+                name: "Stages-Waiting");
+
+            migrationBuilder.DropTable(
+                name: "Blocks");
 
             migrationBuilder.DropTable(
                 name: "Stages");

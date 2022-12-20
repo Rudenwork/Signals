@@ -11,15 +11,5 @@ namespace Signals.App.Database.Entities
 
         public Guid StageId { get; set; }
         public Guid? ParentBlockId { get; set; }
-
-        [Column(TypeName = "nvarchar(25)")]
-        public BlockType Type { get; set; }
-
-        public enum BlockType
-        {
-            Group,
-            Change,
-            Value
-        }
     }
 }

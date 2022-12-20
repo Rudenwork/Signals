@@ -10,19 +10,8 @@ namespace Signals.App.Database
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ChannelEntity> Channels { get; set; }
         public DbSet<SignalEntity> Signals { get; set; }
-
-        //Stages
         public DbSet<StageEntity> Stages { get; set; }
-        public DbSet<WaitingStageEntity> WaitingStages { get; set; }
-        public DbSet<ConditionStageEntity> ConditionStages { get; set; }
-        public DbSet<NotificationStageEntity> NotificationStages { get; set; }
-
-        //Blocks
         public DbSet<BlockEntity> Blocks { get; set; }
-        public DbSet<GroupBlockEntity> GroupBlocks { get; set; }
-        public DbSet<ValueBlockEntity> ValueBlocks { get; set; }
-        public DbSet<ChangeBlockEntity> ChangeBlocks { get; set; }
-
         public DbSet<ExecutionEntity> Executions { get; set; }
 
         public SignalsContext(DbContextOptions<SignalsContext> options) : base(options) { }
@@ -47,11 +36,35 @@ namespace Signals.App.Database
                 .WithMany()
                 .HasForeignKey(x => x.SignalId);
 
+            //Condition Stage
+            modelBuilder.Entity<ConditionStageEntity>()
+                .ToTable($"{nameof(Stages)}-Condition");
+
+            //Waiting Stage
+            modelBuilder.Entity<WaitingStageEntity>()
+                .ToTable($"{nameof(Stages)}-Waiting");
+
+            //Notification Stage
+            modelBuilder.Entity<NotificationStageEntity>()
+                .ToTable($"{nameof(Stages)}-Notification");
+
             //Block
             modelBuilder.Entity<BlockEntity>()
                 .HasOne<StageEntity>()
                 .WithMany()
                 .HasForeignKey(x => x.StageId);
+
+            //Group Block
+            modelBuilder.Entity<GroupBlockEntity>()
+                .ToTable($"{nameof(Blocks)}-Group");
+
+            //Value Block
+            modelBuilder.Entity<ValueBlockEntity>()
+                .ToTable($"{nameof(Blocks)}-Value");
+
+            //Change Block
+            modelBuilder.Entity<ChangeBlockEntity>()
+                .ToTable($"{nameof(Blocks)}-Change");
 
             //Execution
             modelBuilder.Entity<ExecutionEntity>()

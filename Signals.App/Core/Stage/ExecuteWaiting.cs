@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Services;
 
@@ -31,14 +32,14 @@ namespace Signals.App.Core.Stage
             {
                 context.EnsureFresh();
 
-                Logger.LogInformation($"[{context.Message.ExecutionId}] Executing Waiting Stage {context.Message.StageId}");
+                Logger.LogInformation($"[{context.Message.ExecutionId}] Executing Waiting Stage [{context.Message.StageId}]");
 
                 var execution = SignalsContext.Executions.Find(context.Message.ExecutionId);
 
                 if (execution is null)
                     return;
 
-                var stage = SignalsContext.WaitingStages.Find(context.Message.StageId);
+                var stage = SignalsContext.Stages.Find(context.Message.StageId) as WaitingStageEntity;
 
                 await Scheduler.Publish(new Next.Message { ExecutionId = execution.Id }, DateTime.UtcNow + stage.Period, execution.Id);
             }

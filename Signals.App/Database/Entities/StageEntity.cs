@@ -11,20 +11,10 @@ namespace Signals.App.Database.Entities
 
         public Guid SignalId { get; set; }
 
-        [Column(TypeName = "nvarchar(25)")]
-        public StageType Type { get; set; }
-
         [MaxLength(100)]
         public string Name { get; set; }
 
         public Guid? PreviousStageId { get; set; }
         public Guid? NextStageId { get; set; }
-
-        public enum StageType
-        {
-            Condition,
-            Waiting,
-            Notification
-        }
     }
 }
