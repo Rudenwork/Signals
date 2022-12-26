@@ -12,6 +12,20 @@ namespace Signals.App.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Indicators",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoopbackPeriod = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    Interval = table.Column<int>(type: "int", nullable: false),
+                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -24,6 +38,111 @@ namespace Signals.App.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-BollingerBands",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BandType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-BollingerBands", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-BollingerBands_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-Candle",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParameterType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-Candle", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-Candle_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-Constant",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-Constant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-Constant_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-ExponentialMovingAverage",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-ExponentialMovingAverage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-ExponentialMovingAverage_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-MovingAverage",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-MovingAverage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-MovingAverage_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indicators-RelativeStrengthIndex",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Indicators-RelativeStrengthIndex", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Indicators-RelativeStrengthIndex_Indicators_Id",
+                        column: x => x.Id,
+                        principalTable: "Indicators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,7 +312,13 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks-Change",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Operator = table.Column<int>(type: "int", nullable: false),
+                    Target = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsPercentage = table.Column<bool>(type: "bit", nullable: false),
+                    Period = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,6 +329,11 @@ namespace Signals.App.Database.Migrations
                         principalTable: "Blocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Blocks-Change_Indicators_IndicatorId",
+                        column: x => x.IndicatorId,
+                        principalTable: "Indicators",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -228,7 +358,10 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks-Value",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LeftIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RightIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Operator = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,12 +372,43 @@ namespace Signals.App.Database.Migrations
                         principalTable: "Blocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Blocks-Value_Indicators_LeftIndicatorId",
+                        column: x => x.LeftIndicatorId,
+                        principalTable: "Indicators",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Blocks-Value_Indicators_RightIndicatorId",
+                        column: x => x.RightIndicatorId,
+                        principalTable: "Indicators",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks_StageId",
                 table: "Blocks",
                 column: "StageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blocks-Change_IndicatorId",
+                table: "Blocks-Change",
+                column: "IndicatorId",
+                unique: true,
+                filter: "[IndicatorId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blocks-Value_LeftIndicatorId",
+                table: "Blocks-Value",
+                column: "LeftIndicatorId",
+                unique: true,
+                filter: "[LeftIndicatorId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blocks-Value_RightIndicatorId",
+                table: "Blocks-Value",
+                column: "RightIndicatorId",
+                unique: true,
+                filter: "[RightIndicatorId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Channels_UserId",
@@ -294,6 +458,24 @@ namespace Signals.App.Database.Migrations
                 name: "Executions");
 
             migrationBuilder.DropTable(
+                name: "Indicators-BollingerBands");
+
+            migrationBuilder.DropTable(
+                name: "Indicators-Candle");
+
+            migrationBuilder.DropTable(
+                name: "Indicators-Constant");
+
+            migrationBuilder.DropTable(
+                name: "Indicators-ExponentialMovingAverage");
+
+            migrationBuilder.DropTable(
+                name: "Indicators-MovingAverage");
+
+            migrationBuilder.DropTable(
+                name: "Indicators-RelativeStrengthIndex");
+
+            migrationBuilder.DropTable(
                 name: "Stages-Condition");
 
             migrationBuilder.DropTable(
@@ -304,6 +486,9 @@ namespace Signals.App.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Blocks");
+
+            migrationBuilder.DropTable(
+                name: "Indicators");
 
             migrationBuilder.DropTable(
                 name: "Stages");

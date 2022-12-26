@@ -8,6 +8,7 @@ using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Blocks;
+using Signals.App.Database.Entities.Indicators;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Identity;
@@ -108,6 +109,31 @@ namespace Signals.App.Controllers
             conditionStage.NextStageId = waitingStage.Id;
             waitingStage.PreviousStageId = conditionStage.Id;
 
+            var candleCloseIndicator = new CandleIndicatorEntity
+            {
+                Symbol = "ETHBUSD",
+                Interval = Interval.OneHour,
+                ParameterType = CandleParameter.Close
+            };
+
+            var constantIndicator = new ConstantIndicatorEntity
+            {
+                Symbol = "ETHBUSD",
+                Interval = Interval.OneHour,
+                Value = 1200
+            };
+
+            var rsiIndicator = new RelativeStrengthIndexIndicatorEntity
+            {
+                Symbol = "ETHBUSD",
+                Interval = Interval.OneHour,
+                LoopbackPeriod = 14
+            };
+
+            SignalsContext.Indicators.Add(candleCloseIndicator);
+            SignalsContext.Indicators.Add(constantIndicator);
+            SignalsContext.Indicators.Add(rsiIndicator);
+
             var rootGroupBlock = new GroupBlockEntity
             {
                 StageId = conditionStage.Id,
@@ -116,7 +142,10 @@ namespace Signals.App.Controllers
 
             var valueBlock = new ValueBlockEntity
             {
-                StageId = conditionStage.Id
+                StageId = conditionStage.Id,
+                Operator = ValueBlockOperator.GreaterOrEqual,
+                LeftIndicatorId = candleCloseIndicator.Id,
+                RightIndicatorId = constantIndicator.Id
             };
 
             var groupBlock = new GroupBlockEntity
@@ -127,7 +156,12 @@ namespace Signals.App.Controllers
 
             var changeBlock = new ChangeBlockEntity
             {
-                StageId = conditionStage.Id
+                StageId = conditionStage.Id,
+                IndicatorId = rsiIndicator.Id,
+                Period = TimeSpan.FromHours(2),
+                Type = ChangeBlockType.Increase,
+                Operator = ChangeBlockOperator.GreaterOrEqual,
+                Target = 10
             };
 
             SignalsContext.Blocks.Add(rootGroupBlock);
@@ -141,7 +175,7 @@ namespace Signals.App.Controllers
 
             await SignalsContext.SaveChangesAsync();
 
-            await Scheduler.RecurringPublish(new Start.Message { SignalId = signal.Id }, signal.Schedule, signal.Id);
+            //await Scheduler.RecurringPublish(new Start.Message { SignalId = signal.Id }, signal.Schedule, signal.Id);
 
             return Ok();
         }

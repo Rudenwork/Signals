@@ -99,6 +99,30 @@ namespace Signals.App.Database.Migrations
                     b.ToTable("Executions");
                 });
 
+            modelBuilder.Entity("Signals.App.Database.Entities.IndicatorEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Interval")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LoopbackPeriod")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Indicators");
+
+                    b.UseTptMappingStrategy();
+                });
+
             modelBuilder.Entity("Signals.App.Database.Entities.SignalEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -187,6 +211,28 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
 
+                    b.Property<Guid>("IndicatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsPercentage")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Operator")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Period")
+                        .HasColumnType("time");
+
+                    b.Property<decimal>("Target")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasIndex("IndicatorId")
+                        .IsUnique()
+                        .HasFilter("[IndicatorId] IS NOT NULL");
+
                     b.ToTable("Blocks-Change", (string)null);
                 });
 
@@ -204,7 +250,75 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
 
+                    b.Property<Guid>("LeftIndicatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Operator")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RightIndicatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("LeftIndicatorId")
+                        .IsUnique()
+                        .HasFilter("[LeftIndicatorId] IS NOT NULL");
+
+                    b.HasIndex("RightIndicatorId")
+                        .IsUnique()
+                        .HasFilter("[RightIndicatorId] IS NOT NULL");
+
                     b.ToTable("Blocks-Value", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.Property<int>("BandType")
+                        .HasColumnType("int");
+
+                    b.ToTable("Indicators-BollingerBands", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.CandleIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.Property<int>("ParameterType")
+                        .HasColumnType("int");
+
+                    b.ToTable("Indicators-Candle", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.ConstantIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("Indicators-Constant", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.ExponentialMovingAverageIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.ToTable("Indicators-ExponentialMovingAverage", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.ToTable("Indicators-MovingAverage", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.ToTable("Indicators-RelativeStrengthIndex", (string)null);
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Stages.ConditionStageEntity", b =>
@@ -302,6 +416,12 @@ namespace Signals.App.Database.Migrations
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ChangeBlockEntity", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Blocks.ChangeBlockEntity", "IndicatorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Blocks.GroupBlockEntity", b =>
@@ -318,6 +438,72 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.BlockEntity", null)
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "LeftIndicatorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "RightIndicatorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.CandleIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.CandleIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.ConstantIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.ConstantIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.ExponentialMovingAverageIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.ExponentialMovingAverageIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

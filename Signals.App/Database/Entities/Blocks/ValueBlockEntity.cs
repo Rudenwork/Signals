@@ -2,6 +2,14 @@
 {
     public class ValueBlockEntity : BlockEntity
     {
-        ///TODO: Define properties of ChangeBlockEntity
+        public Guid LeftIndicatorId { get; set; }
+        public Guid RightIndicatorId { get; set;}
+        public ValueBlockOperator Operator { get; set; }
+    }
+
+    public enum ValueBlockOperator
+    {
+        GreaterOrEqual,
+        LessOrEqual
     }
 }

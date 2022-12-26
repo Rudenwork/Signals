@@ -13,7 +13,7 @@ namespace Signals.App.Extensions
             using var scope = app.Services.CreateScope();
             var signalsContext = scope.ServiceProvider.GetService<SignalsContext>();
 
-            signalsContext.Database.Migrate();
+            signalsContext.Database.MigrateAsync().Wait();
 
             if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
@@ -22,6 +22,7 @@ namespace Signals.App.Extensions
 
             signalsContext.Users.Add(new UserEntity
             {
+                Id = Guid.Parse("78911115-ed98-4e96-c6b1-08dae7620d69"),
                 Username = "admin",
                 PasswordHash = passwordHasher.HashPassword(null, "admin"),
                 IsAdmin = true,
