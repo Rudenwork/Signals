@@ -1,14 +1,11 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
-using Microsoft.EntityFrameworkCore;
 using Signals.App.Core.Block;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
-using Signals.App.Database.Entities.Blocks;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Services;
-using System;
 
 namespace Signals.App.Core.Stage
 {
@@ -16,8 +13,9 @@ namespace Signals.App.Core.Stage
     {
         public class Message
         {
-            public Guid StageId { get; set; }
             public Guid ExecutionId { get; set; }
+            public ConditionStageEntity Stage { get; set; }
+            public Guid StageId { get; set; }
             public int RetryAttempt { get; set; }
         }
 
@@ -41,16 +39,12 @@ namespace Signals.App.Core.Stage
                 context.EnsureFresh();
                 var message = context.Message;
 
-                Logger.LogInformation($"[{message.ExecutionId}] Executing Condition Stage [{message.StageId}] - Retry Attempt [{message.RetryAttempt}]");
+                Logger.LogInformation($"[{message.ExecutionId}] Executing Condition Stage [{message.Stage.Id}] - Retry Attempt [{message.RetryAttempt}]");
 
                 if (SignalsContext.Executions.Find(message.ExecutionId) is null)
                     return;
 
-                var stage = SignalsContext.Stages
-                    .Where(x => x.Id == message.StageId)
-                    .FirstOrDefault() as ConditionStageEntity;
-
-                var block = SignalsContext.Blocks.Find(stage.BlockId);
+                var block = SignalsContext.Blocks.Find(message.Stage.BlockId);
 
                 var response = await Mediator.SendRequest(new EvaluateBlock.Request { Block = block });
 
@@ -58,10 +52,10 @@ namespace Signals.App.Core.Stage
                 {
                     await context.Publish(new Next.Message { ExecutionId = message.ExecutionId });
                 }
-                else if (message.RetryAttempt < stage.RetryCount)
+                else if (message.RetryAttempt < message.Stage.RetryCount)
                 {
                     message.RetryAttempt++;
-                    await Scheduler.Publish(message, DateTime.UtcNow + (stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
+                    await Scheduler.Publish(message, DateTime.UtcNow + (message.Stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
                 }
                 else
                 {
@@ -72,24 +66,21 @@ namespace Signals.App.Core.Stage
 
         public class FaultConsumer : IConsumer<Fault<Message>>
         {
-            private SignalsContext SignalsContext { get; }
             private Scheduler Scheduler { get; }
 
-            public FaultConsumer(SignalsContext signalsContext, Scheduler scheduler)
+            public FaultConsumer(Scheduler scheduler)
             {
-                SignalsContext = signalsContext;
                 Scheduler = scheduler;
             }
 
             public async Task Consume(ConsumeContext<Fault<Message>> context)
             {
                 var message = context.Message.Message;
-                var stage = SignalsContext.Stages.Find(message.StageId) as ConditionStageEntity;
 
-                if (message.RetryAttempt < stage.RetryCount)
+                if (message.RetryAttempt < message.Stage.RetryCount)
                 {
                     message.RetryAttempt++;
-                    await Scheduler.Publish(message, DateTime.UtcNow + (stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
+                    await Scheduler.Publish(message, DateTime.UtcNow + (message.Stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
                 }
                 else
                 {

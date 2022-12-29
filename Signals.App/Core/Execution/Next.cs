@@ -35,23 +35,22 @@ namespace Signals.App.Core.Execution
                 if (execution is null)
                     return;
 
-                var stage = execution.StageId switch
+                var nextStage = execution.StageId switch
                 {
                     null => SignalsContext.Stages.First(x => x.SignalId == execution.SignalId && x.PreviousStageId == null),
                     _ => SignalsContext.Stages.FirstOrDefault(x => x.PreviousStageId == execution.StageId)
                 };
 
-                execution.StageId = stage?.Id;
+                execution.StageId = nextStage?.Id;
 
                 SignalsContext.Update(execution);
                 SignalsContext.SaveChanges();
 
-                object message = stage switch
+                object message = nextStage switch
                 {
-                    ///TODO: Provide specific stage entity instead of stage id
-                    WaitingStageEntity => new ExecuteWaiting.Message { ExecutionId = execution.Id, StageId = stage.Id },
-                    ConditionStageEntity => new ExecuteCondition.Message { ExecutionId = execution.Id, StageId = stage.Id },
-                    NotificationStageEntity => new ExecuteNotification.Message { ExecutionId = execution.Id, StageId = stage.Id },
+                    WaitingStageEntity stage => new ExecuteWaiting.Message { ExecutionId = execution.Id, Stage = stage },
+                    ConditionStageEntity stage => new ExecuteCondition.Message { ExecutionId = execution.Id, Stage = stage },
+                    NotificationStageEntity stage => new ExecuteNotification.Message { ExecutionId = execution.Id, Stage = stage },
                     _ => new Stop.Message { ExecutionId = execution.Id }
                 };
 

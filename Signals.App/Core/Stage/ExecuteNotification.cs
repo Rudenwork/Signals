@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 
 namespace Signals.App.Core.Stage
@@ -9,8 +10,8 @@ namespace Signals.App.Core.Stage
     {
         public class Message
         {
-            public Guid StageId { get; set; }
             public Guid ExecutionId { get; set; }
+            public NotificationStageEntity Stage { get; set; }
         }
 
         public class Consumer : IConsumer<Message>
@@ -28,10 +29,9 @@ namespace Signals.App.Core.Stage
             {
                 context.EnsureFresh();
 
-                var stageId = context.Message.StageId;
                 var executionId = context.Message.ExecutionId;
 
-                Logger.LogInformation($"[{executionId}] Notification Stage {stageId}");
+                Logger.LogInformation($"[{executionId}] Notification Stage {context.Message.Stage.Id}");
             }
         }
 

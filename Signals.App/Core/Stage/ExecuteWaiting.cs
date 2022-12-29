@@ -12,7 +12,7 @@ namespace Signals.App.Core.Stage
         public class Message
         {
             public Guid ExecutionId { get; set; }
-            public Guid StageId { get; set; }
+            public WaitingStageEntity Stage { get; set; }
         }
 
         public class Consumer : IConsumer<Message>
@@ -32,16 +32,14 @@ namespace Signals.App.Core.Stage
             {
                 context.EnsureFresh();
 
-                Logger.LogInformation($"[{context.Message.ExecutionId}] Executing Waiting Stage [{context.Message.StageId}]");
+                Logger.LogInformation($"[{context.Message.ExecutionId}] Executing Waiting Stage [{context.Message.Stage.Id}]");
 
                 var execution = SignalsContext.Executions.Find(context.Message.ExecutionId);
 
                 if (execution is null)
                     return;
 
-                var stage = SignalsContext.Stages.Find(context.Message.StageId) as WaitingStageEntity;
-
-                await Scheduler.Publish(new Next.Message { ExecutionId = execution.Id }, DateTime.UtcNow + stage.Period, execution.Id);
+                await Scheduler.Publish(new Next.Message { ExecutionId = execution.Id }, DateTime.UtcNow + context.Message.Stage.Period, execution.Id);
             }
         }
 
