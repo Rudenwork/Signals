@@ -15,7 +15,7 @@ namespace Signals.App.Database.Entities
         [Column(TypeName = "nvarchar(25)")]
         public Interval Interval { get; set; }
 
-        public string Symbol { get; set; }
+        public string? Symbol { get; set; }
     }
 
     public enum Interval

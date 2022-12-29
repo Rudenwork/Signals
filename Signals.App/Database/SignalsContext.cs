@@ -109,7 +109,7 @@ namespace Signals.App.Database
                 .ToTable($"{nameof(Indicators)}-ExponentialMovingAverage");
 
             //Moving Average Indicator
-            modelBuilder.Entity<MovingAverageIndicatorEntity>()
+            modelBuilder.Entity<SimpleMovingAverageIndicatorEntity>()
                 .ToTable($"{nameof(Indicators)}-MovingAverage");
 
             //Relative Strength Index Indicator

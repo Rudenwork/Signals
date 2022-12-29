@@ -18,7 +18,7 @@ namespace Signals.App.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoopbackPeriod = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     Interval = table.Column<string>(type: "nvarchar(25)", nullable: false),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -16,7 +16,6 @@ namespace Signals.App.Database.Entities.Indicators
         Low,
         High,
         Average,
-        Volume,
-        TradesNumber
+        Volume
     }
 }

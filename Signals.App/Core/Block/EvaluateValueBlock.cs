@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
+using Signals.App.Core.Indicators;
 using Signals.App.Database;
 using Signals.App.Database.Entities.Blocks;
 
@@ -29,7 +30,22 @@ namespace Signals.App.Core.Block
             {
                 Logger.LogInformation($"Evaluating Value Block");
 
-                await context.RespondAsync(new EvaluateBlock.Response { Result = true });
+                var leftIndicator = SignalsContext.Indicators.Find(context.Message.Block.LeftIndicatorId);
+                var rightIndicator = SignalsContext.Indicators.Find(context.Message.Block.RightIndicatorId);
+
+                var leftResponse = await Mediator.SendRequest(new CalculateIndicator.Request { Indicator = leftIndicator });
+                var rightResponse = await Mediator.SendRequest(new CalculateIndicator.Request { Indicator = rightIndicator });
+
+                var leftResult = leftResponse.Result;
+                var rightResult = rightResponse.Result;
+
+                var result = context.Message.Block.Operator switch
+                {
+                    ValueBlockOperator.LessOrEqual => leftResult <= rightResult,
+                    ValueBlockOperator.GreaterOrEqual => leftResult >= rightResult
+                };
+
+                await context.RespondAsync(new EvaluateBlock.Response { Result = result });
             }
         }
     }

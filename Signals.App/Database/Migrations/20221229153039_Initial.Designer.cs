@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20221229115053_Initial")]
+    [Migration("20221229153039_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -114,7 +114,6 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Symbol")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -314,18 +313,18 @@ namespace Signals.App.Database.Migrations
                     b.ToTable("Indicators-ExponentialMovingAverage", (string)null);
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
-
-                    b.ToTable("Indicators-MovingAverage", (string)null);
-                });
-
             modelBuilder.Entity("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", b =>
                 {
                     b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
 
                     b.ToTable("Indicators-RelativeStrengthIndex", (string)null);
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.SimpleMovingAverageIndicatorEntity", b =>
+                {
+                    b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
+
+                    b.ToTable("Indicators-MovingAverage", (string)null);
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Stages.ConditionStageEntity", b =>
@@ -508,20 +507,20 @@ namespace Signals.App.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.Indicators.MovingAverageIndicatorEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Indicators.RelativeStrengthIndexIndicatorEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Indicators.SimpleMovingAverageIndicatorEntity", b =>
+                {
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Indicators.SimpleMovingAverageIndicatorEntity", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

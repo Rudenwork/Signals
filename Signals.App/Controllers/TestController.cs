@@ -108,8 +108,6 @@ namespace Signals.App.Controllers
                                     },
                                     RightIndicator = new ConstantIndicatorEntity
                                     {
-                                        Symbol = "ETHBUSD",
-                                        Interval = Interval.OneHour,
                                         Value = 1200
                                     }
                                 },

@@ -1,3 +1,4 @@
+using Binance.Net;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using FluentValidation;
@@ -143,6 +144,8 @@ builder.Services.AddQuartz(options =>
 });
 
 builder.Services.AddQuartzServer();
+
+builder.Services.AddBinance();
 
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<Scheduler>();
