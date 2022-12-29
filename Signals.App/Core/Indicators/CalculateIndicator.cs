@@ -14,6 +14,7 @@ namespace Signals.App.Core.Indicators
         public class Request : Request<Response>
         {
             public IndicatorEntity Indicator { get; set; }
+            public DateTime? Time { get; set; }
         }
 
         public class Response
@@ -44,8 +45,9 @@ namespace Signals.App.Core.Indicators
 
                 var symbol = context.Message.Indicator.Symbol;
                 var interval = context.Message.Indicator.Interval.Adapt<KlineInterval>();
+                var endTime = context.Message.Time;
 
-                var kLinesResult = await BinanceClient.SpotApi.ExchangeData.GetKlinesAsync(symbol, interval, limit: 100);
+                var kLinesResult = await BinanceClient.SpotApi.ExchangeData.GetKlinesAsync(symbol, interval, endTime: endTime, limit: 100);
 
                 var quotes = kLinesResult.Data
                     .Select(kline => new Quote

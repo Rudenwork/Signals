@@ -119,9 +119,9 @@ namespace Signals.App.Controllers
                                         new ChangeBlockEntity
                                         {
                                             Period = TimeSpan.FromHours(2),
-                                            Type = ChangeBlockType.Increase,
+                                            Type = ChangeBlockType.Decrease,
                                             Operator = ChangeBlockOperator.GreaterOrEqual,
-                                            Target = 10,
+                                            Target = 1,
                                             Indicator = new RelativeStrengthIndexIndicatorEntity
                                             {
                                                 Symbol = "ETHBUSD",
