@@ -9,7 +9,6 @@ namespace Signals.App.Database.Entities
         [Key]
         public Guid Id { get; set; }
 
-        public Guid StageId { get; set; }
         public Guid? ParentBlockId { get; set; }
     }
 }

@@ -31,12 +31,9 @@ namespace Signals.App.Database.Migrations
                     b.Property<Guid?>("ParentBlockId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("StageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("StageId");
+                    b.HasIndex("ParentBlockId");
 
                     b.ToTable("Blocks");
 
@@ -105,8 +102,9 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
+                    b.Property<string>("Interval")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<int>("LoopbackPeriod")
                         .HasMaxLength(100)
@@ -217,8 +215,9 @@ namespace Signals.App.Database.Migrations
                     b.Property<bool>("IsPercentage")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Operator")
-                        .HasColumnType("int");
+                    b.Property<string>("Operator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<TimeSpan>("Period")
                         .HasColumnType("time");
@@ -226,8 +225,9 @@ namespace Signals.App.Database.Migrations
                     b.Property<decimal>("Target")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasIndex("IndicatorId")
                         .IsUnique()
@@ -240,8 +240,9 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
 
-                    b.Property<int>("GroupType")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.ToTable("Blocks-Group", (string)null);
                 });
@@ -253,8 +254,9 @@ namespace Signals.App.Database.Migrations
                     b.Property<Guid>("LeftIndicatorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Operator")
-                        .HasColumnType("int");
+                    b.Property<string>("Operator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<Guid>("RightIndicatorId")
                         .HasColumnType("uniqueidentifier");
@@ -274,8 +276,9 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
 
-                    b.Property<int>("BandType")
-                        .HasColumnType("int");
+                    b.Property<string>("BandType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.ToTable("Indicators-BollingerBands", (string)null);
                 });
@@ -284,8 +287,9 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
 
-                    b.Property<int>("ParameterType")
-                        .HasColumnType("int");
+                    b.Property<string>("ParameterType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)");
 
                     b.ToTable("Indicators-Candle", (string)null);
                 });
@@ -325,11 +329,18 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.StageEntity");
 
+                    b.Property<Guid>("BlockId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("RetryCount")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan?>("RetryDelay")
                         .HasColumnType("time");
+
+                    b.HasIndex("BlockId")
+                        .IsUnique()
+                        .HasFilter("[BlockId] IS NOT NULL");
 
                     b.ToTable("Stages-Condition", (string)null);
                 });
@@ -361,11 +372,9 @@ namespace Signals.App.Database.Migrations
 
             modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
                 {
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Signals.App.Database.Entities.Blocks.GroupBlockEntity", null)
+                        .WithMany("Children")
+                        .HasForeignKey("ParentBlockId");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
@@ -403,7 +412,7 @@ namespace Signals.App.Database.Migrations
             modelBuilder.Entity("Signals.App.Database.Entities.StageEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
-                        .WithMany()
+                        .WithMany("Stages")
                         .HasForeignKey("SignalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -417,11 +426,13 @@ namespace Signals.App.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "Indicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ChangeBlockEntity", "IndicatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Indicator");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Blocks.GroupBlockEntity", b =>
@@ -441,17 +452,21 @@ namespace Signals.App.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "LeftIndicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "LeftIndicatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", null)
+                    b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "RightIndicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "RightIndicatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("LeftIndicator");
+
+                    b.Navigation("RightIndicator");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", b =>
@@ -510,11 +525,19 @@ namespace Signals.App.Database.Migrations
 
             modelBuilder.Entity("Signals.App.Database.Entities.Stages.ConditionStageEntity", b =>
                 {
+                    b.HasOne("Signals.App.Database.Entities.BlockEntity", "Block")
+                        .WithOne()
+                        .HasForeignKey("Signals.App.Database.Entities.Stages.ConditionStageEntity", "BlockId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Stages.ConditionStageEntity", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Stages.NotificationStageEntity", b =>
@@ -533,6 +556,16 @@ namespace Signals.App.Database.Migrations
                         .HasForeignKey("Signals.App.Database.Entities.Stages.WaitingStageEntity", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.SignalEntity", b =>
+                {
+                    b.Navigation("Stages");
+                });
+
+            modelBuilder.Entity("Signals.App.Database.Entities.Blocks.GroupBlockEntity", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

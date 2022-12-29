@@ -17,7 +17,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoopbackPeriod = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    Interval = table.Column<int>(type: "int", nullable: false),
+                    Interval = table.Column<string>(type: "nvarchar(25)", nullable: false),
                     Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -45,7 +45,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BandType = table.Column<int>(type: "int", nullable: false)
+                    BandType = table.Column<string>(type: "nvarchar(25)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +63,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParameterType = table.Column<int>(type: "int", nullable: false)
+                    ParameterType = table.Column<string>(type: "nvarchar(25)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,25 +210,6 @@ namespace Signals.App.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Blocks",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blocks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Blocks_Stages_StageId",
-                        column: x => x.StageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Executions",
                 columns: table => new
                 {
@@ -250,25 +231,6 @@ namespace Signals.App.Database.Migrations
                         column: x => x.StageId,
                         principalTable: "Stages",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stages-Condition",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RetryCount = table.Column<int>(type: "int", nullable: true),
-                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stages-Condition", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stages-Condition_Stages_Id",
-                        column: x => x.Id,
-                        principalTable: "Stages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,13 +271,25 @@ namespace Signals.App.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Blocks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Blocks-Change",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Operator = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Operator = table.Column<string>(type: "nvarchar(25)", nullable: false),
                     Target = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsPercentage = table.Column<bool>(type: "bit", nullable: false),
                     Period = table.Column<TimeSpan>(type: "time", nullable: false)
@@ -341,7 +315,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GroupType = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -361,7 +335,7 @@ namespace Signals.App.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LeftIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RightIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Operator = table.Column<int>(type: "int", nullable: false)
+                    Operator = table.Column<string>(type: "nvarchar(25)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -384,10 +358,35 @@ namespace Signals.App.Database.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Stages-Condition",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: true),
+                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true),
+                    BlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stages-Condition", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stages-Condition_Blocks_BlockId",
+                        column: x => x.BlockId,
+                        principalTable: "Blocks",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Stages-Condition_Stages_Id",
+                        column: x => x.Id,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Blocks_StageId",
+                name: "IX_Blocks_ParentBlockId",
                 table: "Blocks",
-                column: "StageId");
+                column: "ParentBlockId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks-Change_IndicatorId",
@@ -437,16 +436,31 @@ namespace Signals.App.Database.Migrations
                 name: "IX_Stages_SignalId",
                 table: "Stages",
                 column: "SignalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stages-Condition_BlockId",
+                table: "Stages-Condition",
+                column: "BlockId",
+                unique: true,
+                filter: "[BlockId] IS NOT NULL");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Blocks_Blocks-Group_ParentBlockId",
+                table: "Blocks",
+                column: "ParentBlockId",
+                principalTable: "Blocks-Group",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Blocks-Change");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Blocks_Blocks-Group_ParentBlockId",
+                table: "Blocks");
 
             migrationBuilder.DropTable(
-                name: "Blocks-Group");
+                name: "Blocks-Change");
 
             migrationBuilder.DropTable(
                 name: "Blocks-Value");
@@ -485,9 +499,6 @@ namespace Signals.App.Database.Migrations
                 name: "Stages-Waiting");
 
             migrationBuilder.DropTable(
-                name: "Blocks");
-
-            migrationBuilder.DropTable(
                 name: "Indicators");
 
             migrationBuilder.DropTable(
@@ -498,6 +509,12 @@ namespace Signals.App.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Blocks-Group");
+
+            migrationBuilder.DropTable(
+                name: "Blocks");
         }
     }
 }

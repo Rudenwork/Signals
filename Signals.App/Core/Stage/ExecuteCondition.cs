@@ -1,8 +1,10 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Core.Block;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
+using Signals.App.Database.Entities.Blocks;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Services;
@@ -44,11 +46,11 @@ namespace Signals.App.Core.Stage
                 if (SignalsContext.Executions.Find(message.ExecutionId) is null)
                     return;
 
-                var stage = SignalsContext.Stages.Find(message.StageId) as ConditionStageEntity;
+                var stage = SignalsContext.Stages
+                    .Where(x => x.Id == message.StageId)
+                    .FirstOrDefault() as ConditionStageEntity;
 
-                var block = SignalsContext.Blocks
-                    .Where(x => x.StageId == message.StageId && x.ParentBlockId == null)
-                    .FirstOrDefault();
+                var block = SignalsContext.Blocks.Find(stage.BlockId);
 
                 var response = await Mediator.SendRequest(new EvaluateBlock.Request { Block = block });
 

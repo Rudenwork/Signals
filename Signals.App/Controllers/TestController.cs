@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Core.Execution;
@@ -83,95 +84,73 @@ namespace Signals.App.Controllers
             {
                 UserId = User.GetId(),
                 Name = "Test Signal",
-                Schedule = "0 0/5 * * * ?"
+                Schedule = "0 0/5 * * * ?",
+                Stages = new List<StageEntity>
+                {
+                    new ConditionStageEntity
+                    {
+                        Name = "Condition Stage",
+                        RetryCount = 3,
+                        RetryDelay = TimeSpan.FromSeconds(3),
+                        Block = new GroupBlockEntity
+                        {
+                            Type = GroupBlockType.And,
+                            Children = new List<BlockEntity>
+                            {
+                                new ValueBlockEntity
+                                {
+                                    Operator = ValueBlockOperator.GreaterOrEqual,
+                                    LeftIndicator = new CandleIndicatorEntity
+                                    {
+                                        Symbol = "ETHBUSD",
+                                        Interval = Interval.OneHour,
+                                        ParameterType = CandleParameter.Close
+                                    },
+                                    RightIndicator = new ConstantIndicatorEntity
+                                    {
+                                        Symbol = "ETHBUSD",
+                                        Interval = Interval.OneHour,
+                                        Value = 1200
+                                    }
+                                },
+                                new GroupBlockEntity
+                                {
+                                    Type = GroupBlockType.And,
+                                    Children = new List<BlockEntity>
+                                    {
+                                        new ChangeBlockEntity
+                                        {
+                                            Period = TimeSpan.FromHours(2),
+                                            Type = ChangeBlockType.Increase,
+                                            Operator = ChangeBlockOperator.GreaterOrEqual,
+                                            Target = 10,
+                                            Indicator = new RelativeStrengthIndexIndicatorEntity
+                                            {
+                                                Symbol = "ETHBUSD",
+                                                Interval = Interval.OneHour,
+                                                LoopbackPeriod = 14
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new WaitingStageEntity
+                    {
+                        Name = "Waiting Stage",
+                        Period = TimeSpan.FromSeconds(5)
+                    }
+                }
             };
-
+            
             SignalsContext.Signals.Add(signal);
 
-            var conditionStage = new ConditionStageEntity
+            for (int i = 1; i < signal.Stages.Count; i++)
             {
-                SignalId = signal.Id,
-                Name = "Condition Stage",
-                RetryCount = 3,
-                RetryDelay = TimeSpan.FromSeconds(3)
-            };
-
-            var waitingStage = new WaitingStageEntity
-            {
-                SignalId = signal.Id,
-                Name = "Waiting Stage",
-                Period = TimeSpan.FromSeconds(5)
-            };
-
-            SignalsContext.Stages.Add(conditionStage);
-            SignalsContext.Stages.Add(waitingStage);
-
-            conditionStage.NextStageId = waitingStage.Id;
-            waitingStage.PreviousStageId = conditionStage.Id;
-
-            var candleCloseIndicator = new CandleIndicatorEntity
-            {
-                Symbol = "ETHBUSD",
-                Interval = Interval.OneHour,
-                ParameterType = CandleParameter.Close
-            };
-
-            var constantIndicator = new ConstantIndicatorEntity
-            {
-                Symbol = "ETHBUSD",
-                Interval = Interval.OneHour,
-                Value = 1200
-            };
-
-            var rsiIndicator = new RelativeStrengthIndexIndicatorEntity
-            {
-                Symbol = "ETHBUSD",
-                Interval = Interval.OneHour,
-                LoopbackPeriod = 14
-            };
-
-            SignalsContext.Indicators.Add(candleCloseIndicator);
-            SignalsContext.Indicators.Add(constantIndicator);
-            SignalsContext.Indicators.Add(rsiIndicator);
-
-            var rootGroupBlock = new GroupBlockEntity
-            {
-                StageId = conditionStage.Id,
-                GroupType = GroupBlockEntity.GroupBlockType.And
-            };
-
-            var valueBlock = new ValueBlockEntity
-            {
-                StageId = conditionStage.Id,
-                Operator = ValueBlockOperator.GreaterOrEqual,
-                LeftIndicatorId = candleCloseIndicator.Id,
-                RightIndicatorId = constantIndicator.Id
-            };
-
-            var groupBlock = new GroupBlockEntity
-            {
-                StageId = conditionStage.Id,
-                GroupType = GroupBlockEntity.GroupBlockType.And
-            };
-
-            var changeBlock = new ChangeBlockEntity
-            {
-                StageId = conditionStage.Id,
-                IndicatorId = rsiIndicator.Id,
-                Period = TimeSpan.FromHours(2),
-                Type = ChangeBlockType.Increase,
-                Operator = ChangeBlockOperator.GreaterOrEqual,
-                Target = 10
-            };
-
-            SignalsContext.Blocks.Add(rootGroupBlock);
-            SignalsContext.Blocks.Add(valueBlock);
-            SignalsContext.Blocks.Add(groupBlock);
-            SignalsContext.Blocks.Add(changeBlock);
-
-            valueBlock.ParentBlockId = rootGroupBlock.Id;
-            groupBlock.ParentBlockId = rootGroupBlock.Id;
-            changeBlock.ParentBlockId = groupBlock.Id;
+                signal.Stages[i - 1].NextStageId = signal.Stages[i].Id;
+                signal.Stages[i].PreviousStageId = signal.Stages[i - 1].Id;
+            }
 
             await SignalsContext.SaveChangesAsync();
 

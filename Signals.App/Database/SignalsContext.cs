@@ -35,12 +35,18 @@ namespace Signals.App.Database
             //Stage
             modelBuilder.Entity<StageEntity>()
                 .HasOne<SignalEntity>()
-                .WithMany()
+                .WithMany(x => x.Stages)
                 .HasForeignKey(x => x.SignalId);
 
             //Condition Stage
             modelBuilder.Entity<ConditionStageEntity>()
                 .ToTable($"{nameof(Stages)}-Condition");
+
+            modelBuilder.Entity<ConditionStageEntity>()
+                .HasOne(x => x.Block)
+                .WithOne()
+                .HasForeignKey<ConditionStageEntity>(x => x.BlockId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //Waiting Stage
             modelBuilder.Entity<WaitingStageEntity>()
@@ -52,9 +58,9 @@ namespace Signals.App.Database
 
             //Block
             modelBuilder.Entity<BlockEntity>()
-                .HasOne<StageEntity>()
-                .WithMany()
-                .HasForeignKey(x => x.StageId);
+                .HasOne<GroupBlockEntity>()
+                .WithMany(x => x.Children)
+                .HasForeignKey(x => x.ParentBlockId);
 
             //Group Block
             modelBuilder.Entity<GroupBlockEntity>()
@@ -65,13 +71,13 @@ namespace Signals.App.Database
                 .ToTable($"{nameof(Blocks)}-Value");
 
             modelBuilder.Entity<ValueBlockEntity>()
-                .HasOne<IndicatorEntity>()
+                .HasOne(x => x.LeftIndicator)
                 .WithOne()
                 .HasForeignKey<ValueBlockEntity>(x => x.LeftIndicatorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ValueBlockEntity>()
-                .HasOne<IndicatorEntity>()
+                .HasOne(x => x.RightIndicator)
                 .WithOne()
                 .HasForeignKey<ValueBlockEntity>(x => x.RightIndicatorId)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -81,7 +87,7 @@ namespace Signals.App.Database
                 .ToTable($"{nameof(Blocks)}-Change");
 
             modelBuilder.Entity<ChangeBlockEntity>()
-                .HasOne<IndicatorEntity>()
+                .HasOne(x => x.Indicator)
                 .WithOne()
                 .HasForeignKey<ChangeBlockEntity>(x => x.IndicatorId)
                 .OnDelete(DeleteBehavior.NoAction);

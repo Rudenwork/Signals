@@ -17,5 +17,8 @@ namespace Signals.App.Database.Entities
         public string Schedule { get; set; }
 
         public bool IsDisabled { get; set; }
+
+        //EF Injected
+        public List<StageEntity> Stages { get; set; }
     }
 }

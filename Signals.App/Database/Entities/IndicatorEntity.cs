@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Signals.App.Database.Entities
 {
@@ -10,6 +12,7 @@ namespace Signals.App.Database.Entities
         [MinLength(1), MaxLength(100)]
         public int LoopbackPeriod { get; set; }
 
+        [Column(TypeName = "nvarchar(25)")]
         public Interval Interval { get; set; }
 
         public string Symbol { get; set; }

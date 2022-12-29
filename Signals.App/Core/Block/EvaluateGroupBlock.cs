@@ -31,7 +31,7 @@ namespace Signals.App.Core.Block
 
                 Logger.LogInformation($"Evaluating Group Block");
 
-                var isAnd = block.GroupType == GroupBlockEntity.GroupBlockType.And;
+                var isAnd = block.Type == GroupBlockType.And;
 
                 var children = SignalsContext.Blocks
                     .Where(x => x.ParentBlockId == block.Id)

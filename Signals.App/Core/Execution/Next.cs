@@ -48,6 +48,7 @@ namespace Signals.App.Core.Execution
 
                 object message = stage switch
                 {
+                    ///TODO: Provide specific stage entity instead of stage id
                     WaitingStageEntity => new ExecuteWaiting.Message { ExecutionId = execution.Id, StageId = stage.Id },
                     ConditionStageEntity => new ExecuteCondition.Message { ExecutionId = execution.Id, StageId = stage.Id },
                     NotificationStageEntity => new ExecuteNotification.Message { ExecutionId = execution.Id, StageId = stage.Id },
