@@ -30,14 +30,15 @@ namespace Signals.App.Controllers
         {
             var query = SignalsContext.Channels.AsQueryable();
 
-            if (filter.Type is not null)
-            {
-                var channelType = filter.Type.Adapt<ChannelEntity.ChannelType>();
-                query = query.Where(x => x.Type == channelType);
-            }
+            //if (filter.Type is not null)
+            //{
+            //    ///TODO: Fix channel type filter
+            //    var channelType = filter.Type.Adapt<ChannelEntity.ChannelType>();
+            //    query = query.Where(x => x.Type == channelType);
+            //}
 
-            if (filter.Destination is not null)
-                query = query.Where(x => x.Destination.Contains(filter.Destination));
+            //if (filter.Destination is not null)
+            //    query = query.Where(x => x.Destination.Contains(filter.Destination));
 
             if (filter.Description is not null)
                 query = query.Where(x => x.Description.Contains(filter.Description));

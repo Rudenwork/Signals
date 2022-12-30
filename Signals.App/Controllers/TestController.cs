@@ -9,6 +9,7 @@ using Signals.App.Core.Test;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Blocks;
+using Signals.App.Database.Entities.Channels;
 using Signals.App.Database.Entities.Indicators;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
@@ -80,6 +81,16 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Seed()
         {
+            var channel = new EmailChannelEntity
+            {
+                UserId = User.GetId(),
+                Address = "rudenwork@gmail.com",
+                Code = "123456",
+                IsVerified = true
+            };
+
+            SignalsContext.Channels.Add(channel);
+
             var signal = new SignalEntity
             {
                 UserId = User.GetId(),
@@ -94,7 +105,7 @@ namespace Signals.App.Controllers
                         RetryDelay = TimeSpan.FromSeconds(3),
                         Block = new GroupBlockEntity
                         {
-                            Type = GroupBlockType.And,
+                            Type = GroupBlockType.Or,
                             Children = new List<BlockEntity>
                             {
                                 new ValueBlockEntity
@@ -108,7 +119,7 @@ namespace Signals.App.Controllers
                                     },
                                     RightIndicator = new ConstantIndicatorEntity
                                     {
-                                        Value = 1200
+                                        Value = 1000
                                     }
                                 },
                                 new GroupBlockEntity
@@ -138,6 +149,12 @@ namespace Signals.App.Controllers
                     {
                         Name = "Waiting Stage",
                         Period = TimeSpan.FromSeconds(5)
+                    },
+                    new NotificationStageEntity
+                    {
+                        Name = "Notification Stage",
+                        ChannelId = channel.Id,
+                        Message = "Test Message"
                     }
                 }
             };

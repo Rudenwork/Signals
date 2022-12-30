@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Blocks;
+using Signals.App.Database.Entities.Channels;
 using Signals.App.Database.Entities.Indicators;
 using Signals.App.Database.Entities.Stages;
 
@@ -25,6 +26,14 @@ namespace Signals.App.Database
                 .HasOne<UserEntity>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
+
+            //Email Channel
+            modelBuilder.Entity<EmailChannelEntity>()
+                .ToTable($"{nameof(Channels)}-Email");
+
+            //Telegram Channel
+            modelBuilder.Entity<TelegramChannelEntity>()
+                .ToTable($"{nameof(Channels)}-Telegram");
 
             //Signal
             modelBuilder.Entity<SignalEntity>()
