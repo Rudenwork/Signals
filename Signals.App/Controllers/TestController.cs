@@ -80,7 +80,7 @@ namespace Signals.App.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Seed()
         {
-            var channel = new EmailChannelEntity
+            var emailChannel = new EmailChannelEntity
             {
                 UserId = User.GetId(),
                 Address = "rudenwork@gmail.com",
@@ -88,7 +88,16 @@ namespace Signals.App.Controllers
                 IsVerified = true
             };
 
-            SignalsContext.Channels.Add(channel);
+            var telegramChannel = new TelegramChannelEntity
+            {
+                UserId = User.GetId(),
+                Username = "rudenvad",
+                Code = "123456",
+                IsVerified = true
+            };
+
+            SignalsContext.Channels.Add(emailChannel);
+            SignalsContext.Channels.Add(telegramChannel);
 
             var signal = new SignalEntity
             {
@@ -152,8 +161,9 @@ namespace Signals.App.Controllers
                     new NotificationStageEntity
                     {
                         Name = "Notification Stage",
-                        ChannelId = channel.Id,
-                        Message = "Test Message"
+                        //ChannelId = emailChannel.Id,
+                        ChannelId = telegramChannel.Id,
+                        Text = "Test Message"
                     }
                 }
             };

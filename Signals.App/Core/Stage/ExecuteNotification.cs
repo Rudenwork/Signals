@@ -42,7 +42,7 @@ namespace Signals.App.Core.Stage
                 var channel = SignalsContext.Channels.Find(stage.ChannelId);
 
                 var topic = $"{signal.Name} - {stage.Name}";
-                var message = stage.Message;
+                var text = stage.Text;
 
                 object request = channel switch
                 {
@@ -50,13 +50,13 @@ namespace Signals.App.Core.Stage
                     { 
                         Channel = emailChannel,
                         Topic = topic,
-                        Message = message
+                        Text = text
                     },
                     TelegramChannelEntity telegramChannel => new SendTelegramNotification.Request
                     { 
                         Channel = telegramChannel,
                         Topic = topic,
-                        Message = message 
+                        Text = text 
                     }
                 };
 

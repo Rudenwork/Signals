@@ -149,6 +149,8 @@ builder.Services.AddQuartzServer();
 
 builder.Services.AddBinance();
 
+builder.Services.AddTelegramBot();
+
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<Scheduler>();
 

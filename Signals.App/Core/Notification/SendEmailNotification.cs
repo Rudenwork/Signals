@@ -13,7 +13,7 @@ namespace Signals.App.Core.Notification
         {
             public EmailChannelEntity Channel { get; set; }
             public string Topic { get; set; }
-            public string Message { get; set; }
+            public string Text { get; set; }
         }
 
         public class Consumer : IConsumer<Request>
@@ -32,7 +32,7 @@ namespace Signals.App.Core.Notification
                     From = { new MailboxAddress("Signals", Settings.Username) },
                     To = { new MailboxAddress("User", context.Message.Channel.Address) },
                     Subject = context.Message.Topic,
-                    Body = new TextPart("plain") { Text = context.Message.Message }
+                    Body = new TextPart("plain") { Text = context.Message.Text }
                 };
 
                 using var client = new SmtpClient();

@@ -7,6 +7,6 @@ namespace Signals.App.Database.Entities.Stages
         public Guid ChannelId { get; set; }
 
         [MaxLength(100)]
-        public string Message { get; set; }
+        public string Text { get; set; }
     }
 }

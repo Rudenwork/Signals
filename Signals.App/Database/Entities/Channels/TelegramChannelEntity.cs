@@ -3,6 +3,6 @@
     public class TelegramChannelEntity : ChannelEntity
     {
         public string Username { get; set; }
-        public int? ChatId { get; set; }
+        public long? ChatId { get; set; }
     }
 }

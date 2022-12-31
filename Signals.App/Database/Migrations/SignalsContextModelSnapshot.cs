@@ -283,8 +283,8 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.ChannelEntity");
 
-                    b.Property<int?>("ChatId")
-                        .HasColumnType("int");
+                    b.Property<long?>("ChatId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -373,7 +373,7 @@ namespace Signals.App.Database.Migrations
                     b.Property<Guid>("ChannelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Message")
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
