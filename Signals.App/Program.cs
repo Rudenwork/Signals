@@ -22,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var settings = builder.Configuration.Get<Settings>();
 
+builder.Services.Configure<Settings>(builder.Configuration);
+
 builder.Services.AddDbContext<SignalsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
 

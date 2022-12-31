@@ -1,6 +1,9 @@
 ﻿using MassTransit;
+using MassTransit.Mediator;
 using Signals.App.Core.Execution;
+using Signals.App.Core.Notification;
 using Signals.App.Database;
+using Signals.App.Database.Entities.Channels;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 
@@ -18,20 +21,48 @@ namespace Signals.App.Core.Stage
         {
             private ILogger<Consumer> Logger { get; }
             private SignalsContext SignalsContext { get; }
+            private IMediator Mediator { get; }
 
-            public Consumer(ILogger<Consumer> logger, SignalsContext signalsContext)
+            public Consumer(ILogger<Consumer> logger, SignalsContext signalsContext, IMediator mediator)
             {
                 Logger = logger;
                 SignalsContext = signalsContext;
+                Mediator = mediator;
             }
 
             public async Task Consume(ConsumeContext<Message> context)
             {
                 context.EnsureFresh();
 
-                var executionId = context.Message.ExecutionId;
+                Logger.LogInformation($"[{context.Message.ExecutionId}] Notification Stage {context.Message.Stage.Id}");
 
-                Logger.LogInformation($"[{executionId}] Notification Stage {context.Message.Stage.Id}");
+                var stage = context.Message.Stage;
+
+                var signal = SignalsContext.Signals.Find(stage.SignalId);
+                var channel = SignalsContext.Channels.Find(stage.ChannelId);
+
+                var topic = $"{signal.Name} - {stage.Name}";
+                var message = stage.Message;
+
+                object request = channel switch
+                {
+                    EmailChannelEntity emailChannel => new SendEmailNotification.Request
+                    { 
+                        Channel = emailChannel,
+                        Topic = topic,
+                        Message = message
+                    },
+                    TelegramChannelEntity telegramChannel => new SendTelegramNotification.Request
+                    { 
+                        Channel = telegramChannel,
+                        Topic = topic,
+                        Message = message 
+                    }
+                };
+
+                await Mediator.Send(request);
+
+                await context.Publish(new Next.Message { ExecutionId = context.Message.ExecutionId });
             }
         }
 

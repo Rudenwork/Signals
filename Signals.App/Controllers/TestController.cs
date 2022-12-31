@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Signals.App.Core.Execution;
