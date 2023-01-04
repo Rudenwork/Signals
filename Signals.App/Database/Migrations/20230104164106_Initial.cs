@@ -16,8 +16,8 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoopbackPeriod = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    Interval = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Interval = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LoopbackPeriod = table.Column<int>(type: "int", nullable: false),
                     Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -30,7 +30,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsDisabled = table.Column<bool>(type: "bit", nullable: false)
@@ -45,7 +45,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BandType = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                    BandType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +63,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParameterType = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                    ParameterType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,7 +151,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -172,8 +172,8 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Schedule = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Schedule = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDisabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -230,7 +230,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PreviousStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -275,7 +275,7 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -324,8 +324,8 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
-                    Operator = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Operator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Target = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsPercentage = table.Column<bool>(type: "bit", nullable: false),
                     Period = table.Column<TimeSpan>(type: "time", nullable: false)
@@ -351,7 +351,7 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -371,7 +371,7 @@ namespace Signals.App.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LeftIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RightIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Operator = table.Column<string>(type: "nvarchar(25)", nullable: false)
+                    Operator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -5,7 +5,7 @@ namespace Signals.App.Database.Entities.Indicators
 {
     public class CandleIndicatorEntity : IndicatorEntity
     {
-        [Column(TypeName = "nvarchar(25)")]
+        [Column(TypeName = "nvarchar(max)")]
         public CandleParameter ParameterType { get; set; }
     }
 

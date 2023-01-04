@@ -9,12 +9,10 @@ namespace Signals.App.Database.Entities
         [Key]
         public Guid Id { get; set; }
 
-        [MinLength(1), MaxLength(100)]
-        public int LoopbackPeriod { get; set; }
-
-        [Column(TypeName = "nvarchar(25)")]
+        [Column(TypeName = "nvarchar(max)")]
         public Interval Interval { get; set; }
 
+        public int LoopbackPeriod { get; set; }
         public string? Symbol { get; set; }
     }
 

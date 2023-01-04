@@ -51,8 +51,7 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
@@ -101,10 +100,9 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Interval")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LoopbackPeriod")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<string>("Symbol")
@@ -128,13 +126,11 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Schedule")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -154,8 +150,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("NextStageId")
                         .HasColumnType("uniqueidentifier");
@@ -193,8 +188,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -213,7 +207,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Operator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan>("Period")
                         .HasColumnType("time");
@@ -223,7 +217,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("IndicatorId")
                         .IsUnique()
@@ -238,7 +232,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Blocks-Group", (string)null);
                 });
@@ -252,7 +246,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Operator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RightIndicatorId")
                         .HasColumnType("uniqueidentifier");
@@ -299,7 +293,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("BandType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Indicators-BollingerBands", (string)null);
                 });
@@ -310,7 +304,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("ParameterType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Indicators-Candle", (string)null);
                 });
@@ -375,8 +369,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Stages-Notification", (string)null);
                 });

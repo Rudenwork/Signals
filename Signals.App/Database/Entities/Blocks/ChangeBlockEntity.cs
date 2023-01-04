@@ -7,11 +7,12 @@ namespace Signals.App.Database.Entities.Blocks
     {
         public Guid IndicatorId { get; set; }
 
-        [Column(TypeName = "nvarchar(25)")]
+        [Column(TypeName = "nvarchar(max)")]
         public ChangeBlockType Type { get; set; }
 
-        [Column(TypeName = "nvarchar(25)")]
+        [Column(TypeName = "nvarchar(max)")]
         public ChangeBlockOperator Operator { get; set; }
+
         public decimal Target { get; set; }
         public bool IsPercentage { get; set; }
         public TimeSpan Period { get; set; }

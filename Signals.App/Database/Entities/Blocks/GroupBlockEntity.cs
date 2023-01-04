@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Signals.App.Database.Entities.Blocks
 {
     public class GroupBlockEntity : BlockEntity
     {
-        [Column(TypeName = "nvarchar(25)")]
+        [Column(TypeName = "nvarchar(max)")]
         public GroupBlockType Type { get; set; }
 
         //EF Injected
