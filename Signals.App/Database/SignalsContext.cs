@@ -51,12 +51,6 @@ namespace Signals.App.Database
             modelBuilder.Entity<ConditionStageEntity>()
                 .ToTable($"{nameof(Stages)}-Condition");
 
-            modelBuilder.Entity<ConditionStageEntity>()
-                .HasOne(x => x.Block)
-                .WithOne()
-                .HasForeignKey<ConditionStageEntity>(x => x.BlockId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             //Waiting Stage
             modelBuilder.Entity<WaitingStageEntity>()
                 .ToTable($"{nameof(Stages)}-Waiting");
@@ -65,7 +59,18 @@ namespace Signals.App.Database
             modelBuilder.Entity<NotificationStageEntity>()
                 .ToTable($"{nameof(Stages)}-Notification");
 
+            modelBuilder.Entity<NotificationStageEntity>()
+                .HasOne<ChannelEntity>()
+                .WithMany()
+                .HasForeignKey(x => x.ChannelId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //Block
+            modelBuilder.Entity<BlockEntity>()
+                .HasOne<ConditionStageEntity>()
+                .WithOne(x => x.Block)
+                .HasForeignKey<BlockEntity>(x => x.ParentStageId);
+
             modelBuilder.Entity<BlockEntity>()
                 .HasOne<GroupBlockEntity>()
                 .WithMany(x => x.Children)
@@ -79,27 +84,15 @@ namespace Signals.App.Database
             modelBuilder.Entity<ValueBlockEntity>()
                 .ToTable($"{nameof(Blocks)}-Value");
 
-            modelBuilder.Entity<ValueBlockEntity>()
-                .HasOne(x => x.LeftIndicator)
-                .WithOne()
-                .HasForeignKey<ValueBlockEntity>(x => x.LeftIndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<ValueBlockEntity>()
-                .HasOne(x => x.RightIndicator)
-                .WithOne()
-                .HasForeignKey<ValueBlockEntity>(x => x.RightIndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             //Change Block
             modelBuilder.Entity<ChangeBlockEntity>()
                 .ToTable($"{nameof(Blocks)}-Change");
 
-            modelBuilder.Entity<ChangeBlockEntity>()
-                .HasOne(x => x.Indicator)
-                .WithOne()
-                .HasForeignKey<ChangeBlockEntity>(x => x.IndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //Indicator
+            modelBuilder.Entity<IndicatorEntity>()
+                .HasOne<BlockEntity>()
+                .WithMany(x => x.Indicators)
+                .HasForeignKey(x => x.BlockId);
 
             //Bollinger Bands Indicator
             modelBuilder.Entity<BollingerBandsIndicatorEntity>()

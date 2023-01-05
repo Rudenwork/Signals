@@ -2,6 +2,7 @@
 using MassTransit.Mediator;
 using Signals.App.Core.Indicators;
 using Signals.App.Database;
+using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Blocks;
 
 namespace Signals.App.Core.Block
@@ -30,8 +31,10 @@ namespace Signals.App.Core.Block
             {
                 Logger.LogInformation($"Evaluating Value Block");
 
-                var leftIndicator = SignalsContext.Indicators.Find(context.Message.Block.LeftIndicatorId);
-                var rightIndicator = SignalsContext.Indicators.Find(context.Message.Block.RightIndicatorId);
+                var block = context.Message.Block;
+
+                var leftIndicator = SignalsContext.Indicators.FirstOrDefault(x => x.BlockId == block.Id && x.Type == IndicatorType.Left);
+                var rightIndicator = SignalsContext.Indicators.FirstOrDefault(x => x.BlockId == block.Id && x.Type == IndicatorType.Right);
 
                 var leftResponse = await Mediator.SendRequest(new CalculateIndicator.Request { Indicator = leftIndicator });
                 var rightResponse = await Mediator.SendRequest(new CalculateIndicator.Request { Indicator = rightIndicator });
@@ -39,7 +42,7 @@ namespace Signals.App.Core.Block
                 var leftResult = leftResponse.Result;
                 var rightResult = rightResponse.Result;
 
-                var result = context.Message.Block.Operator switch
+                var result = block.Operator switch
                 {
                     ValueBlockOperator.LessOrEqual => leftResult <= rightResult,
                     ValueBlockOperator.GreaterOrEqual => leftResult >= rightResult

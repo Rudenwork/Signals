@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Signals.App.Database.Entities
 {
@@ -10,5 +9,9 @@ namespace Signals.App.Database.Entities
         public Guid Id { get; set; }
 
         public Guid? ParentBlockId { get; set; }
+        public Guid? ParentStageId { get; set; }
+
+        //EF Injected
+        public List<IndicatorEntity> Indicators { get; set; }
     }
 }

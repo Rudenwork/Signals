@@ -2,6 +2,7 @@
 using MassTransit.Mediator;
 using Signals.App.Core.Indicators;
 using Signals.App.Database;
+using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Blocks;
 
 namespace Signals.App.Core.Block
@@ -32,7 +33,7 @@ namespace Signals.App.Core.Block
 
                 var block = context.Message.Block;
 
-                var indicator = SignalsContext.Indicators.Find(block.IndicatorId);
+                var indicator = SignalsContext.Indicators.FirstOrDefault(x => x.BlockId == block.Id && x.Type == IndicatorType.Change);
 
                 var oldResponse = await Mediator.SendRequest(new CalculateIndicator.Request 
                 { 
