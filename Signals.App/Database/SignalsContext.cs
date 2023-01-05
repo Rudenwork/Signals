@@ -25,7 +25,8 @@ namespace Signals.App.Database
             modelBuilder.Entity<ChannelEntity>()
                 .HasOne<UserEntity>()
                 .WithMany()
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Email Channel
             modelBuilder.Entity<EmailChannelEntity>()
@@ -39,13 +40,15 @@ namespace Signals.App.Database
             modelBuilder.Entity<SignalEntity>()
                 .HasOne<UserEntity>()
                 .WithMany()
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Stage
             modelBuilder.Entity<StageEntity>()
                 .HasOne<SignalEntity>()
                 .WithMany(x => x.Stages)
-                .HasForeignKey(x => x.SignalId);
+                .HasForeignKey(x => x.SignalId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Condition Stage
             modelBuilder.Entity<ConditionStageEntity>()
@@ -55,7 +58,7 @@ namespace Signals.App.Database
                 .HasOne(x => x.Block)
                 .WithOne()
                 .HasForeignKey<ConditionStageEntity>(x => x.BlockId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Waiting Stage
             modelBuilder.Entity<WaitingStageEntity>()
@@ -65,11 +68,18 @@ namespace Signals.App.Database
             modelBuilder.Entity<NotificationStageEntity>()
                 .ToTable($"{nameof(Stages)}-Notification");
 
+            modelBuilder.Entity<NotificationStageEntity>()
+                .HasOne<ChannelEntity>()
+                .WithMany()
+                .HasForeignKey(x => x.ChannelId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //Block
             modelBuilder.Entity<BlockEntity>()
                 .HasOne<GroupBlockEntity>()
                 .WithMany(x => x.Children)
-                .HasForeignKey(x => x.ParentBlockId);
+                .HasForeignKey(x => x.ParentBlockId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Group Block
             modelBuilder.Entity<GroupBlockEntity>()
@@ -83,13 +93,13 @@ namespace Signals.App.Database
                 .HasOne(x => x.LeftIndicator)
                 .WithOne()
                 .HasForeignKey<ValueBlockEntity>(x => x.LeftIndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ValueBlockEntity>()
                 .HasOne(x => x.RightIndicator)
                 .WithOne()
                 .HasForeignKey<ValueBlockEntity>(x => x.RightIndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Change Block
             modelBuilder.Entity<ChangeBlockEntity>()
@@ -99,7 +109,7 @@ namespace Signals.App.Database
                 .HasOne(x => x.Indicator)
                 .WithOne()
                 .HasForeignKey<ChangeBlockEntity>(x => x.IndicatorId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Bollinger Bands Indicator
             modelBuilder.Entity<BollingerBandsIndicatorEntity>()
@@ -129,7 +139,8 @@ namespace Signals.App.Database
             modelBuilder.Entity<ExecutionEntity>()
                 .HasOne<SignalEntity>()
                 .WithOne()
-                .HasForeignKey<ExecutionEntity>(x => x.SignalId);
+                .HasForeignKey<ExecutionEntity>(x => x.SignalId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ExecutionEntity>()
                 .HasOne<StageEntity>()

@@ -281,6 +281,12 @@ namespace Signals.App.Database.Migrations
                 {
                     table.PrimaryKey("PK_Stages-Notification", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Stages-Notification_Channels_ChannelId",
+                        column: x => x.ChannelId,
+                        principalTable: "Channels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Stages-Notification_Stages_Id",
                         column: x => x.Id,
                         principalTable: "Stages",
@@ -343,7 +349,8 @@ namespace Signals.App.Database.Migrations
                         name: "FK_Blocks-Change_Indicators_IndicatorId",
                         column: x => x.IndicatorId,
                         principalTable: "Indicators",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -386,12 +393,14 @@ namespace Signals.App.Database.Migrations
                         name: "FK_Blocks-Value_Indicators_LeftIndicatorId",
                         column: x => x.LeftIndicatorId,
                         principalTable: "Indicators",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Blocks-Value_Indicators_RightIndicatorId",
                         column: x => x.RightIndicatorId,
                         principalTable: "Indicators",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -410,7 +419,8 @@ namespace Signals.App.Database.Migrations
                         name: "FK_Stages-Condition_Blocks_BlockId",
                         column: x => x.BlockId,
                         principalTable: "Blocks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Stages-Condition_Stages_Id",
                         column: x => x.Id,
@@ -480,12 +490,18 @@ namespace Signals.App.Database.Migrations
                 unique: true,
                 filter: "[BlockId] IS NOT NULL");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Stages-Notification_ChannelId",
+                table: "Stages-Notification",
+                column: "ChannelId");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Blocks_Blocks-Group_ParentBlockId",
                 table: "Blocks",
                 column: "ParentBlockId",
                 principalTable: "Blocks-Group",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -538,10 +554,10 @@ namespace Signals.App.Database.Migrations
                 name: "Stages-Waiting");
 
             migrationBuilder.DropTable(
-                name: "Channels");
+                name: "Indicators");
 
             migrationBuilder.DropTable(
-                name: "Indicators");
+                name: "Channels");
 
             migrationBuilder.DropTable(
                 name: "Stages");
