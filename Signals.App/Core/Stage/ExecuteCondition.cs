@@ -44,7 +44,7 @@ namespace Signals.App.Core.Stage
                 if (SignalsContext.Executions.Find(message.ExecutionId) is null)
                     return;
 
-                var block = SignalsContext.Blocks.FirstOrDefault(x => x.ParentStageId == message.Stage.Id);
+                var block = SignalsContext.Blocks.Find(message.Stage.BlockId);
 
                 var response = await Mediator.SendRequest(new EvaluateBlock.Request { Block = block });
 

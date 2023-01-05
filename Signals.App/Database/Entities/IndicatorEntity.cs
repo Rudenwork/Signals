@@ -10,21 +10,10 @@ namespace Signals.App.Database.Entities
         public Guid Id { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
-        public IndicatorType Type { get; set; }
-
-        [Column(TypeName = "nvarchar(max)")]
         public Interval Interval { get; set; }
 
-        public Guid BlockId { get; set; }
         public int LoopbackPeriod { get; set; }
         public string? Symbol { get; set; }
-    }
-
-    public enum IndicatorType
-    {
-        Left,
-        Right,
-        Change
     }
 
     public enum Interval

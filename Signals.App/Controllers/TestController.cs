@@ -119,20 +119,15 @@ namespace Signals.App.Controllers
                                 new ValueBlockEntity
                                 {
                                     Operator = ValueBlockOperator.GreaterOrEqual,
-                                    Indicators = new List<IndicatorEntity>
+                                    LeftIndicator = new CandleIndicatorEntity
                                     {
-                                        new CandleIndicatorEntity
-                                        {
-                                            Type = IndicatorType.Left,
-                                            Symbol = "ETHBUSD",
-                                            Interval = Interval.OneHour,
-                                            ParameterType = CandleParameter.Close
-                                        },
-                                        new ConstantIndicatorEntity
-                                        {
-                                            Type = IndicatorType.Right,
-                                            Value = 1000
-                                        }
+                                        Symbol = "ETHBUSD",
+                                        Interval = Interval.OneHour,
+                                        ParameterType = CandleParameter.Close
+                                    },
+                                    RightIndicator = new ConstantIndicatorEntity
+                                    {
+                                        Value = 1000
                                     }
                                 },
                                 new GroupBlockEntity
@@ -146,15 +141,11 @@ namespace Signals.App.Controllers
                                             Type = ChangeBlockType.Decrease,
                                             Operator = ChangeBlockOperator.GreaterOrEqual,
                                             Target = 1,
-                                            Indicators = new List<IndicatorEntity>
+                                            Indicator = new RelativeStrengthIndexIndicatorEntity
                                             {
-                                                new RelativeStrengthIndexIndicatorEntity
-                                                {
-                                                    Type = IndicatorType.Change,
-                                                    Symbol = "ETHBUSD",
-                                                    Interval = Interval.OneHour,
-                                                    LoopbackPeriod = 14
-                                                }
+                                                Symbol = "ETHBUSD",
+                                                Interval = Interval.OneHour,
+                                                LoopbackPeriod = 14
                                             }
                                         }
                                     }
