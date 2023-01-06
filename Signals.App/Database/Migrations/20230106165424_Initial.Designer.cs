@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20230105160436_Initial")]
+    [Migration("20230106165424_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -394,7 +394,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.Blocks.GroupBlockEntity", null)
                         .WithMany("Children")
                         .HasForeignKey("ParentBlockId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ChannelEntity", b =>
@@ -402,7 +402,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -411,7 +411,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.ExecutionEntity", "SignalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
@@ -425,7 +425,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -434,7 +434,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
                         .WithMany("Stages")
                         .HasForeignKey("SignalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -449,7 +449,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "Indicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ChangeBlockEntity", "IndicatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Indicator");
@@ -475,13 +475,13 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "LeftIndicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "LeftIndicatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Signals.App.Database.Entities.IndicatorEntity", "RightIndicator")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Blocks.ValueBlockEntity", "RightIndicatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("LeftIndicator");
@@ -566,7 +566,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.BlockEntity", "Block")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.Stages.ConditionStageEntity", "BlockId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
@@ -583,7 +583,7 @@ namespace Signals.App.Database.Migrations
                     b.HasOne("Signals.App.Database.Entities.ChannelEntity", null)
                         .WithMany()
                         .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Signals.App.Database.Entities.StageEntity", null)
