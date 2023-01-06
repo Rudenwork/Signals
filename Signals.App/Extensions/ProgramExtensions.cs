@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
@@ -11,7 +12,21 @@ namespace Signals.App.Extensions
         public static void PrepareDatabase(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
+
             var signalsContext = scope.ServiceProvider.GetService<SignalsContext>();
+            var quartzContext = scope.ServiceProvider.GetService<QuartzContext>();
+
+            if (!quartzContext.Database.CanConnect())
+            {
+                quartzContext.Database.EnsureCreated();
+
+                var sql = File.ReadAllText("Database/Scripts/Signals.Quartz-Init.sql");
+
+                foreach (var batch in sql.Split("GO", StringSplitOptions.RemoveEmptyEntries))
+                {
+                    quartzContext.Database.ExecuteSqlRaw(batch);
+                }
+            }
 
             signalsContext.Database.MigrateAsync().Wait();
 

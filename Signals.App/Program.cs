@@ -27,6 +27,9 @@ builder.Services.Configure<Settings>(builder.Configuration);
 builder.Services.AddDbContext<SignalsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
 
+builder.Services.AddDbContext<QuartzContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}")));
+
 builder.Services.AddIdentityServer(options => options.KeyManagement.KeyPath = $"{AppContext.BaseDirectory}/keys")
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
