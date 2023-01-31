@@ -13,10 +13,10 @@ namespace Signals.App.Database
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ChannelEntity> Channels { get; set; }
         public DbSet<SignalEntity> Signals { get; set; }
+        public DbSet<ExecutionEntity> Executions { get; set; }
         public DbSet<StageEntity> Stages { get; set; }
         public DbSet<BlockEntity> Blocks { get; set; }
         public DbSet<IndicatorEntity> Indicators { get; set; }
-        public DbSet<ExecutionEntity> Executions { get; set; }
 
         static SignalsContext()
         {

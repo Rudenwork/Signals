@@ -1,9 +1,12 @@
 ﻿using Mapster;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Signals.App.Controllers.Models;
+using Signals.App.Core.Notification;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
+using Signals.App.Database.Entities.Channels;
 using Signals.App.Extensions;
 using System.Data;
 
@@ -12,33 +15,30 @@ namespace Signals.App.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ChannelsController : ControllerBase
     {
         private SignalsContext SignalsContext { get; }
+        private IMediator Mediator { get; }
 
-        public ChannelsController(SignalsContext signalsContext)
+        public ChannelsController(SignalsContext signalsContext, IMediator mediator)
         {
             SignalsContext = signalsContext;
+            Mediator = mediator;
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<ChannelModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Filter filter)
+        public ActionResult<List<ChannelModel>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Filter filter)
         {
             var query = SignalsContext.Channels.AsQueryable();
 
-            //if (filter.Type is not null)
-            //{
-            //    ///TODO: Fix channel type filter
-            //    var channelType = filter.Type.Adapt<ChannelEntity.ChannelType>();
-            //    query = query.Where(x => x.Type == channelType);
-            //}
-
-            //if (filter.Destination is not null)
-            //    query = query.Where(x => x.Destination.Contains(filter.Destination));
+            if (filter.Type is not null)
+            {
+                query = filter.Type switch
+                {
+                    ChannelModel.Filter.TypeEnum.Email => query.Where(x => x is EmailChannelEntity),
+                    ChannelModel.Filter.TypeEnum.Telegram => query.Where(x => x is TelegramChannelEntity)
+                };
+            }
 
             if (filter.Description is not null)
                 query = query.Where(x => x.Description.Contains(filter.Description));
@@ -46,85 +46,119 @@ namespace Signals.App.Controllers
             if (filter.IsVerified is not null)
                 query = query.Where(x => x.IsVerified == filter.IsVerified.Value);
 
+            if (filter.Address is not null)
+                query = query.Where(x => (x as EmailChannelEntity).Address.Contains(filter.Address));
+
+            if (filter.Username is not null)
+                query = query.Where(x => (x as TelegramChannelEntity).Username.Contains(filter.Username));
+
             var result = query
                 .Where(x => x.UserId == User.GetId())
                 .Subset(subset.Offset, subset.Limit)
-                .Adapt<List<ChannelModel.Read>>();
+                .Select(x => AdaptToModel(x))
+                .ToList();
 
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ChannelModel.Read> Get(Guid id)
+        public ActionResult<ChannelModel> Get(Guid id)
         {
-            var entity = SignalsContext.Channels
-                .FirstOrDefault(x => x.Id == id);
+            var entity = SignalsContext.Channels.Find(id);
 
             if (entity == null)
-                return NotFound();
+                return NoContent();
 
             if (entity.UserId != User.GetId())
                 return Forbid();
 
-            var result = entity.Adapt<ChannelModel.Read>();
+            var result = AdaptToModel(entity);
 
             return Ok(result);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<ChannelModel.Read> Post(ChannelModel.Create model)
+        public ActionResult<ChannelModel> Post(ChannelModel model)
         {
-            var entity = model.Adapt<ChannelEntity>();
+            ChannelEntity entity = model switch
+            {
+                ChannelModel.Email => model.Adapt<EmailChannelEntity>(),
+                ChannelModel.Telegram => model.Adapt<TelegramChannelEntity>()
+            };
+
             entity.UserId = User.GetId();
+            entity.Code = GenerateCode();
 
             SignalsContext.Channels.Add(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<ChannelModel.Read>();
+            var result = AdaptToModel(entity);
 
-            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{result.Id}", result);
+            return Ok(result);
         }
 
         [HttpPatch("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ChannelModel.Read> Patch(Guid id, ChannelModel.Update model)
+        public async Task<ActionResult<ChannelModel>> Patch(Guid id, ChannelModel model)
         {
-            var entity = SignalsContext.Channels
-                .FirstOrDefault(x => x.Id == id);
+            var entity = SignalsContext.Channels.Find(id);
 
             if (entity is null)
-                return NotFound();
+                return NoContent();
 
             if (entity.UserId != User.GetId())
                 return Forbid();
 
-            model.Adapt(entity);
+            var patchEntityType = model switch
+            {
+                ChannelModel.Email => typeof(EmailChannelEntity),
+                ChannelModel.Telegram => typeof(TelegramChannelEntity)
+            };
+
+            if (entity.GetType() != patchEntityType)
+            {
+                ModelState.AddModelError(nameof(model), "Type is not correct");
+                return ValidationProblem();
+            }
+
+            var shouldReset = model switch
+            {
+                ChannelModel.Email emailModel => emailModel.Address is not null,
+                ChannelModel.Telegram telegramModel => telegramModel.Username is not null
+            };
+
+            if ((model as ChannelModel.Email)?.Address is not null || (model as ChannelModel.Telegram)?.Username is not null)
+            {
+                entity.IsVerified = false;
+                entity.Code = GenerateCode();
+            }
+
+            if (shouldReset && model is ChannelModel.Email)
+            {
+                await Mediator.Send(new SendEmailNotification.Request
+                {
+                    Channel = entity as EmailChannelEntity,
+                    Topic = "Signals Verification Code",
+                    Text = $"Verification Code: {entity.Code}"
+                });
+            }
+
+            model.Adapt(entity, model.GetType(), entity.GetType());
 
             SignalsContext.Channels.Update(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<ChannelModel.Read>();
+            var result = AdaptToModel(entity);
 
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(Guid id)
         {
-            var entity = SignalsContext.Channels
-                .FirstOrDefault(x => x.Id == id);
+            var entity = SignalsContext.Channels.Find(id);
 
             if (entity is null)
-                return NotFound();
+                return NoContent();
 
             if (entity.UserId != User.GetId())
                 return Forbid();
@@ -132,7 +166,15 @@ namespace Signals.App.Controllers
             SignalsContext.Channels.Remove(entity);
             SignalsContext.SaveChanges();
 
-            return NoContent();
+            return Ok();
         }
+
+        private static string GenerateCode() => Random.Shared.Next(1000, 10000).ToString();
+
+        private static ChannelModel AdaptToModel(ChannelEntity entity) => entity switch
+        {
+            EmailChannelEntity => entity.Adapt<ChannelModel.Email>(),
+            TelegramChannelEntity => entity.Adapt<ChannelModel.Telegram>()
+        };
     }
 }
