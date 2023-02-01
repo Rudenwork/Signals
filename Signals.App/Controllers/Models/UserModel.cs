@@ -2,59 +2,25 @@
 
 namespace Signals.App.Controllers.Models
 {
-    public class UserModel
+    public class UserModel 
     {
-        public class Create
-        {
-            public string Username { get; set; }
-            public string Password { get; set; }
-            public bool? IsAdmin { get; set; }
-            public bool? IsDisabled { get; set; }
+        public Guid? Id { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public bool? IsAdmin { get; set; }
+        public bool? IsDisabled { get; set; }
 
-            public class Validator : AbstractValidator<Create>
+        public class Validator : AbstractValidator<UserModel>
+        {
+            public Validator()
             {
-                public Validator()
-                {
-                    RuleFor(x => x.Username)
-                        .NotNull()
-                        .Matches(Constants.Username.Regex)
-                        .WithMessage(Constants.Username.ErrorMessage);
+                RuleFor(x => x.Username)
+                    .Matches(Constants.Username.Regex)
+                    .WithMessage(Constants.Username.ErrorMessage);
 
-                    RuleFor(x => x.Password)
-                        .NotNull()
-                        .Matches(Constants.Password.Regex)
-                        .WithMessage(Constants.Password.ErrorMessage);
-                }
-            }
-        }
-
-        public class Read
-        {
-            public Guid Id { get; set; }
-            public string Username { get; set; }
-            public bool IsAdmin { get; set; }
-            public bool IsDisabled { get; set; }
-        }
-
-        public class Update
-        {
-            public string? Username { get; set; }
-            public string? Password { get; set; }
-            public bool? IsAdmin { get; set; }
-            public bool? IsDisabled { get; set; }
-
-            public class Validator : AbstractValidator<Update>
-            {
-                public Validator()
-                {
-                    RuleFor(x => x.Username)
-                        .Matches(Constants.Username.Regex)
-                        .WithMessage(Constants.Username.ErrorMessage);
-
-                    RuleFor(x => x.Password)
-                        .Matches(Constants.Password.Regex)
-                        .WithMessage(Constants.Password.ErrorMessage);
-                }
+                RuleFor(x => x.Password)
+                    .Matches(Constants.Password.Regex)
+                    .WithMessage(Constants.Password.ErrorMessage);
             }
         }
 

@@ -13,9 +13,6 @@ namespace Signals.App.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = IdentityRoles.Admin)]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class UsersController : ControllerBase
     {
         private SignalsContext SignalsContext { get; }
@@ -28,8 +25,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<UserModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Filter filter)
+        public ActionResult<List<UserModel>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Filter filter)
         {
             var query = SignalsContext.Users.AsQueryable();
 
@@ -44,31 +40,40 @@ namespace Signals.App.Controllers
 
             var result = query
                 .Subset(subset.Offset, subset.Limit)
-                .Adapt<List<UserModel.Read>>();
+                .Adapt<List<UserModel>>();
 
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserModel.Read> Get(Guid id)
+        public ActionResult<UserModel> Get(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
 
             if (entity == null)
-                return NotFound();
+                return NoContent();
 
-            var result = entity.Adapt<UserModel.Read>();
+            var result = entity.Adapt<UserModel>();
 
             return Ok(result);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<UserModel.Read> Post(UserModel.Create model)
+        public ActionResult<UserModel> Post(UserModel model)
         {
+            if (model.Username is null)
+            {
+                ModelState.AddModelError(nameof(model.Username), "Cannot be null");
+                return ValidationProblem();
+            }
+
+            if (model.Password is null)
+            {
+                ModelState.AddModelError(nameof(model.Password), "Cannot be null");
+                return ValidationProblem();
+            }
+
             if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
@@ -81,21 +86,19 @@ namespace Signals.App.Controllers
             SignalsContext.Users.Add(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<UserModel.Read>();
+            var result = entity.Adapt<UserModel>();
 
-            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{result.Id}", result);
+            return Ok(result);
         }
 
         [HttpPatch("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserModel.Read> Patch(Guid id, UserModel.Update model)
+        public ActionResult<UserModel> Patch(Guid id, UserModel model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
-                return NotFound();
+                return NoContent();
 
             if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
@@ -111,26 +114,24 @@ namespace Signals.App.Controllers
             SignalsContext.Users.Update(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<UserModel.Read>();
+            var result = entity.Adapt<UserModel>();
 
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
 
             if (entity is null)
-                return NotFound();
+                return NoContent();
 
             SignalsContext.Users.Remove(entity);
             SignalsContext.SaveChanges();
 
-            return NoContent();
+            return Ok();
         }
     }
 }
