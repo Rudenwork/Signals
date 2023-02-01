@@ -78,7 +78,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChannelModel> Post(ChannelModel model)
+        public async Task<ActionResult<ChannelModel>> Post(ChannelModel model)
         {
             ChannelEntity entity = model switch
             {
@@ -88,6 +88,9 @@ namespace Signals.App.Controllers
 
             entity.UserId = User.GetId();
             entity.Code = GenerateCode();
+
+            if (model is ChannelModel.Email)
+                await SendVerificationEmail(entity as EmailChannelEntity);
 
             SignalsContext.Channels.Add(entity);
             SignalsContext.SaveChanges();
@@ -133,14 +136,7 @@ namespace Signals.App.Controllers
             }
 
             if (shouldReset && model is ChannelModel.Email)
-            {
-                await Mediator.Send(new SendEmailNotification.Request
-                {
-                    Channel = entity as EmailChannelEntity,
-                    Topic = "Signals Verification Code",
-                    Text = $"Verification Code: {entity.Code}"
-                });
-            }
+                await SendVerificationEmail(entity as EmailChannelEntity);
 
             model.Adapt(entity, model.GetType(), entity.GetType());
 
@@ -176,5 +172,15 @@ namespace Signals.App.Controllers
             EmailChannelEntity => entity.Adapt<ChannelModel.Email>(),
             TelegramChannelEntity => entity.Adapt<ChannelModel.Telegram>()
         };
+
+        private async Task SendVerificationEmail(EmailChannelEntity entity)
+        {
+            await Mediator.Send(new SendEmailNotification.Request
+            {
+                Channel = entity,
+                Topic = "Signals Verification Code",
+                Text = $"Verification Code: {entity.Code}"
+            });
+        }
     }
 }
