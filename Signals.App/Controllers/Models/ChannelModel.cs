@@ -36,9 +36,12 @@ namespace Signals.App.Controllers.Models
 
             public class Validator : AbstractValidator<Email>
             {
-                public Validator()
+                public Validator(ChannelModel.Validator baseValidator)
                 {
+                    Include(baseValidator);
+
                     RuleFor(x => x.Address)
+                        .NotNull()
                         .EmailAddress();
                 }
             }
@@ -50,9 +53,12 @@ namespace Signals.App.Controllers.Models
 
             public class Validator : AbstractValidator<Telegram>
             {
-                public Validator()
+                public Validator(ChannelModel.Validator baseValidator)
                 {
+                    Include(baseValidator);
+
                     RuleFor(x => x.Username)
+                        .NotNull()
                         .MaximumLength(100)
                         .Matches(Constants.Username.Regex);
                 }

@@ -2,7 +2,7 @@
 
 namespace Signals.App.Controllers.Models
 {
-    public class UserModel 
+    public class UserModel
     {
         public Guid? Id { get; set; }
         public string? Username { get; set; }
@@ -21,6 +21,29 @@ namespace Signals.App.Controllers.Models
                 RuleFor(x => x.Password)
                     .Matches(Constants.Password.Regex)
                     .WithMessage(Constants.Password.ErrorMessage);
+
+                RuleFor(x => x.Id)
+                    .Null();
+
+                RuleFor(x => x.IsDisabled)
+                    .Null();
+            }
+        }
+
+        public class Create : UserModel
+        {
+            public class Validator : AbstractValidator<Create>
+            {
+                public Validator(UserModel.Validator baseValidator)
+                {
+                    Include(baseValidator);
+
+                    RuleFor(x => x.Username)
+                        .NotNull();
+
+                    RuleFor(x => x.Password)
+                        .NotNull();
+                }
             }
         }
 

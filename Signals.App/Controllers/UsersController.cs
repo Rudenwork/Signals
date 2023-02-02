@@ -60,20 +60,8 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserModel> Post(UserModel model)
+        public ActionResult<UserModel> Post(UserModel.Create model)
         {
-            if (model.Username is null)
-            {
-                ModelState.AddModelError(nameof(model.Username), "Cannot be null");
-                return ValidationProblem();
-            }
-
-            if (model.Password is null)
-            {
-                ModelState.AddModelError(nameof(model.Password), "Cannot be null");
-                return ValidationProblem();
-            }
-
             if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
