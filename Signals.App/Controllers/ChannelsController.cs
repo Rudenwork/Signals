@@ -89,7 +89,7 @@ namespace Signals.App.Controllers
             entity.UserId = User.GetId();
             entity.Code = GenerateCode();
 
-            if (model is ChannelModel.Email)
+            if (entity is EmailChannelEntity)
                 await SendVerificationEmail(entity as EmailChannelEntity);
 
             SignalsContext.Channels.Add(entity);
@@ -135,7 +135,7 @@ namespace Signals.App.Controllers
                 entity.Code = GenerateCode();
             }
 
-            if (shouldReset && model is ChannelModel.Email)
+            if (shouldReset && entity is EmailChannelEntity)
                 await SendVerificationEmail(entity as EmailChannelEntity);
 
             model.Adapt(entity, model.GetType(), entity.GetType());
