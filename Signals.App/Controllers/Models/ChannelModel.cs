@@ -5,7 +5,10 @@ namespace Signals.App.Controllers.Models
 {
     public abstract class ChannelModel
     {
+        public Guid? Id { get; set; }
+        public Guid? UserId { get; set; }
         public string? Description { get; set; }
+        public bool? IsVerified { get; set; }
 
         public class Validator : AbstractValidator<ChannelModel>
         {
@@ -13,6 +16,15 @@ namespace Signals.App.Controllers.Models
             {
                 RuleFor(x => x.Description)
                     .MaximumLength(100);
+
+                RuleFor(x => x.Id)
+                    .Null();
+
+                RuleFor(x => x.UserId)
+                    .Null();
+
+                RuleFor(x => x.IsVerified)
+                    .Null();
             }
         }
 
@@ -98,10 +110,6 @@ namespace Signals.App.Controllers.Models
         [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
         public abstract class Read : ChannelModel
         {
-            public Guid? Id { get; set; }
-            public Guid? UserId { get; set; }
-            public bool? IsVerified { get; set; }
-
             public class Email : Read
             {
                 public string? Address { get; set; }
