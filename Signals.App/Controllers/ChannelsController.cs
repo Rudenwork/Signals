@@ -177,7 +177,7 @@ namespace Signals.App.Controllers
         {
             await Mediator.Send(new SendEmailNotification.Request
             {
-                Channel = entity,
+                Address = entity.Address,
                 Topic = "Signals Verification Code",
                 Text = $"Verification Code: {entity.Code}"
             });

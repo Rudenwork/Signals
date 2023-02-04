@@ -41,6 +41,8 @@ namespace Signals.App.Core.Stage
                 var signal = SignalsContext.Signals.Find(stage.SignalId);
                 var channel = SignalsContext.Channels.Find(stage.ChannelId);
 
+                ///TODO: Handle not verified channel scenario
+
                 var topic = $"{signal.Name} - {stage.Name}";
                 var text = stage.Text;
 
@@ -48,13 +50,13 @@ namespace Signals.App.Core.Stage
                 {
                     EmailChannelEntity emailChannel => new SendEmailNotification.Request
                     { 
-                        Channel = emailChannel,
+                        Address = emailChannel.Address,
                         Topic = topic,
                         Text = text
                     },
                     TelegramChannelEntity telegramChannel => new SendTelegramNotification.Request
-                    { 
-                        Channel = telegramChannel,
+                    {
+                        ChatId = telegramChannel.ChatId.Value,
                         Topic = topic,
                         Text = text 
                     }

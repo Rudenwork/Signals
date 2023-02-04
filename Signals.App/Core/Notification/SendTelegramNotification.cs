@@ -1,6 +1,5 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Options;
-using Signals.App.Database.Entities.Channels;
 using Telegram.Bot;
 using static Signals.App.Settings.Settings;
 
@@ -10,7 +9,7 @@ namespace Signals.App.Core.Notification
     {
         public class Request
         {
-            public TelegramChannelEntity Channel { get; set; }
+            public long ChatId { get; set; }
             public string Topic { get; set; }
             public string Text { get; set; }
         }
@@ -30,7 +29,7 @@ namespace Signals.App.Core.Notification
 
                 var client = new TelegramBotClient(Settings.Token);
 
-                await client.SendTextMessageAsync(message.Channel.ChatId, $"[{message.Topic}]\n{message.Text}");
+                await client.SendTextMessageAsync(message.ChatId, $"[{message.Topic}]\n{message.Text}");
             }
         }
     }

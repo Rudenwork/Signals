@@ -2,7 +2,6 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Signals.App.Database.Entities.Channels;
 using static Signals.App.Settings.Settings;
 
 namespace Signals.App.Core.Notification
@@ -11,7 +10,7 @@ namespace Signals.App.Core.Notification
     {
         public class Request
         {
-            public EmailChannelEntity Channel { get; set; }
+            public string Address { get; set; }
             public string Topic { get; set; }
             public string Text { get; set; }
         }
@@ -30,7 +29,7 @@ namespace Signals.App.Core.Notification
                 var message = new MimeMessage 
                 {
                     From = { new MailboxAddress("Signals", Settings.Username) },
-                    To = { new MailboxAddress("User", context.Message.Channel.Address) },
+                    To = { new MailboxAddress("User", context.Message.Address) },
                     Subject = context.Message.Topic,
                     Body = new TextPart("plain") { Text = context.Message.Text }
                 };
