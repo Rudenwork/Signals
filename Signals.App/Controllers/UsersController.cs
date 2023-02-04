@@ -25,7 +25,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<UserModel>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Filter filter)
+        public ActionResult<List<UserModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Read.Filter filter)
         {
             var query = SignalsContext.Users.AsQueryable();
 
@@ -40,13 +40,13 @@ namespace Signals.App.Controllers
 
             var result = query
                 .Subset(subset.Offset, subset.Limit)
-                .Adapt<List<UserModel>>();
+                .Adapt<List<UserModel.Read>>();
 
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UserModel> Get(Guid id)
+        public ActionResult<UserModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
@@ -54,13 +54,13 @@ namespace Signals.App.Controllers
             if (entity == null)
                 return NoContent();
 
-            var result = entity.Adapt<UserModel>();
+            var result = entity.Adapt<UserModel.Read>();
 
             return Ok(result);
         }
 
         [HttpPost]
-        public ActionResult<UserModel> Post(UserModel.Create model)
+        public ActionResult<UserModel.Read> Post(UserModel.Create model)
         {
             if (SignalsContext.Users.Any(x => x.Username == model.Username))
             {
@@ -74,13 +74,13 @@ namespace Signals.App.Controllers
             SignalsContext.Users.Add(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<UserModel>();
+            var result = entity.Adapt<UserModel.Read>();
 
             return Ok(result);
         }
 
         [HttpPatch("{id}")]
-        public ActionResult<UserModel> Patch(Guid id, UserModel model)
+        public ActionResult<UserModel.Read> Patch(Guid id, UserModel.Update model)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
@@ -102,7 +102,7 @@ namespace Signals.App.Controllers
             SignalsContext.Users.Update(entity);
             SignalsContext.SaveChanges();
 
-            var result = entity.Adapt<UserModel>();
+            var result = entity.Adapt<UserModel.Read>();
 
             return Ok(result);
         }

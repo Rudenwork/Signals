@@ -2,7 +2,7 @@
 
 namespace Signals.App.Controllers.Models
 {
-    public class UserModel
+    public abstract class UserModel
     {
         public Guid? Id { get; set; }
         public string? Username { get; set; }
@@ -14,6 +14,9 @@ namespace Signals.App.Controllers.Models
         {
             public Validator()
             {
+                RuleFor(x => x.Id)
+                    .Null();
+
                 RuleFor(x => x.Username)
                     .Matches(Constants.Username.Regex)
                     .WithMessage(Constants.Username.ErrorMessage);
@@ -21,22 +24,16 @@ namespace Signals.App.Controllers.Models
                 RuleFor(x => x.Password)
                     .Matches(Constants.Password.Regex)
                     .WithMessage(Constants.Password.ErrorMessage);
-
-                RuleFor(x => x.Id)
-                    .Null();
-
-                RuleFor(x => x.IsDisabled)
-                    .Null();
             }
         }
 
         public class Create : UserModel
         {
-            public class Validator : AbstractValidator<Create>
+            public new class Validator : AbstractValidator<Create>
             {
-                public Validator(UserModel.Validator baseValidator)
+                public Validator(UserModel.Validator validator)
                 {
-                    Include(baseValidator);
+                    Include(validator);
 
                     RuleFor(x => x.Username)
                         .NotNull();
@@ -47,11 +44,28 @@ namespace Signals.App.Controllers.Models
             }
         }
 
-        public class Filter
+        public class Update : UserModel
         {
-            public string? Username { get; set; }
-            public bool? IsAdmin { get; set; }
-            public bool? IsDisabled { get; set; }
+            public new class Validator : AbstractValidator<Update>
+            {
+                public Validator(UserModel.Validator validator)
+                {
+                    Include(validator);
+
+                    RuleFor(x => x.IsDisabled)
+                        .Null();
+                }
+            }
+        }
+
+        public class Read : UserModel
+        {
+            public class Filter
+            {
+                public string? Username { get; set; }
+                public bool? IsAdmin { get; set; }
+                public bool? IsDisabled { get; set; }
+            }
         }
 
         private static class Constants
