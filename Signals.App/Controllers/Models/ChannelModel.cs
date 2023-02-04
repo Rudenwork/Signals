@@ -3,14 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
 {
-    [JsonDerivedType(typeof(Email), nameof(Email))]
-    [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
-    public class ChannelModel
+    public abstract class ChannelModel
     {
-        public Guid? Id { get; set; }
-        public Guid? UserId { get; set; }
         public string? Description { get; set; }
-        public bool? IsVerified { get; set; }
 
         public class Validator : AbstractValidator<ChannelModel>
         {
@@ -18,69 +13,122 @@ namespace Signals.App.Controllers.Models
             {
                 RuleFor(x => x.Description)
                     .MaximumLength(100);
-
-                RuleFor(x => x.Id)
-                    .Null();
-
-                RuleFor(x => x.UserId)
-                    .Null();
-
-                RuleFor(x => x.IsVerified)
-                    .Null();
             }
         }
 
-        public class Email : ChannelModel
+        [JsonDerivedType(typeof(Email), nameof(Email))]
+        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
+        public abstract class Create : ChannelModel
         {
-            public string? Address { get; set; }
-
-            public class Validator : AbstractValidator<Email>
+            public class Email : Create
             {
-                public Validator(ChannelModel.Validator baseValidator)
-                {
-                    Include(baseValidator);
+                public string? Address { get; set; }
 
-                    RuleFor(x => x.Address)
-                        .NotNull()
-                        .EmailAddress();
+                public new class Validator : AbstractValidator<Email>
+                {
+                    public Validator(ChannelModel.Validator validator)
+                    {
+                        Include(validator);
+
+                        RuleFor(x => x.Address)
+                            .NotNull()
+                            .EmailAddress();
+                    }
+                }
+            }
+
+            public class Telegram : Create
+            {
+                public string? Username { get; set; }
+
+                public new class Validator : AbstractValidator<Telegram>
+                {
+                    public Validator(ChannelModel.Validator validator)
+                    {
+                        Include(validator);
+
+                        RuleFor(x => x.Username)
+                            .NotNull()
+                            .MaximumLength(100)
+                            .Matches(Constants.Username.Regex);
+                    }
                 }
             }
         }
 
-        public class Telegram : ChannelModel
+        [JsonDerivedType(typeof(Email), nameof(Email))]
+        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
+        public abstract class Update : ChannelModel
         {
-            public string? Username { get; set; }
-
-            public class Validator : AbstractValidator<Telegram>
+            public class Email : Update
             {
-                public Validator(ChannelModel.Validator baseValidator)
-                {
-                    Include(baseValidator);
+                public string? Address { get; set; }
 
-                    RuleFor(x => x.Username)
-                        .NotNull()
-                        .MaximumLength(100)
-                        .Matches(Constants.Username.Regex);
+                public new class Validator : AbstractValidator<Email>
+                {
+                    public Validator(ChannelModel.Validator validator)
+                    {
+                        Include(validator);
+
+                        RuleFor(x => x.Address)
+                            .EmailAddress();
+                    }
+                }
+            }
+
+            public class Telegram : Update
+            {
+                public string? Username { get; set; }
+
+                public new class Validator : AbstractValidator<Telegram>
+                {
+                    public Validator(ChannelModel.Validator validator)
+                    {
+                        Include(validator);
+
+                        RuleFor(x => x.Username)
+                            .MaximumLength(100)
+                            .Matches(Constants.Username.Regex);
+                    }
                 }
             }
         }
 
-        public class Filter
+        [JsonDerivedType(typeof(Email), nameof(Email))]
+        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
+        public abstract class Read : ChannelModel
         {
-            public TypeEnum? Type { get; set; }
-            public string? Description { get; set; }
+            public Guid? Id { get; set; }
+            public Guid? UserId { get; set; }
             public bool? IsVerified { get; set; }
 
-            //Email
-            public string? Address { get; set; }
-
-            //Telegram
-            public string? Username { get; set; }
-
-            public enum TypeEnum
+            public class Email : Read
             {
-                Email,
-                Telegram
+                public string? Address { get; set; }
+            }
+
+            public class Telegram : Read
+            {
+                public string? Username { get; set; }
+            }
+
+            public class Filter
+            {
+                public TypeEnum? Type { get; set; }
+                public string? Description { get; set; }
+                public bool? IsVerified { get; set; }
+
+                //Email
+                public string? Address { get; set; }
+
+                //Telegram
+                public string? Username { get; set; }
+
+                public enum TypeEnum
+                {
+                    Email,
+                    Telegram
+                }
             }
         }
 

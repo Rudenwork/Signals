@@ -27,7 +27,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<ChannelModel>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Filter filter)
+        public ActionResult<List<ChannelModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] ChannelModel.Read.Filter filter)
         {
             var query = SignalsContext.Channels.AsQueryable();
 
@@ -35,8 +35,8 @@ namespace Signals.App.Controllers
             {
                 query = filter.Type switch
                 {
-                    ChannelModel.Filter.TypeEnum.Email => query.Where(x => x is EmailChannelEntity),
-                    ChannelModel.Filter.TypeEnum.Telegram => query.Where(x => x is TelegramChannelEntity)
+                    ChannelModel.Read.Filter.TypeEnum.Email => query.Where(x => x is EmailChannelEntity),
+                    ChannelModel.Read.Filter.TypeEnum.Telegram => query.Where(x => x is TelegramChannelEntity)
                 };
             }
 
@@ -62,7 +62,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ChannelModel> Get(Guid id)
+        public ActionResult<ChannelModel.Read> Get(Guid id)
         {
             var entity = SignalsContext.Channels.Find(id);
 
@@ -78,12 +78,12 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ChannelModel>> Post(ChannelModel model)
+        public async Task<ActionResult<ChannelModel.Read>> Post(ChannelModel.Create model)
         {
             ChannelEntity entity = model switch
             {
-                ChannelModel.Email => model.Adapt<EmailChannelEntity>(),
-                ChannelModel.Telegram => model.Adapt<TelegramChannelEntity>()
+                ChannelModel.Create.Email => model.Adapt<EmailChannelEntity>(),
+                ChannelModel.Create.Telegram => model.Adapt<TelegramChannelEntity>()
             };
 
             entity.UserId = User.GetId();
@@ -101,7 +101,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ChannelModel>> Patch(Guid id, ChannelModel model)
+        public async Task<ActionResult<ChannelModel.Read>> Patch(Guid id, ChannelModel.Update model)
         {
             var entity = SignalsContext.Channels.Find(id);
 
@@ -113,8 +113,8 @@ namespace Signals.App.Controllers
 
             var patchEntityType = model switch
             {
-                ChannelModel.Email => typeof(EmailChannelEntity),
-                ChannelModel.Telegram => typeof(TelegramChannelEntity)
+                ChannelModel.Update.Email => typeof(EmailChannelEntity),
+                ChannelModel.Update.Telegram => typeof(TelegramChannelEntity)
             };
 
             if (entity.GetType() != patchEntityType)
@@ -125,20 +125,20 @@ namespace Signals.App.Controllers
 
             var shouldReset = model switch
             {
-                ChannelModel.Email emailModel => emailModel.Address is not null,
-                ChannelModel.Telegram telegramModel => telegramModel.Username is not null
+                ChannelModel.Update.Email emailModel => emailModel.Address is not null,
+                ChannelModel.Update.Telegram telegramModel => telegramModel.Username is not null
             };
 
-            if ((model as ChannelModel.Email)?.Address is not null || (model as ChannelModel.Telegram)?.Username is not null)
+            if (shouldReset)
             {
                 entity.IsVerified = false;
                 entity.Code = GenerateCode();
             }
 
+            model.Adapt(entity, model.GetType(), entity.GetType());
+
             if (shouldReset && entity is EmailChannelEntity)
                 await SendVerificationEmail(entity as EmailChannelEntity);
-
-            model.Adapt(entity, model.GetType(), entity.GetType());
 
             SignalsContext.Channels.Update(entity);
             SignalsContext.SaveChanges();
@@ -167,10 +167,10 @@ namespace Signals.App.Controllers
 
         private static string GenerateCode() => Random.Shared.Next(1000, 10000).ToString();
 
-        private static ChannelModel AdaptToModel(ChannelEntity entity) => entity switch
+        private static ChannelModel.Read AdaptToModel(ChannelEntity entity) => entity switch
         {
-            EmailChannelEntity => entity.Adapt<ChannelModel.Email>(),
-            TelegramChannelEntity => entity.Adapt<ChannelModel.Telegram>()
+            EmailChannelEntity => entity.Adapt<ChannelModel.Read.Email>(),
+            TelegramChannelEntity => entity.Adapt<ChannelModel.Read.Telegram>()
         };
 
         private async Task SendVerificationEmail(EmailChannelEntity entity)
