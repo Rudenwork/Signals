@@ -4,9 +4,13 @@ namespace Signals.App.Controllers.Models
 {
     public abstract class SignalModel
     {
+        public Guid? Id { get; set; }
+        public Guid? UserId { get; set; }
         public string? Name { get; set; }
         public string? Schedule { get; set; }
         public List<StageModel>? Stages { get; set; }
+        public bool? IsDisabled { get; set; }
+        public ExecutionModel? Execution { get; set; }
 
         public class Create : SignalModel
         {
