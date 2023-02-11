@@ -89,6 +89,7 @@ namespace Signals.App.Controllers
             entity.UserId = User.GetId();
             entity.Code = GenerateCode();
 
+            ///TODO: if(entity is EmailChannelEntity emailEntity)
             if (entity is EmailChannelEntity)
                 await SendVerificationEmail(entity as EmailChannelEntity);
 
@@ -167,6 +168,7 @@ namespace Signals.App.Controllers
 
         private static string GenerateCode() => Random.Shared.Next(1000, 10000).ToString();
 
+        ///TODO: Add derived types mapping configuration
         private static ChannelModel.Read AdaptToModel(ChannelEntity entity) => entity switch
         {
             EmailChannelEntity => entity.Adapt<ChannelModel.Read.Email>(),
