@@ -10,6 +10,23 @@ namespace Signals.App.Controllers.Models
     {
         public Guid? Id { get; set; }
 
+        public class Validator : AbstractValidator<BlockModel>
+        {
+            public Validator(Group.Validator group, Value.Validator value, Change.Validator change)
+            {
+                RuleFor(x => x)
+                    .SetInheritanceValidator(x => 
+                    {
+                        x.Add(group);
+                        x.Add(value);
+                        x.Add(change);
+                    });
+
+                RuleFor(x => x.Id)
+                    .Null();
+            }
+        }
+
         public class Group : BlockModel
         {
             public TypeEnum? Type { get; set; }
@@ -19,6 +36,21 @@ namespace Signals.App.Controllers.Models
             {
                 And,
                 Or
+            }
+
+            public new class Validator : AbstractValidator<Group>
+            {
+                public Validator(/*BlockModel.Validator block*/)
+                {
+                    RuleFor(x => x.Type)
+                        .NotNull();
+
+                    RuleFor(x => x.Children)
+                        .NotEmpty();
+
+                    //RuleForEach(x => x.Children)
+                    //    .SetValidator(block);
+                }
             }
         }
 
@@ -32,6 +64,24 @@ namespace Signals.App.Controllers.Models
             {
                 GreaterOrEqual,
                 LessOrEqual
+            }
+
+            public new class Validator : AbstractValidator<Value>
+            {
+                public Validator(IndicatorModel.Validator indicator)
+                {
+                    RuleFor(x => x.LeftIndicator)
+                        .NotNull()
+                        .SetValidator(indicator);
+
+                    RuleFor(x => x.RightIndicator)
+                        .NotNull()
+                        .SetValidator(indicator);
+
+                    ///TODO: check behaviour of IsInEnum()
+                    RuleFor(x => x.Operator)
+                        .NotNull();
+                }
             }
         }
         
@@ -57,97 +107,30 @@ namespace Signals.App.Controllers.Models
                 LessOrEqual,
                 Crossed
             }
-        }
-    }
-
-    [JsonDerivedType(typeof(Group), nameof(Group))]
-    [JsonDerivedType(typeof(Value), nameof(Value))]
-    [JsonDerivedType(typeof(Change), nameof(Change))]
-    public abstract class BlockModel_X
-    {
-        public Guid? Id { get; set; }
-        public class Validator : AbstractValidator<BlockModel_X>
-        {
-            public Validator()
-            {
-                RuleFor(x => x.Id)
-                    .Null();
-            }
-        }
-
-        public class Group : BlockModel_X 
-        {
-            public TypeEnum Type { get; set; }
-
-            public List<BlockModel_X>? Children { get; set; }
-
-            public new class Validator : AbstractValidator<Group>
-            {
-                public Validator(BlockModel_X.Validator validator)
-                {
-                    Include(validator);
-                }
-            }
-
-            public enum TypeEnum
-            {
-                And,
-                Or
-            }
-        }
-        public class Value : BlockModel_X 
-        {
-            /// TODO: Create model for indicator
-            public Guid? LeftIndicatorId { get; set; }
-            public Guid? RightIndicatorId { get; set; }
-
-            public new class Validator : AbstractValidator<Value>
-            {
-                public Validator(BlockModel_X.Validator validator)
-                {
-                    Include(validator);
-                }
-            }
-
-            public OperatorEnum Operator { get; set; }
-
-            public enum OperatorEnum
-            {
-                GreaterOrEqual,
-                LessOrEqual
-            }
-        }
-        public class Change : BlockModel_X 
-        {
-            /// TODO: Create model for indicator
-            public Guid? IndicatorId { get; set; }
-
-            public TypeEnum Type { get; set; }
-            public OperatorEnum Operator { get; set; }
-            public decimal? Target { get; set; }
-            public bool? IsPercentage { get; set; }
-            public TimeSpan? Period { get; set; }
 
             public new class Validator : AbstractValidator<Change>
             {
-                public Validator(BlockModel_X.Validator validator)
+                public Validator(IndicatorModel.Validator indicator)
                 {
-                    Include(validator);
+                    RuleFor(x => x.Indicator)
+                        .NotNull()
+                        .SetValidator(indicator);
+
+                    RuleFor(x => x.Type)
+                        .NotNull();
+
+                    RuleFor(x => x.Operator)
+                        .NotNull();
+
+                    RuleFor(x => x.Target)
+                        .NotNull();
+
+                    RuleFor(x => x.IsPercentage)
+                        .NotNull();
+
+                    RuleFor(x => x.Period)
+                        .NotNull();
                 }
-            }
-
-            public enum TypeEnum
-            {
-                Increase,
-                Decrease,
-                Cross
-            }
-
-            public enum OperatorEnum
-            {
-                GreaterOrEqual,
-                LessOrEqual,
-                Crossed
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FluentValidation;
+using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
 {
@@ -35,6 +36,33 @@ namespace Signals.App.Controllers.Models
             OneMonth
         }
 
+        public class Validator : AbstractValidator<IndicatorModel>
+        {
+            public Validator(BollingerBands.Validator bollingerBands, Candle.Validator candle, Constant.Validator constant)
+            {
+                RuleFor(x => x)
+                    .SetInheritanceValidator(x => 
+                    {
+                        x.Add(bollingerBands);
+                        x.Add(candle);
+                        x.Add(constant);
+                    });
+
+                RuleFor(x => x.Id)
+                    .Null();
+
+                RuleFor(x => x.Interval)
+                    .NotNull();
+
+                RuleFor(x => x.LoopbackPeriod)
+                    .NotNull()
+                    .InclusiveBetween(Constants.LoopBackPeriod.Min, Constants.LoopBackPeriod.Max);
+
+                RuleFor(x => x.Symbol)
+                    .NotEmpty();
+            }
+        }
+
         public class BollingerBands : IndicatorModel
         {
             public TypeEnum? BandType { get; set; }
@@ -43,6 +71,15 @@ namespace Signals.App.Controllers.Models
                 Lower,
                 Middle,
                 Upper
+            }
+
+            public new class Validator : AbstractValidator<BollingerBands>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.BandType)
+                        .NotNull();
+                }
             }
         }
 
@@ -59,11 +96,29 @@ namespace Signals.App.Controllers.Models
                 Average,
                 Volume
             }
+
+            public new class Validator : AbstractValidator<Candle>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.ParameterType)
+                        .NotNull();
+                }
+            }
         }
 
         public class Constant : IndicatorModel
         {
             public decimal? Value { get; set; }
+
+            public new class Validator : AbstractValidator<Constant>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Value)
+                        .NotNull();
+                }
+            }
         }
 
         public class ExponentialMovingAverage : IndicatorModel 
@@ -72,13 +127,22 @@ namespace Signals.App.Controllers.Models
         }
 
         public class RelativeStrengthIndex : IndicatorModel 
-        { 
+        {
 
         }
 
         public class SimpleMovingAverage : IndicatorModel 
         {
-            
+
+        }
+
+        private static class Constants 
+        {
+            public static class LoopBackPeriod 
+            {
+                public const int Min = 1;
+                public const int Max = 100;
+            }
         }
     }
 }
