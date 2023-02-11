@@ -40,7 +40,7 @@ namespace Signals.App.Controllers.Models
 
             public new class Validator : AbstractValidator<Group>
             {
-                public Validator(/*BlockModel.Validator block*/)
+                public Validator(Value.Validator value, Change.Validator change)
                 {
                     RuleFor(x => x.Type)
                         .NotNull();
@@ -48,8 +48,8 @@ namespace Signals.App.Controllers.Models
                     RuleFor(x => x.Children)
                         .NotEmpty();
 
-                    //RuleForEach(x => x.Children)
-                    //    .SetValidator(block);
+                    RuleForEach(x => x.Children)
+                        .SetValidator(new BlockModel.Validator(this, value, change));
                 }
             }
         }
