@@ -129,7 +129,6 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Schedule")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")

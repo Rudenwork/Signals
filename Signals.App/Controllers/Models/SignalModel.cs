@@ -22,7 +22,7 @@ namespace Signals.App.Controllers.Models
                 RuleFor(x => x.Name)
                     .MaximumLength(Constants.Name.MaxLength);
 
-                ///TODO: Is schedule validation 
+                ///TODO: Is schedule validation
                 RuleFor(x => x.Schedule)
                     .MaximumLength(Constants.Schedule.MaxLength);
 
@@ -46,9 +46,6 @@ namespace Signals.App.Controllers.Models
                     Include(signal);
 
                     RuleFor(x => x.Name)
-                        .NotEmpty();
-
-                    RuleFor(x => x.Schedule)
                         .NotEmpty();
 
                     RuleFor(x => x.Stages)

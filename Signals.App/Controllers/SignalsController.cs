@@ -153,7 +153,7 @@ namespace Signals.App.Controllers
 
             await SignalsContext.SaveChangesAsync();
 
-            if(!entity.IsDisabled)
+            if(!entity.IsDisabled && entity.Schedule is not null)
             {
                 await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
             }

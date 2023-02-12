@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20230106165424_Initial")]
+    [Migration("20230212165403_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -132,7 +132,6 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Schedule")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
