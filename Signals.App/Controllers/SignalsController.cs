@@ -167,22 +167,28 @@ namespace Signals.App.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<SignalModel>> Delete(Guid id)
         {
-            //var entity = SignalsContext.Signals.Find(id);
+            var entity = SignalsContext.Signals.Find(id);
 
-            //if (entity is null)
-            //    return NoContent();
+            if (entity is null)
+                return NoContent();
 
-            //if (entity.UserId != User.GetId())
-            //    return Forbid();
+            if (entity.UserId != User.GetId())
+                return Forbid();
 
-            //if (!entity.IsDisabled)
-            //{
-            //    await Scheduler.CancelPublish(entity.Id);
-            //    await Mediator.Publish(new Stop.Message { ExecutionId = context.Message.Message.ExecutionId });
-            //}
+            if (!entity.IsDisabled)
+            {
+                await Scheduler.CancelPublish(entity.Id);
+            }
 
-            //SignalsContext.Signals.Remove(entity);
-            //SignalsContext.SaveChanges();
+            var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == entity.Id);
+
+            if (execution is not null)
+            {
+                await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
+            }
+
+            SignalsContext.Signals.Remove(entity);
+            SignalsContext.SaveChanges();
 
             return Ok();
         }
