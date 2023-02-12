@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Duende.IdentityServer.Extensions;
+using Mapster;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Signals.App.Core.Notification;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Channels;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using System.Data;
 
@@ -164,6 +166,39 @@ namespace Signals.App.Controllers
             SignalsContext.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<ChannelModel.Read>> Verify(Guid id, [FromQuery] string code)
+        {
+            var entity = SignalsContext.Channels.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            if (entity.IsVerified)
+            {
+                ModelState.AddModelError(nameof(entity.IsVerified), "Already verified");
+                return ValidationProblem();
+            }
+
+            if (code.IsNullOrEmpty() || !entity.Code.Equals(code))
+            {
+                ModelState.AddModelError(nameof(code), "Invalid");
+                return ValidationProblem();
+            }
+
+            entity.IsVerified = true;
+
+            SignalsContext.Channels.Update(entity);
+            SignalsContext.SaveChanges();
+
+            var result = AdaptToModel(entity);
+
+            return Ok(result);
         }
 
         private static string GenerateCode() => Random.Shared.Next(1000, 10000).ToString();
