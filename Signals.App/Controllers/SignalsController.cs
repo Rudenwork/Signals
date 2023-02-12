@@ -204,7 +204,10 @@ namespace Signals.App.Controllers
                 return Forbid();
 
             if (!entity.IsDisabled)
-                return BadRequest();
+            {
+                ModelState.AddModelError(nameof(entity.IsDisabled), "Already enabled");
+                return ValidationProblem();
+            }
 
             if (entity.Schedule is not null) 
             {
@@ -235,7 +238,10 @@ namespace Signals.App.Controllers
                 return Forbid();
 
             if (entity.IsDisabled)
-                return BadRequest();
+            {
+                ModelState.AddModelError(nameof(entity.IsDisabled), "Already disabled");
+                return ValidationProblem();
+            }
 
             if (entity.Schedule is not null)
             {
@@ -253,6 +259,68 @@ namespace Signals.App.Controllers
 
             SignalsContext.Update(entity);
             SignalsContext.SaveChanges();
+
+            FillRelatedEntities(entity);
+
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<SignalModel.Read>> Start(Guid id)
+        {
+            var entity = SignalsContext.Signals.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            if (entity.IsDisabled)
+            {
+                ModelState.AddModelError(nameof(entity.IsDisabled), "Signal should be enabled");
+                return ValidationProblem();
+            }
+
+            var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == entity.Id);
+
+            if (execution is not null)
+            {
+                ModelState.AddModelError(nameof(execution), "Already started");
+                return ValidationProblem();
+            }
+
+            await Mediator.Publish(new Start.Message { SignalId = entity.Id });
+
+            FillRelatedEntities(entity);
+
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<SignalModel.Read>> Stop(Guid id)
+        {
+            var entity = SignalsContext.Signals.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == entity.Id);
+
+            if (execution is null)
+            {
+                ModelState.AddModelError(nameof(execution), "Already stopped");
+                return ValidationProblem();
+            }
+
+            await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
 
             FillRelatedEntities(entity);
 
