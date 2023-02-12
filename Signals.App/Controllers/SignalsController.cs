@@ -2,7 +2,6 @@
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
@@ -175,7 +174,7 @@ namespace Signals.App.Controllers
             if (entity.UserId != User.GetId())
                 return Forbid();
 
-            if (!entity.IsDisabled)
+            if (!entity.IsDisabled && entity.Schedule is not null)
             {
                 await Scheduler.CancelPublish(entity.Id);
             }
@@ -191,6 +190,75 @@ namespace Signals.App.Controllers
             SignalsContext.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<SignalModel.Read>> Enable(Guid id)
+        {
+            var entity = SignalsContext.Signals.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            if (!entity.IsDisabled)
+                return BadRequest();
+
+            if (entity.Schedule is not null) 
+            {
+                await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
+            }
+
+            entity.IsDisabled = false;
+
+            SignalsContext.Update(entity);
+            SignalsContext.SaveChanges();
+
+            FillRelatedEntities(entity);
+
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<SignalModel.Read>> Disable(Guid id)
+        {
+            var entity = SignalsContext.Signals.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            if (entity.IsDisabled)
+                return BadRequest();
+
+            if (entity.Schedule is not null)
+            {
+                await Scheduler.CancelPublish(entity.Id);
+            }
+
+            var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == entity.Id);
+            
+            if (execution is not null)
+            {
+                await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
+            }
+
+            entity.IsDisabled = true;
+
+            SignalsContext.Update(entity);
+            SignalsContext.SaveChanges();
+
+            FillRelatedEntities(entity);
+
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
         }
 
         private void FillRelatedEntities(SignalEntity signal)
