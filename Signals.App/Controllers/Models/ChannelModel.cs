@@ -140,6 +140,11 @@ namespace Signals.App.Controllers.Models
             }
         }
 
+        public class Verify
+        {
+            public string Code { get; set; }
+        }
+
         private static class Constants
         {
             public static class Username

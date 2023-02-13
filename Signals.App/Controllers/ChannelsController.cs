@@ -169,7 +169,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<ChannelModel.Read>> Verify(Guid id, [FromQuery] string code)
+        public async Task<ActionResult<ChannelModel.Read>> Verify(Guid id, ChannelModel.Verify model)
         {
             var entity = SignalsContext.Channels.Find(id);
 
@@ -185,9 +185,9 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            if (code.IsNullOrEmpty() || !entity.Code.Equals(code))
+            if (model.Code != entity.Code)
             {
-                ModelState.AddModelError(nameof(code), "Invalid");
+                ModelState.AddModelError(nameof(model.Code), "Invalid");
                 return ValidationProblem();
             }
 
