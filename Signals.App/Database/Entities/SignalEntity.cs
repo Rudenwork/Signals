@@ -15,5 +15,6 @@ namespace Signals.App.Database.Entities
 
         //EF Injected
         public List<StageEntity> Stages { get; set; }
+        public ExecutionEntity? Execution { get; set; }
     }
 }

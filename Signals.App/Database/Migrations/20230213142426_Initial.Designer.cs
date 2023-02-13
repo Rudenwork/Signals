@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20230212165403_Initial")]
+    [Migration("20230213142426_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -408,15 +408,17 @@ namespace Signals.App.Database.Migrations
             modelBuilder.Entity("Signals.App.Database.Entities.ExecutionEntity", b =>
                 {
                     b.HasOne("Signals.App.Database.Entities.SignalEntity", null)
-                        .WithOne()
+                        .WithOne("Execution")
                         .HasForeignKey("Signals.App.Database.Entities.ExecutionEntity", "SignalId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Signals.App.Database.Entities.StageEntity", null)
+                    b.HasOne("Signals.App.Database.Entities.StageEntity", "Stage")
                         .WithOne()
                         .HasForeignKey("Signals.App.Database.Entities.ExecutionEntity", "StageId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.SignalEntity", b =>
@@ -603,6 +605,8 @@ namespace Signals.App.Database.Migrations
 
             modelBuilder.Entity("Signals.App.Database.Entities.SignalEntity", b =>
                 {
+                    b.Navigation("Execution");
+
                     b.Navigation("Stages");
                 });
 

@@ -11,6 +11,7 @@ using Signals.App.Database.Entities.Indicators;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Services;
+using System;
 
 namespace Signals.App.Controllers
 {
@@ -331,6 +332,13 @@ namespace Signals.App.Controllers
 
         private void FillRelatedEntities(SignalEntity signal)
         {
+            if (signal is null)
+                return;
+
+            signal.Execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == signal.Id);
+
+            FillRelatedEntities(signal.Execution);
+
             signal.Stages = SignalsContext.Stages
                 .Where(x => x.SignalId == signal.Id)
                 .ToList();
@@ -338,9 +346,17 @@ namespace Signals.App.Controllers
             signal.Stages.ForEach(FillRelatedEntities);
         }
 
+        private void FillRelatedEntities(ExecutionEntity execution)
+        {
+            if (execution is null)
+                return;
+
+            execution.Stage = SignalsContext.Stages.FirstOrDefault(x => x.Id == execution.StageId);
+        }
+
         private void FillRelatedEntities(StageEntity stage)
         {
-            if (stage is not ConditionStageEntity conditionStage)
+            if (stage is null || stage is not ConditionStageEntity conditionStage)
                 return;
 
             conditionStage.Block = SignalsContext.Blocks.Find(conditionStage.BlockId);
@@ -349,6 +365,9 @@ namespace Signals.App.Controllers
 
         private void FillRelatedEntities(BlockEntity block)
         {
+            if (block is null)
+                return;
+
             if (block is ValueBlockEntity valueBlock)
             {
                 valueBlock.LeftIndicator = SignalsContext.Indicators.Find(valueBlock.LeftIndicatorId);

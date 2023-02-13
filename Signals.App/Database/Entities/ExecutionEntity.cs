@@ -10,5 +10,8 @@ namespace Signals.App.Database.Entities
 
         public Guid SignalId { get; set; }
         public Guid? StageId { get; set; }
+
+        //EF Injected
+        public StageEntity? Stage { get; set; }
     }
 }

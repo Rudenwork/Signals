@@ -130,12 +130,12 @@ namespace Signals.App.Database
             //Execution
             modelBuilder.Entity<ExecutionEntity>()
                 .HasOne<SignalEntity>()
-                .WithOne()
+                .WithOne(x => x.Execution)
                 .HasForeignKey<ExecutionEntity>(x => x.SignalId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ExecutionEntity>()
-                .HasOne<StageEntity>()
+                .HasOne(x => x.Stage)
                 .WithOne()
                 .HasForeignKey<ExecutionEntity>(x => x.StageId)
                 .OnDelete(DeleteBehavior.NoAction);
