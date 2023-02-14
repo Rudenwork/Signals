@@ -51,7 +51,7 @@ namespace Signals.App.Database
                 if (execution is not null)
                 {
                     context.Executions.Remove(execution);
-                } 
+                }
 
                 context.Stages.RemoveRange(stages);
             };

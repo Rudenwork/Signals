@@ -2,6 +2,7 @@
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
@@ -11,7 +12,6 @@ using Signals.App.Database.Entities.Indicators;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using Signals.App.Services;
-using System;
 
 namespace Signals.App.Controllers
 {
@@ -158,6 +158,90 @@ namespace Signals.App.Controllers
             {
                 await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
             }
+
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<SignalModel.Read>> Patch(Guid id, SignalModel.Update model)
+        {
+            var entity = SignalsContext.Signals.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.UserId != User.GetId())
+                return Forbid();
+
+            if (model.Name is not null)
+            {
+                entity.Name = model.Name;
+            }
+
+            if (model.Schedule is not null)
+            {
+                if (!entity.IsDisabled && entity.Schedule is not null)
+                {
+                    await Scheduler.CancelPublish(entity.Id);
+                }
+
+                entity.Schedule = model.Schedule == "never" ? null : model.Schedule;
+
+                if (!entity.IsDisabled && entity.Schedule is not null)
+                {
+                    await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
+                }
+            }
+
+            if (model.Stages is not null)
+            {
+                var execution = SignalsContext.Executions
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.SignalId == entity.Id);
+
+                if (execution is not null)
+                {
+                    await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
+                }
+
+                var stages = SignalsContext.Stages
+                    .Where(x => x.SignalId == entity.Id)
+                    .ToList();
+
+                SignalsContext.Stages.RemoveRange(stages);
+
+                stages = model.Stages
+                    .Select(x =>
+                    {
+                        StageEntity stage = x switch
+                        {
+                            StageModel.Condition => x.Adapt<ConditionStageEntity>(),
+                            StageModel.Waiting => x.Adapt<WaitingStageEntity>(),
+                            StageModel.Notification => x.Adapt<NotificationStageEntity>()
+                        };
+
+                        stage.Id = Guid.NewGuid();
+                        stage.SignalId = entity.Id;
+
+                        return stage;
+                    })
+                    .ToList();
+
+                for (int i = 1; i < stages.Count; i++)
+                {
+                    stages[i - 1].NextStageId = stages[i].Id;
+                    stages[i].PreviousStageId = stages[i - 1].Id;
+                }
+
+                SignalsContext.Stages.AddRange(stages);
+            }
+
+            SignalsContext.Signals.Update(entity);
+            SignalsContext.SaveChanges();
+
+            FillRelatedEntities(entity);
 
             var result = entity.Adapt<SignalModel.Read>();
 
