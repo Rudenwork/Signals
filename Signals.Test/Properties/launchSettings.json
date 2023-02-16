@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Signals.Test": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
