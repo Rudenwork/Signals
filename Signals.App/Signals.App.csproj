@@ -6,6 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>51dcd4ec-e79c-4ce8-810d-9b884b71d7dc</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileTag>signals.app</DockerfileTag>
 	</PropertyGroup>
 
 	<ItemGroup>
