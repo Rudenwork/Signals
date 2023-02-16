@@ -78,6 +78,18 @@ namespace Signals.App.Controllers
         {
             var query = SignalsContext.Signals.AsQueryable();
 
+            if (filter.Name is not null)
+                query = query.Where(x => x.Name.Contains(filter.Name));
+
+            if (filter.IsDisabled is not null)
+                query = query.Where(x => x.IsDisabled == filter.IsDisabled);
+
+            if (filter.HasSchedule is not null)
+                query = query.Where(x => (x.Schedule != null) == filter.HasSchedule);
+
+            if (filter.HasExecution is not null)
+                query = query.Where(x => (x.Execution != null) == filter.HasExecution);
+
             var entities = query
                 .Where(x => x.UserId == User.GetId())
                 .Subset(subset.Offset, subset.Limit)

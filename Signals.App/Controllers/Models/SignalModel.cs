@@ -73,14 +73,9 @@ namespace Signals.App.Controllers.Models
             public class Filter
             {
                 public string? Name { get; set; }
-                public StatusEnum? Status { get; set; }
-
-                public enum StatusEnum
-                {
-                    InProgress,
-                    Scheduled,
-                    Disabled
-                }
+                public bool? IsDisabled { get; set; }
+                public bool? HasExecution { get; set; }
+                public bool? HasSchedule { get; set; }
             }
         }
 
