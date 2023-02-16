@@ -22,7 +22,8 @@ jobs:
       - name: Build image and push to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
-          context: ./Signals.Test
+          context: .
+          file: ./Signals.Test/Dockerfile
           tags: ghcr.io/rudenwork/signals.test:v0.0
           push: true
 
