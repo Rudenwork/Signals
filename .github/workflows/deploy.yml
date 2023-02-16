@@ -1,0 +1,18 @@
+name: Deploy
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+      environment:
+        type: environment
+        description: Environment
+        required: true
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
