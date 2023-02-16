@@ -1,10 +1,26 @@
-name: Docker Build Push
-on: workflow_dispatch
+name: Create Release
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+      deploy:
+        type: boolean
+        description: Deploy
 jobs:
-  build-push-docker-image:
-    name: Build Docker image and push 
+  create-release-docker-build-push:
+    name: Create Release, Docker Build-Push
     runs-on: ubuntu-latest
     steps:
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
+      
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -24,8 +40,5 @@ jobs:
         with:
           context: .
           file: ./Signals.Test/Dockerfile
-          tags: ghcr.io/rudenwork/signals.test:v0.0
+          tags: ghcr.io/rudenwork/signals.test:${{ github.event.inputs.version }}
           push: true
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
