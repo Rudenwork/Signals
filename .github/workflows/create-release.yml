@@ -9,8 +9,8 @@ on:
         type: boolean
         description: Deploy
 jobs:
-  create-release-docker-build-push:
-    name: Create Release, Docker Build-Push
+  create-release:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Create release
@@ -42,3 +42,9 @@ jobs:
           file: ./Signals.Test/Dockerfile
           tags: ghcr.io/rudenwork/signals.test:${{ github.event.inputs.version }}
           push: true
+          
+      - name: Deploy
+        if: github.event.inputs.deploy
+        uses: rudenwork/signals/.github/workflows/deploy.yml@main
+        with:
+          version: ${{ github.event.inputs.version }}
