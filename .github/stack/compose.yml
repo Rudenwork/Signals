@@ -1,0 +1,7 @@
+version: '3.9'
+
+services:
+  
+  signals.test:
+    image: ghcr.io/rudenwork/signals.test:$TAG
+    restart: always
