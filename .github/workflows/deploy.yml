@@ -19,16 +19,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+            
       - name: Deploy Portainer stack
-        uses: bots-house/portainer-deploy-stack-action@v1.0.0
-        with:
-          portainer-url: ${{ secrets.PORTAINER_URL }}
-          portainer-username: ${{ secrets.PORTAINER_USERNAME }}
-          portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
-          portainer-endpoint: 2
-          teams: default
-          stack-name: signals
-          stack-file: .github/stack/compose.yml
-          stack-vars: |
-            TAG: ${{ github.event.inputs.version }}
+        uses: LGinC/portainer-stack-deploy@1.0
+        with: 
+          serverurl: ${{ secrets.PORTAINER_URL }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          endpointId: 2
+          stackname: signals
+          env: |
+            TAG=${{ github.event.inputs.version }}
+          docker_compose: |
+            version: '3.9'
+            services:
+              signals.test:
+                image: ghcr.io/rudenwork/signals.test:$TAG
+                restart: always  
