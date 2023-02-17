@@ -19,3 +19,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Read compose file
+        id: readcompose
+        run: |
+          echo 'COMPOSE<<EOF' >> $GITHUB_ENV
+          cat .github/stack/compose.yml >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+            
+      - name: Deploy Portainer stack
+        uses: LGinC/portainer-stack-deploy@1.0
+        with: 
+          serverurl: ${{ secrets.PORTAINER_URL }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          endpointId: 2
+          stackname: signals
+          docker_compose: ${{ env.COMPOSE }}
+          env: |
+            TAG=${{ github.event.inputs.version }}
