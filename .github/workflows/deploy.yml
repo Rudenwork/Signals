@@ -22,7 +22,7 @@ jobs:
         
       - name: Read compose file
         id: readcompose
-        run: echo "{compose}={$(cat .github/stack/compose.yml)}" >> $GITHUB_ENV
+        run: echo "{compose}={'$(cat .github/stack/compose.yml)'}" >> $GITHUB_ENV
             
       - name: Deploy Portainer stack
         uses: LGinC/portainer-stack-deploy@1.0
