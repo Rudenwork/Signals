@@ -1,13 +1,10 @@
 name: Deploy
 on: 
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
+        type: string
         description: 'Version'
-        required: true
-      environment:
-        type: environment
-        description: Environment
         required: true
 jobs:
   deploy:
