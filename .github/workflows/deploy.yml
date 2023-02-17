@@ -19,3 +19,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Deploy Portainer stack
+        uses: bots-house/portainer-deploy-stack-action@v1.0.0
+        with:
+          portainer-url: ${{ secrets.PORTAINER_URL }}
+          portainer-username: ${{ secrets.PORTAINER_USERNAME }}
+          portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
+          portainer-endpoint: 1
+          stack-name: signals
+          stack-file: .github/stack/compose.yml
+          stack-vars: |
+            TAG: ${{ github.event.inputs.version }}
