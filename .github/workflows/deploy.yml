@@ -2,15 +2,15 @@ name: Deploy
 on:
   workflow_dispatch:
     inputs:
-      version:
+      tag:
         type: string
-        description: 'Version'
+        description: 'Tag'
         required: true
   workflow_call:
     inputs:
-      version:
+      tag:
         type: string
-        description: 'Version'
+        description: 'Tag'
         required: true
 jobs:
   deploy:
@@ -37,4 +37,4 @@ jobs:
           stackname: signals
           docker_compose: ${{ env.COMPOSE }}
           env: |
-            TAG=${{ github.event.inputs.version }}
+            TAG=${{ github.event.inputs.tag }}
