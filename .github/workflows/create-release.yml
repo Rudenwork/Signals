@@ -45,6 +45,7 @@ jobs:
           
   deploy:
     name: Deploy
+    needs: create-release
     if: github.event.inputs.deploy
     uses: rudenwork/signals/.github/workflows/deploy.yml@main
     with:
