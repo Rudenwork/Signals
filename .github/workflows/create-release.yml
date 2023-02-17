@@ -48,6 +48,7 @@ jobs:
     needs: create-release
     if: github.event.inputs.deploy
     uses: rudenwork/signals/.github/workflows/deploy.yml@main
+    secrets: inherit
     with:
       version: ${{ github.event.inputs.version }}
     
