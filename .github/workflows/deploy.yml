@@ -22,7 +22,7 @@ jobs:
         
       - name: Read compose file
         id: readcompose
-        run: echo "{compose}={'$(cat .github/stack/compose.yml)'}" >> $GITHUB_ENV
+        run: echo "COMPOSE=$(cat .github/stack/compose.yml)" >> $GITHUB_OUTPUT
             
       - name: Deploy Portainer stack
         uses: LGinC/portainer-stack-deploy@1.0
@@ -32,6 +32,6 @@ jobs:
           password: ${{ secrets.PORTAINER_PASSWORD }}
           endpointId: 2
           stackname: signals
-          docker_compose: ${{ env.compose }}
+          docker_compose: ${{ steps.readcompose.outputs.COMPOSE }}
           env: |
             TAG=${{ github.event.inputs.version }}
