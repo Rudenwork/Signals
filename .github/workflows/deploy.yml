@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Read compose file
+        id: readcompose
+        run: echo "::set-output name=compose::$(cat .github/stack/compose.yml)"
             
       - name: Deploy Portainer stack
         uses: LGinC/portainer-stack-deploy@1.0
@@ -28,11 +32,6 @@ jobs:
           password: ${{ secrets.PORTAINER_PASSWORD }}
           endpointId: 2
           stackname: signals
+          docker_compose: ${{ steps.readcompose.outputs.compose }}
           env: |
             TAG=${{ github.event.inputs.version }}
-          docker_compose: |
-            version: '3.9'
-            services:
-              signals.test:
-                image: ghcr.io/rudenwork/signals.test:$TAG
-                restart: always  
