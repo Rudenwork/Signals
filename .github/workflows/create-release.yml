@@ -43,8 +43,10 @@ jobs:
           tags: ghcr.io/rudenwork/signals.test:${{ github.event.inputs.version }}
           push: true
           
-      - name: Deploy
-        if: github.event.inputs.deploy
-        uses: rudenwork/signals/.github/workflows/deploy.yml@main
-        with:
-          version: ${{ github.event.inputs.version }}
+  deploy:
+    name: Deploy
+    if: github.event.inputs.deploy
+    uses: rudenwork/signals/.github/workflows/deploy.yml@main
+    with:
+      version: ${{ github.event.inputs.version }}
+    
