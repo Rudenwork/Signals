@@ -26,7 +26,7 @@ jobs:
           portainer-url: ${{ secrets.PORTAINER_URL }}
           portainer-username: ${{ secrets.PORTAINER_USERNAME }}
           portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
-          portainer-endpoint: 1
+          portainer-endpoint: 2
           stack-name: signals
           stack-file: .github/stack/compose.yml
           stack-vars: |
