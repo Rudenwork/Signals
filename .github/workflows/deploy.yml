@@ -37,4 +37,17 @@ jobs:
           stackname: signals
           docker_compose: ${{ env.COMPOSE }}
           env: |
-            TAG=${{ github.event.inputs.tag }}
+            RELEASE_TAG=${{ github.event.inputs.tag }}
+            RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}
+            RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            IDENTITY_AUTHORITY=${{ secrets.IDENTITY_AUTHORITY }}
+            RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}
+            EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+            EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+            DB_CONNECTION_SIGNALS=${{ secrets.DB_CONNECTION_SIGNALS }}
+            DB_CONNECTION_QUARTZ=${{ secrets.DB_CONNECTION_QUARTZ }}
