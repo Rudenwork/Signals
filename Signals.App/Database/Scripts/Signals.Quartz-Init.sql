@@ -1,383 +1,169 @@
-﻿IF OBJECT_ID(N'[dbo].[FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS]', N'F') IS NOT NULL
-ALTER TABLE [dbo].[QRTZ_TRIGGERS] DROP CONSTRAINT [FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS];
-GO
-
-IF OBJECT_ID(N'[dbo].[FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS]', N'F') IS NOT NULL
-ALTER TABLE [dbo].[QRTZ_CRON_TRIGGERS] DROP CONSTRAINT [FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS]', N'F') IS NOT NULL
-ALTER TABLE [dbo].[QRTZ_SIMPLE_TRIGGERS] DROP CONSTRAINT [FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS]', N'F') IS NOT NULL
-ALTER TABLE [dbo].[QRTZ_SIMPROP_TRIGGERS] DROP CONSTRAINT [FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS];
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_QRTZ_JOB_LISTENERS_QRTZ_JOB_DETAILS]') AND parent_object_id = OBJECT_ID(N'[dbo].[QRTZ_JOB_LISTENERS]'))
-ALTER TABLE [dbo].[QRTZ_JOB_LISTENERS] DROP CONSTRAINT [FK_QRTZ_JOB_LISTENERS_QRTZ_JOB_DETAILS];
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_QRTZ_TRIGGER_LISTENERS_QRTZ_TRIGGERS]') AND parent_object_id = OBJECT_ID(N'[dbo].[QRTZ_TRIGGER_LISTENERS]'))
-ALTER TABLE [dbo].[QRTZ_TRIGGER_LISTENERS] DROP CONSTRAINT [FK_QRTZ_TRIGGER_LISTENERS_QRTZ_TRIGGERS];
+﻿DROP TABLE IF EXISTS qrtz_fired_triggers;
+DROP TABLE IF EXISTS qrtz_paused_trigger_grps;
+DROP TABLE IF EXISTS qrtz_scheduler_state;
+DROP TABLE IF EXISTS qrtz_locks;
+DROP TABLE IF EXISTS qrtz_simprop_triggers;
+DROP TABLE IF EXISTS qrtz_simple_triggers;
+DROP TABLE IF EXISTS qrtz_cron_triggers;
+DROP TABLE IF EXISTS qrtz_blob_triggers;
+DROP TABLE IF EXISTS qrtz_triggers;
+DROP TABLE IF EXISTS qrtz_job_details;
+DROP TABLE IF EXISTS qrtz_calendars;
 
 
-IF OBJECT_ID(N'[dbo].[QRTZ_CALENDARS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_CALENDARS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_CRON_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_CRON_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_BLOB_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_BLOB_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_FIRED_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_FIRED_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_PAUSED_TRIGGER_GRPS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_PAUSED_TRIGGER_GRPS];
-GO
-
-IF  OBJECT_ID(N'[dbo].[QRTZ_JOB_LISTENERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_JOB_LISTENERS];
-
-IF OBJECT_ID(N'[dbo].[QRTZ_SCHEDULER_STATE]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_SCHEDULER_STATE];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_LOCKS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_LOCKS];
-GO
-IF OBJECT_ID(N'[dbo].[QRTZ_TRIGGER_LISTENERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_TRIGGER_LISTENERS];
-
-
-IF OBJECT_ID(N'[dbo].[QRTZ_JOB_DETAILS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_JOB_DETAILS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_SIMPLE_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_SIMPLE_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_SIMPROP_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_SIMPROP_TRIGGERS];
-GO
-
-IF OBJECT_ID(N'[dbo].[QRTZ_TRIGGERS]', N'U') IS NOT NULL
-DROP TABLE [dbo].[QRTZ_TRIGGERS];
-GO
-
-CREATE TABLE [dbo].[QRTZ_CALENDARS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [CALENDAR_NAME] nvarchar(200) NOT NULL,
-  [CALENDAR] varbinary(max) NOT NULL
+CREATE TABLE qrtz_job_details
+  (
+    sched_name TEXT NOT NULL,
+	job_name  TEXT NOT NULL,
+    job_group TEXT NOT NULL,
+    description TEXT NULL,
+    job_class_name   TEXT NOT NULL, 
+    is_durable BOOL NOT NULL,
+    is_nonconcurrent BOOL NOT NULL,
+    is_update_data BOOL NOT NULL,
+	requests_recovery BOOL NOT NULL,
+    job_data BYTEA NULL,
+    PRIMARY KEY (sched_name,job_name,job_group)
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_CRON_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [CRON_EXPRESSION] nvarchar(120) NOT NULL,
-  [TIME_ZONE_ID] nvarchar(80) 
+CREATE TABLE qrtz_triggers
+  (
+    sched_name TEXT NOT NULL,
+	trigger_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL,
+    job_name  TEXT NOT NULL, 
+    job_group TEXT NOT NULL,
+    description TEXT NULL,
+    next_fire_time BIGINT NULL,
+    prev_fire_time BIGINT NULL,
+    priority INTEGER NULL,
+    trigger_state TEXT NOT NULL,
+    trigger_type TEXT NOT NULL,
+    start_time BIGINT NOT NULL,
+    end_time BIGINT NULL,
+    calendar_name TEXT NULL,
+    misfire_instr SMALLINT NULL,
+    job_data BYTEA NULL,
+    PRIMARY KEY (sched_name,trigger_name,trigger_group),
+    FOREIGN KEY (sched_name,job_name,job_group) 
+		REFERENCES qrtz_job_details(sched_name,job_name,job_group) 
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_FIRED_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [ENTRY_ID] nvarchar(140) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [INSTANCE_NAME] nvarchar(200) NOT NULL,
-  [FIRED_TIME] bigint NOT NULL,
-  [SCHED_TIME] bigint NOT NULL,
-  [PRIORITY] int NOT NULL,
-  [STATE] nvarchar(16) NOT NULL,
-  [JOB_NAME] nvarchar(150) NULL,
-  [JOB_GROUP] nvarchar(150) NULL,
-  [IS_NONCONCURRENT] bit NULL,
-  [REQUESTS_RECOVERY] bit NULL 
+CREATE TABLE qrtz_simple_triggers
+  (
+    sched_name TEXT NOT NULL,
+	trigger_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL,
+    repeat_count BIGINT NOT NULL,
+    repeat_interval BIGINT NOT NULL,
+    times_triggered BIGINT NOT NULL,
+    PRIMARY KEY (sched_name,trigger_name,trigger_group),
+    FOREIGN KEY (sched_name,trigger_name,trigger_group) 
+		REFERENCES qrtz_triggers(sched_name,trigger_name,trigger_group) ON DELETE CASCADE
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_PAUSED_TRIGGER_GRPS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL 
+CREATE TABLE QRTZ_SIMPROP_TRIGGERS 
+  (
+    sched_name TEXT NOT NULL,
+    trigger_name TEXT NOT NULL ,
+    trigger_group TEXT NOT NULL ,
+    str_prop_1 TEXT NULL,
+    str_prop_2 TEXT NULL,
+    str_prop_3 TEXT NULL,
+    int_prop_1 INTEGER NULL,
+    int_prop_2 INTEGER NULL,
+    long_prop_1 BIGINT NULL,
+    long_prop_2 BIGINT NULL,
+    dec_prop_1 NUMERIC NULL,
+    dec_prop_2 NUMERIC NULL,
+    bool_prop_1 BOOL NULL,
+    bool_prop_2 BOOL NULL,
+	time_zone_id TEXT NULL,
+	PRIMARY KEY (sched_name,trigger_name,trigger_group),
+    FOREIGN KEY (sched_name,trigger_name,trigger_group) 
+		REFERENCES qrtz_triggers(sched_name,trigger_name,trigger_group) ON DELETE CASCADE
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_SCHEDULER_STATE] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [INSTANCE_NAME] nvarchar(200) NOT NULL,
-  [LAST_CHECKIN_TIME] bigint NOT NULL,
-  [CHECKIN_INTERVAL] bigint NOT NULL
+CREATE TABLE qrtz_cron_triggers
+  (
+    sched_name TEXT NOT NULL,
+    trigger_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL,
+    cron_expression TEXT NOT NULL,
+    time_zone_id TEXT,
+    PRIMARY KEY (sched_name,trigger_name,trigger_group),
+    FOREIGN KEY (sched_name,trigger_name,trigger_group) 
+		REFERENCES qrtz_triggers(sched_name,trigger_name,trigger_group) ON DELETE CASCADE
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_LOCKS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [LOCK_NAME] nvarchar(40) NOT NULL 
+CREATE TABLE qrtz_blob_triggers
+  (
+    sched_name TEXT NOT NULL,
+    trigger_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL,
+    blob_data BYTEA NULL,
+    PRIMARY KEY (sched_name,trigger_name,trigger_group),
+    FOREIGN KEY (sched_name,trigger_name,trigger_group) 
+		REFERENCES qrtz_triggers(sched_name,trigger_name,trigger_group) ON DELETE CASCADE
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_JOB_DETAILS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [JOB_NAME] nvarchar(150) NOT NULL,
-  [JOB_GROUP] nvarchar(150) NOT NULL,
-  [DESCRIPTION] nvarchar(250) NULL,
-  [JOB_CLASS_NAME] nvarchar(250) NOT NULL,
-  [IS_DURABLE] bit NOT NULL,
-  [IS_NONCONCURRENT] bit NOT NULL,
-  [IS_UPDATE_DATA] bit NOT NULL,
-  [REQUESTS_RECOVERY] bit NOT NULL,
-  [JOB_DATA] varbinary(max) NULL
+CREATE TABLE qrtz_calendars
+  (
+    sched_name TEXT NOT NULL,
+    calendar_name  TEXT NOT NULL, 
+    calendar BYTEA NOT NULL,
+    PRIMARY KEY (sched_name,calendar_name)
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_SIMPLE_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [REPEAT_COUNT] int NOT NULL,
-  [REPEAT_INTERVAL] bigint NOT NULL,
-  [TIMES_TRIGGERED] int NOT NULL
+CREATE TABLE qrtz_paused_trigger_grps
+  (
+    sched_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL, 
+    PRIMARY KEY (sched_name,trigger_group)
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_SIMPROP_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [STR_PROP_1] nvarchar(512) NULL,
-  [STR_PROP_2] nvarchar(512) NULL,
-  [STR_PROP_3] nvarchar(512) NULL,
-  [INT_PROP_1] int NULL,
-  [INT_PROP_2] int NULL,
-  [LONG_PROP_1] bigint NULL,
-  [LONG_PROP_2] bigint NULL,
-  [DEC_PROP_1] numeric(13,4) NULL,
-  [DEC_PROP_2] numeric(13,4) NULL,
-  [BOOL_PROP_1] bit NULL,
-  [BOOL_PROP_2] bit NULL,
-  [TIME_ZONE_ID] nvarchar(80) NULL 
+CREATE TABLE qrtz_fired_triggers 
+  (
+    sched_name TEXT NOT NULL,
+    entry_id TEXT NOT NULL,
+    trigger_name TEXT NOT NULL,
+    trigger_group TEXT NOT NULL,
+    instance_name TEXT NOT NULL,
+    fired_time BIGINT NOT NULL,
+	sched_time BIGINT NOT NULL,
+    priority INTEGER NOT NULL,
+    state TEXT NOT NULL,
+    job_name TEXT NULL,
+    job_group TEXT NULL,
+    is_nonconcurrent BOOL NOT NULL,
+    requests_recovery BOOL NULL,
+    PRIMARY KEY (sched_name,entry_id)
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_BLOB_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [BLOB_DATA] varbinary(max) NULL
+CREATE TABLE qrtz_scheduler_state 
+  (
+    sched_name TEXT NOT NULL,
+    instance_name TEXT NOT NULL,
+    last_checkin_time BIGINT NOT NULL,
+    checkin_interval BIGINT NOT NULL,
+    PRIMARY KEY (sched_name,instance_name)
 );
-GO
 
-CREATE TABLE [dbo].[QRTZ_TRIGGERS] (
-  [SCHED_NAME] nvarchar(120) NOT NULL,
-  [TRIGGER_NAME] nvarchar(150) NOT NULL,
-  [TRIGGER_GROUP] nvarchar(150) NOT NULL,
-  [JOB_NAME] nvarchar(150) NOT NULL,
-  [JOB_GROUP] nvarchar(150) NOT NULL,
-  [DESCRIPTION] nvarchar(250) NULL,
-  [NEXT_FIRE_TIME] bigint NULL,
-  [PREV_FIRE_TIME] bigint NULL,
-  [PRIORITY] int NULL,
-  [TRIGGER_STATE] nvarchar(16) NOT NULL,
-  [TRIGGER_TYPE] nvarchar(8) NOT NULL,
-  [START_TIME] bigint NOT NULL,
-  [END_TIME] bigint NULL,
-  [CALENDAR_NAME] nvarchar(200) NULL,
-  [MISFIRE_INSTR] int NULL,
-  [JOB_DATA] varbinary(max) NULL
+CREATE TABLE qrtz_locks
+  (
+    sched_name TEXT NOT NULL,
+    lock_name  TEXT NOT NULL, 
+    PRIMARY KEY (sched_name,lock_name)
 );
-GO
 
-ALTER TABLE [dbo].[QRTZ_CALENDARS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_CALENDARS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [CALENDAR_NAME]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_CRON_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_CRON_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_FIRED_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_FIRED_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [ENTRY_ID]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_PAUSED_TRIGGER_GRPS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_PAUSED_TRIGGER_GRPS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_SCHEDULER_STATE] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_SCHEDULER_STATE] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [INSTANCE_NAME]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_LOCKS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_LOCKS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [LOCK_NAME]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_JOB_DETAILS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_JOB_DETAILS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [JOB_NAME],
-    [JOB_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_SIMPLE_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_SIMPLE_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_SIMPROP_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_SIMPROP_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_BLOB_TRIGGERS] WITH NOCHECK ADD
-  CONSTRAINT [PK_QRTZ_BLOB_TRIGGERS] PRIMARY KEY  CLUSTERED
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  );
-GO
-
-ALTER TABLE [dbo].[QRTZ_CRON_TRIGGERS] ADD
-  CONSTRAINT [FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS] FOREIGN KEY
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) REFERENCES [dbo].[QRTZ_TRIGGERS] (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) ON DELETE CASCADE;
-GO
-
-ALTER TABLE [dbo].[QRTZ_SIMPLE_TRIGGERS] ADD
-  CONSTRAINT [FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS] FOREIGN KEY
-  (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) REFERENCES [dbo].[QRTZ_TRIGGERS] (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) ON DELETE CASCADE;
-GO
-
-ALTER TABLE [dbo].[QRTZ_SIMPROP_TRIGGERS] ADD
-  CONSTRAINT [FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS] FOREIGN KEY
-  (
-	[SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) REFERENCES [dbo].[QRTZ_TRIGGERS] (
-    [SCHED_NAME],
-    [TRIGGER_NAME],
-    [TRIGGER_GROUP]
-  ) ON DELETE CASCADE;
-GO
-
-ALTER TABLE [dbo].[QRTZ_TRIGGERS] ADD
-  CONSTRAINT [FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS] FOREIGN KEY
-  (
-    [SCHED_NAME],
-    [JOB_NAME],
-    [JOB_GROUP]
-  ) REFERENCES [dbo].[QRTZ_JOB_DETAILS] (
-    [SCHED_NAME],
-    [JOB_NAME],
-    [JOB_GROUP]
-  );
-GO
-
--- drop indexe if they exist and rebuild if current ones
-DROP INDEX IF EXISTS [IDX_QRTZ_T_J] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_JG] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_C] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_G] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_G_J] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_STATE] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_N_STATE] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_N_G_STATE] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_NEXT_FIRE_TIME] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_NFT_ST] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_NFT_MISFIRE] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_NFT_ST_MISFIRE] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_T_NFT_ST_MISFIRE_GRP] ON [dbo].[QRTZ_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_TRIG_INST_NAME] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_INST_JOB_REQ_RCVRY] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_J_G] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_JG] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_T_G] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_TG] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_G_J] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-DROP INDEX IF EXISTS [IDX_QRTZ_FT_G_T] ON [dbo].[QRTZ_FIRED_TRIGGERS];
-GO
-
-
-CREATE INDEX [IDX_QRTZ_T_G_J]                 ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, JOB_GROUP, JOB_NAME);
-CREATE INDEX [IDX_QRTZ_T_C]                   ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, CALENDAR_NAME);
-
-CREATE INDEX [IDX_QRTZ_T_N_G_STATE]           ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, TRIGGER_GROUP, TRIGGER_STATE);
-CREATE INDEX [IDX_QRTZ_T_STATE]               ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, TRIGGER_STATE);
-CREATE INDEX [IDX_QRTZ_T_N_STATE]             ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, TRIGGER_STATE);
-CREATE INDEX [IDX_QRTZ_T_NEXT_FIRE_TIME]      ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, NEXT_FIRE_TIME);
-CREATE INDEX [IDX_QRTZ_T_NFT_ST]              ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, TRIGGER_STATE, NEXT_FIRE_TIME);
-CREATE INDEX [IDX_QRTZ_T_NFT_ST_MISFIRE]      ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, MISFIRE_INSTR, NEXT_FIRE_TIME, TRIGGER_STATE);
-CREATE INDEX [IDX_QRTZ_T_NFT_ST_MISFIRE_GRP]  ON [dbo].[QRTZ_TRIGGERS](SCHED_NAME, MISFIRE_INSTR, NEXT_FIRE_TIME, TRIGGER_GROUP, TRIGGER_STATE);
-
-CREATE INDEX [IDX_QRTZ_FT_INST_JOB_REQ_RCVRY] ON [dbo].[QRTZ_FIRED_TRIGGERS](SCHED_NAME, INSTANCE_NAME, REQUESTS_RECOVERY);
-CREATE INDEX [IDX_QRTZ_FT_G_J]                ON [dbo].[QRTZ_FIRED_TRIGGERS](SCHED_NAME, JOB_GROUP, JOB_NAME);
-CREATE INDEX [IDX_QRTZ_FT_G_T]                ON [dbo].[QRTZ_FIRED_TRIGGERS](SCHED_NAME, TRIGGER_GROUP, TRIGGER_NAME);
-GO
+create index idx_qrtz_j_req_recovery on qrtz_job_details(requests_recovery);
+create index idx_qrtz_t_next_fire_time on qrtz_triggers(next_fire_time);
+create index idx_qrtz_t_state on qrtz_triggers(trigger_state);
+create index idx_qrtz_t_nft_st on qrtz_triggers(next_fire_time,trigger_state);
+create index idx_qrtz_ft_trig_name on qrtz_fired_triggers(trigger_name);
+create index idx_qrtz_ft_trig_group on qrtz_fired_triggers(trigger_group);
+create index idx_qrtz_ft_trig_nm_gp on qrtz_fired_triggers(sched_name,trigger_name,trigger_group);
+create index idx_qrtz_ft_trig_inst_name on qrtz_fired_triggers(instance_name);
+create index idx_qrtz_ft_job_name on qrtz_fired_triggers(job_name);
+create index idx_qrtz_ft_job_group on qrtz_fired_triggers(job_group);
+create index idx_qrtz_ft_job_req_recovery on qrtz_fired_triggers(requests_recovery);

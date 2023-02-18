@@ -7,10 +7,10 @@ namespace Signals.App.Database.Entities.Blocks
     {
         public Guid IndicatorId { get; set; }
 
-        [Column(TypeName = "nvarchar(max)")]
+        [Column(TypeName = "varchar")]
         public ChangeBlockType Type { get; set; }
 
-        [Column(TypeName = "nvarchar(max)")]
+        [Column(TypeName = "varchar")]
         public ChangeBlockOperator Operator { get; set; }
 
         public decimal Target { get; set; }

@@ -15,10 +15,10 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Interval = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LoopbackPeriod = table.Column<int>(type: "int", nullable: false),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Interval = table.Column<string>(type: "varchar", nullable: false),
+                    LoopbackPeriod = table.Column<int>(type: "integer", nullable: false),
+                    Symbol = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,11 +29,11 @@ namespace Signals.App.Database.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    IsDisabled = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDisabled = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,8 +44,8 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-BollingerBands",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BandType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BandType = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,8 +62,8 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-Candle",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParameterType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParameterType = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,8 +80,8 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-Constant",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,7 +98,7 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-ExponentialMovingAverage",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,7 +115,7 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-MovingAverage",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,7 +132,7 @@ namespace Signals.App.Database.Migrations
                 name: "Indicators-RelativeStrengthIndex",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,11 +149,11 @@ namespace Signals.App.Database.Migrations
                 name: "Channels",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    IsVerified = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,11 +169,11 @@ namespace Signals.App.Database.Migrations
                 name: "Signals",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Schedule = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDisabled = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Schedule = table.Column<string>(type: "text", nullable: true),
+                    IsDisabled = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,8 +189,8 @@ namespace Signals.App.Database.Migrations
                 name: "Channels-Email",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,8 +207,8 @@ namespace Signals.App.Database.Migrations
                 name: "Channels-Telegram",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
                     ChatId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -226,11 +226,11 @@ namespace Signals.App.Database.Migrations
                 name: "Stages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PreviousStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NextStageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SignalId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    PreviousStageId = table.Column<Guid>(type: "uuid", nullable: true),
+                    NextStageId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,9 +246,9 @@ namespace Signals.App.Database.Migrations
                 name: "Executions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SignalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SignalId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StageId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,9 +269,9 @@ namespace Signals.App.Database.Migrations
                 name: "Stages-Notification",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChannelId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -293,8 +293,8 @@ namespace Signals.App.Database.Migrations
                 name: "Stages-Waiting",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Period = table.Column<TimeSpan>(type: "time", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Period = table.Column<TimeSpan>(type: "interval", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -311,8 +311,8 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParentBlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParentBlockId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -323,13 +323,13 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks-Change",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Operator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Target = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsPercentage = table.Column<bool>(type: "bit", nullable: false),
-                    Period = table.Column<TimeSpan>(type: "time", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IndicatorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "varchar", nullable: false),
+                    Operator = table.Column<string>(type: "varchar", nullable: false),
+                    Target = table.Column<decimal>(type: "numeric", nullable: false),
+                    IsPercentage = table.Column<bool>(type: "boolean", nullable: false),
+                    Period = table.Column<TimeSpan>(type: "interval", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -351,8 +351,8 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks-Group",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -369,10 +369,10 @@ namespace Signals.App.Database.Migrations
                 name: "Blocks-Value",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LeftIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RightIndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Operator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    LeftIndicatorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RightIndicatorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Operator = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -399,10 +399,10 @@ namespace Signals.App.Database.Migrations
                 name: "Stages-Condition",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RetryCount = table.Column<int>(type: "int", nullable: true),
-                    RetryDelay = table.Column<TimeSpan>(type: "time", nullable: true),
-                    BlockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    RetryCount = table.Column<int>(type: "integer", nullable: true),
+                    RetryDelay = table.Column<TimeSpan>(type: "interval", nullable: true),
+                    BlockId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -429,22 +429,19 @@ namespace Signals.App.Database.Migrations
                 name: "IX_Blocks-Change_IndicatorId",
                 table: "Blocks-Change",
                 column: "IndicatorId",
-                unique: true,
-                filter: "[IndicatorId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks-Value_LeftIndicatorId",
                 table: "Blocks-Value",
                 column: "LeftIndicatorId",
-                unique: true,
-                filter: "[LeftIndicatorId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks-Value_RightIndicatorId",
                 table: "Blocks-Value",
                 column: "RightIndicatorId",
-                unique: true,
-                filter: "[RightIndicatorId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Channels_UserId",
@@ -461,8 +458,7 @@ namespace Signals.App.Database.Migrations
                 name: "IX_Executions_StageId",
                 table: "Executions",
                 column: "StageId",
-                unique: true,
-                filter: "[StageId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Signals_UserId",
@@ -478,8 +474,7 @@ namespace Signals.App.Database.Migrations
                 name: "IX_Stages-Condition_BlockId",
                 table: "Stages-Condition",
                 column: "BlockId",
-                unique: true,
-                filter: "[BlockId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stages-Notification_ChannelId",

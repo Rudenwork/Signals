@@ -5,7 +5,7 @@ namespace Signals.App.Database.Entities.Indicators
 {
     public class BollingerBandsIndicatorEntity : IndicatorEntity 
     {
-        [Column(TypeName = "nvarchar(max)")]
+        [Column(TypeName = "varchar")]
         public BollingerBand BandType { get; set; }
     }
 

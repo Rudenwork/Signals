@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Signals.App.Database;
 
 #nullable disable
@@ -17,19 +17,19 @@ namespace Signals.App.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Signals.App.Database.Entities.BlockEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("ParentBlockId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -44,20 +44,20 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -72,13 +72,13 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SignalId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("StageId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -86,8 +86,7 @@ namespace Signals.App.Database.Migrations
                         .IsUnique();
 
                     b.HasIndex("StageId")
-                        .IsUnique()
-                        .HasFilter("[StageId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Executions");
                 });
@@ -96,17 +95,17 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Interval")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.Property<int>("LoopbackPeriod")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Symbol")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -119,20 +118,20 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDisabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Schedule")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -145,20 +144,20 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("NextStageId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("PreviousStageId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SignalId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -173,21 +172,21 @@ namespace Signals.App.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDisabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -199,28 +198,27 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
 
                     b.Property<Guid>("IndicatorId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsPercentage")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Operator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.Property<TimeSpan>("Period")
-                        .HasColumnType("time");
+                        .HasColumnType("interval");
 
                     b.Property<decimal>("Target")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.HasIndex("IndicatorId")
-                        .IsUnique()
-                        .HasFilter("[IndicatorId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Blocks-Change", (string)null);
                 });
@@ -231,7 +229,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.ToTable("Blocks-Group", (string)null);
                 });
@@ -241,22 +239,20 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.BlockEntity");
 
                     b.Property<Guid>("LeftIndicatorId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Operator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.Property<Guid>("RightIndicatorId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasIndex("LeftIndicatorId")
-                        .IsUnique()
-                        .HasFilter("[LeftIndicatorId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("RightIndicatorId")
-                        .IsUnique()
-                        .HasFilter("[RightIndicatorId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Blocks-Value", (string)null);
                 });
@@ -267,7 +263,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.ToTable("Channels-Email", (string)null);
                 });
@@ -281,7 +277,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.ToTable("Channels-Telegram", (string)null);
                 });
@@ -292,7 +288,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("BandType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.ToTable("Indicators-BollingerBands", (string)null);
                 });
@@ -303,7 +299,7 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<string>("ParameterType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar");
 
                     b.ToTable("Indicators-Candle", (string)null);
                 });
@@ -313,7 +309,7 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.IndicatorEntity");
 
                     b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.ToTable("Indicators-Constant", (string)null);
                 });
@@ -344,17 +340,16 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.StageEntity");
 
                     b.Property<Guid>("BlockId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int?>("RetryCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<TimeSpan?>("RetryDelay")
-                        .HasColumnType("time");
+                        .HasColumnType("interval");
 
                     b.HasIndex("BlockId")
-                        .IsUnique()
-                        .HasFilter("[BlockId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Stages-Condition", (string)null);
                 });
@@ -364,11 +359,11 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.StageEntity");
 
                     b.Property<Guid>("ChannelId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasIndex("ChannelId");
 
@@ -380,7 +375,7 @@ namespace Signals.App.Database.Migrations
                     b.HasBaseType("Signals.App.Database.Entities.StageEntity");
 
                     b.Property<TimeSpan>("Period")
-                        .HasColumnType("time");
+                        .HasColumnType("interval");
 
                     b.ToTable("Stages-Waiting", (string)null);
                 });

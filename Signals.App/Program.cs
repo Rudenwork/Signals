@@ -25,10 +25,10 @@ var settings = builder.Configuration.Get<Settings>();
 builder.Services.Configure<Settings>(builder.Configuration);
 
 builder.Services.AddDbContext<SignalsContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(Signals))));
+    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(Signals))));
 
 builder.Services.AddDbContext<QuartzContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}")));
 
 builder.Services.AddIdentityServer(options => options.KeyManagement.KeyPath = $"{AppContext.BaseDirectory}/keys")
     .AddInMemoryIdentityResources(new List<IdentityResource>
@@ -140,7 +140,7 @@ builder.Services.AddQuartz(options =>
 {
     options.UsePersistentStore(config =>
     {
-        config.UseSqlServer(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}"));
+        config.UsePostgres(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}"));
         config.UseJsonSerializer();
     });
 

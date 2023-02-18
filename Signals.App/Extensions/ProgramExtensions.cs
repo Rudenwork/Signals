@@ -22,10 +22,7 @@ namespace Signals.App.Extensions
 
                 var sql = File.ReadAllText("Database/Scripts/Signals.Quartz-Init.sql");
 
-                foreach (var batch in sql.Split("GO", StringSplitOptions.RemoveEmptyEntries))
-                {
-                    quartzContext.Database.ExecuteSqlRaw(batch);
-                }
+                quartzContext.Database.ExecuteSqlRaw(sql);
             }
 
             signalsContext.Database.MigrateAsync().Wait();

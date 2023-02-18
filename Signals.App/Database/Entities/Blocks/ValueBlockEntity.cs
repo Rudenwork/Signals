@@ -8,7 +8,7 @@ namespace Signals.App.Database.Entities.Blocks
         public Guid LeftIndicatorId { get; set; }
         public Guid RightIndicatorId { get; set;}
 
-        [Column(TypeName = "nvarchar(max)")]
+        [Column(TypeName = "varchar")]
         public ValueBlockOperator Operator { get; set; }
 
         //EF Injected

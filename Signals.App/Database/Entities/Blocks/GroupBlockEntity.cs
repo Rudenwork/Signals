@@ -4,7 +4,7 @@ namespace Signals.App.Database.Entities.Blocks
 {
     public class GroupBlockEntity : BlockEntity
     {
-        [Column(TypeName = "nvarchar(max)")]
+        [Column(TypeName = "varchar")]
         public GroupBlockType Type { get; set; }
 
         //EF Injected
