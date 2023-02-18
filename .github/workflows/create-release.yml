@@ -35,14 +35,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Build Signals.Test
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Signals.Test/Dockerfile
-          tags: ghcr.io/rudenwork/signals.test:${{ github.event.inputs.tag }}
-          push: true
-          
       - name: Build Signals.App
         uses: docker/build-push-action@v2
         with:
