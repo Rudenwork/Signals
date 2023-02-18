@@ -2,6 +2,50 @@ version: '3.9'
 
 services:
   
-  signals.test:
-    image: ghcr.io/rudenwork/signals.test:$TAG
+  signals.app:
+    ports:
+      - 1001:80
+      - 1000:443
+    image: ghcr.io/rudenwork/signals.app:$RELEASE_TAG
     restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      
+      - Identity:Authority=$IDENTITY_AUTHORITY
+      - RabbitMq:Host=$RABBITMQ_HOST
+      - RabbitMq:Username=$RABBITMQ_USER
+      - RabbitMq:Password=$RABBITMQ_PASSWORD
+      - Email:Host=$EMAIL_HOST
+      - Email:Port=$EMAIL_PORT
+      - Email:Username=$EMAIL_USERNAME
+      - Email:Password=$EMAIL_PASSWORD
+      - Telegram:Token=$TELEGRAM_TOKEN
+      - ConnectionStrings:Signals=$DB_CONNECTION_SIGNALS
+      - ConnectionStrings:Signals.Quartz=$DB_CONNECTION_QUARTZ
+    
+  rabbitmq:
+    image: rabbitmq:3.9.28-management
+    restart: always
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBITMQ_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBITMQ_PASSWORD
+      
+  postgres:
+    image: postgres:15.2
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      
+volumes:
+  rabbitmq-data:
+  rabbitmq-log:
+  postgres-data:
