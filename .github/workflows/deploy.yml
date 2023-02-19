@@ -49,5 +49,3 @@ jobs:
             EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
-            DB_CONNECTION_SIGNALS=${{ secrets.DB_CONNECTION_SIGNALS }}
-            DB_CONNECTION_QUARTZ=${{ secrets.DB_CONNECTION_QUARTZ }}
