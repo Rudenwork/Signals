@@ -32,4 +32,10 @@
 		<PackageReference Include="Telegram.Bot" Version="18.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Database\Scripts\Signals.Quartz-Init.sql">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

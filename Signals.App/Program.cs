@@ -63,6 +63,7 @@ builder.Services.AddAuthentication(options =>
     {
         options.Authority = settings.Identity.Authority;
         options.TokenValidationParameters.ValidateAudience = false;
+        options.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddAuthorization();
