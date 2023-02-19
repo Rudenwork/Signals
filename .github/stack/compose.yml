@@ -3,17 +3,13 @@ version: '3.9'
 services:
   
   signals.app:
-    ports:
-      - 1001:80
-      - 1000:443
     image: ghcr.io/rudenwork/signals.app:$RELEASE_TAG
     restart: always
     depends_on:
       - rabbitmq
       - postgres
     environment:
-      - ASPNETCORE_URLS=http://+:80
-      
+      - ASPNETCORE_URLS=http://+:80  
       - Identity:Authority=$IDENTITY_AUTHORITY
       - RabbitMq:Host=$RABBITMQ_HOST
       - RabbitMq:Username=$RABBITMQ_USER
