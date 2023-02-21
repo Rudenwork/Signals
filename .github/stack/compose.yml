@@ -19,6 +19,7 @@ services:
       - Email:Username=$EMAIL_USERNAME
       - Email:Password=$EMAIL_PASSWORD
       - Telegram:Token=$TELEGRAM_TOKEN
+      - Binance:BaseAddress=$BINANCE_BASEADDRESS
       - ConnectionStrings:Signals=User ID=$POSTGRES_USER;Password=$POSTGRES_PASSWORD;Host=postgres;Port=5432;Database=Signals;
       - ConnectionStrings:Signals.Quartz=User ID=$POSTGRES_USER;Password=$POSTGRES_PASSWORD;Host=postgres;Port=5432;Database=Signals.Quartz;
     

@@ -1,4 +1,5 @@
 using Binance.Net;
+using Binance.Net.Objects;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using FluentValidation;
@@ -151,7 +152,10 @@ builder.Services.AddQuartz(options =>
 
 builder.Services.AddQuartzServer();
 
-builder.Services.AddBinance();
+builder.Services.AddBinance((options, _) => options.SpotApiOptions = new BinanceApiClientOptions
+{
+    BaseAddress = settings.Binance.BaseAddress
+});
 
 builder.Services.AddTelegramBot();
 

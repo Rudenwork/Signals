@@ -10,6 +10,8 @@
 
         public TelegramSettings Telegram { get; set; }
 
+        public BinanceSettings Binance { get; set; }
+
         public class IdentitySettings
         {
             public string Authority { get; set; }
@@ -33,6 +35,11 @@
         public class TelegramSettings
         {
             public string Token { get; set; }
+        }
+
+        public class BinanceSettings
+        {
+            public string BaseAddress { get; set; }
         }
     }
 }
