@@ -48,5 +48,25 @@ namespace Signals.App.Core.Execution
                 await context.Publish(new Next.Message { ExecutionId = executionId });
             }
         }
+
+        public class FaultConsumer : IConsumer<Fault<Message>>
+        {
+            private SignalsContext SignalsContext { get; }
+
+            public FaultConsumer(SignalsContext signalsContext)
+            {
+                SignalsContext = signalsContext;
+            }
+
+            public async Task Consume(ConsumeContext<Fault<Message>> context)
+            {
+                var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == context.Message.Message.SignalId);
+
+                if (execution is not null)
+                {
+                    await context.Publish(new Stop.Message { ExecutionId = execution.Id });
+                }
+            }
+        }
     }
 }
