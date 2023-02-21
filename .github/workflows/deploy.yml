@@ -49,3 +49,4 @@ jobs:
             EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+            BINANCE_BASEADDRESS=${{ secrets.BINANCE_BASEADDRESS }}
