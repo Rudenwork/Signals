@@ -16,11 +16,13 @@ namespace Signals.App.Core.Execution
         {
             private ILogger<Consumer> Logger { get; }
             private SignalsContext SignalsContext { get; }
+            private IBus Bus { get; }
 
-            public Consumer(ILogger<Consumer> logger, SignalsContext signalsContext)
+            public Consumer(ILogger<Consumer> logger, SignalsContext signalsContext, IBus bus)
             {
                 Logger = logger;
                 SignalsContext = signalsContext;
+                Bus = bus;
             }
 
             public async Task Consume(ConsumeContext<Message> context)
@@ -45,7 +47,7 @@ namespace Signals.App.Core.Execution
 
                 SignalsContext.SaveChanges();
 
-                await context.Publish(new Next.Message { ExecutionId = executionId });
+                await Bus.Publish(new Next.Message { ExecutionId = executionId });
             }
         }
 

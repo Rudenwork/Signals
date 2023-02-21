@@ -24,7 +24,6 @@ namespace Signals.App.Controllers
         private SignalsContext SignalsContext { get; }
         private Scheduler Scheduler { get; }
         private IMediator Mediator { get; }
-        private IBus Bus { get; }
 
         public SignalsController(SignalsContext signalsContext, Scheduler scheduler, IMediator mediator, IBus bus)
         {
@@ -73,7 +72,6 @@ namespace Signals.App.Controllers
             SignalsContext = signalsContext;
             Scheduler = scheduler;
             Mediator = mediator;
-            Bus = bus;
         }
 
         [HttpGet]
@@ -264,7 +262,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<SignalModel>> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
@@ -293,7 +291,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<SignalModel.Read>> Enable(Guid id)
+        public async Task<ActionResult> Enable(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
@@ -319,15 +317,11 @@ namespace Signals.App.Controllers
             SignalsContext.Update(entity);
             SignalsContext.SaveChanges();
 
-            FillRelatedEntities(entity);
-
-            var result = entity.Adapt<SignalModel.Read>();
-
-            return Ok(result);
+            return Ok();
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<SignalModel.Read>> Disable(Guid id)
+        public async Task<ActionResult> Disable(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
@@ -360,15 +354,11 @@ namespace Signals.App.Controllers
             SignalsContext.Update(entity);
             SignalsContext.SaveChanges();
 
-            FillRelatedEntities(entity);
-
-            var result = entity.Adapt<SignalModel.Read>();
-
-            return Ok(result);
+            return Ok();
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<SignalModel.Read>> Start(Guid id)
+        public async Task<ActionResult> Start(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
@@ -392,17 +382,13 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            await Bus.Publish(new Start.Message { SignalId = entity.Id });
+            await Mediator.Publish(new Start.Message { SignalId = entity.Id });
 
-            FillRelatedEntities(entity);
-
-            var result = entity.Adapt<SignalModel.Read>();
-
-            return Ok(result);
+            return Ok();
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<SignalModel.Read>> Stop(Guid id)
+        public async Task<ActionResult> Stop(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 

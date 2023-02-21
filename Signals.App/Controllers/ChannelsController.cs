@@ -169,7 +169,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult<ChannelModel.Read>> Verify(Guid id, ChannelModel.Verify model)
+        public async Task<ActionResult> Verify(Guid id, ChannelModel.Verify model)
         {
             var entity = SignalsContext.Channels.Find(id);
 
@@ -196,9 +196,7 @@ namespace Signals.App.Controllers
             SignalsContext.Channels.Update(entity);
             SignalsContext.SaveChanges();
 
-            var result = AdaptToModel(entity);
-
-            return Ok(result);
+            return Ok();
         }
 
         private static string GenerateCode() => Random.Shared.Next(1000, 10000).ToString();
