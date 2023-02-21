@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using MassTransit;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,13 +24,10 @@ namespace Signals.App.Controllers
         private SignalsContext SignalsContext { get; }
         private Scheduler Scheduler { get; }
         private IMediator Mediator { get; }
+        private IBus Bus { get; }
 
-        public SignalsController(SignalsContext signalsContext, Scheduler scheduler, IMediator mediator)
+        public SignalsController(SignalsContext signalsContext, Scheduler scheduler, IMediator mediator, IBus bus)
         {
-            SignalsContext = signalsContext;
-            Scheduler = scheduler;
-            Mediator = mediator;
-
             TypeAdapterConfig<StageModel, StageEntity>
                 .NewConfig()
                 .Include<StageModel.Condition, ConditionStageEntity>()
@@ -71,6 +69,11 @@ namespace Signals.App.Controllers
                 .Include<ExponentialMovingAverageIndicatorEntity, IndicatorModel.ExponentialMovingAverage>()
                 .Include<RelativeStrengthIndexIndicatorEntity, IndicatorModel.RelativeStrengthIndex>()
                 .Include<SimpleMovingAverageIndicatorEntity, IndicatorModel.SimpleMovingAverage>();
+
+            SignalsContext = signalsContext;
+            Scheduler = scheduler;
+            Mediator = mediator;
+            Bus = bus;
         }
 
         [HttpGet]
@@ -389,7 +392,7 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            await Mediator.Publish(new Start.Message { SignalId = entity.Id });
+            await Bus.Publish(new Start.Message { SignalId = entity.Id });
 
             FillRelatedEntities(entity);
 
