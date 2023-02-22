@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
-      "applicationUrl": "https://localhost:7165;http://localhost:5225"
+      "applicationUrl": "http://localhost:5000"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -18,19 +18,14 @@
       }
     },
     "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true,
-      "useSSL": true
+      "commandName": "Docker"
     }
   },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:2899",
-      "sslPort": 44367
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
