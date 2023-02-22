@@ -6,10 +6,10 @@ on:
         description: Tag
         required: true
         default: dev
-      publish-app:
+      app:
         type: boolean
         description: Signals.App
-      publish-web:
+      web:
         type: boolean
         description: Signals.Web
 jobs:
@@ -31,13 +31,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-  publish-app:
-    name: Publish Signals.App
-    needs: preparation
-    if: github.event.inputs.publish-app
-    runs-on: ubuntu-latest
-    steps:
       - name: Build Signals.App
+        if: inputs.app
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -45,13 +40,8 @@ jobs:
           tags: ghcr.io/rudenwork/signals.app:${{ inputs.tag }}
           push: true
 
-  publish-web:
-    name: Publish Signals.Web
-    needs: preparation
-    if: github.event.inputs.publish-web
-    runs-on: ubuntu-latest
-    steps:
       - name: Build Signals.Web
+        if: inputs.web
         uses: docker/build-push-action@v2
         with:
           context: .
