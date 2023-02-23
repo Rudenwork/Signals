@@ -11,8 +11,8 @@
 
         public class AdministrationSettings
         {
-            public string AdminUsername { get; set; }
-            public string AdminPassword { get; set; }
+            public string DefaultUsername { get; set; }
+            public string DefaultPassword { get; set; }
         }
 
         public class IdentitySettings

@@ -37,8 +37,8 @@ namespace Signals.App.Extensions
 
             signalsContext.Users.Add(new UserEntity
             {
-                Username = settings.Administration.AdminUsername,
-                PasswordHash = passwordHasher.HashPassword(null, settings.Administration.AdminPassword),
+                Username = settings.Administration.DefaultUsername,
+                PasswordHash = passwordHasher.HashPassword(null, settings.Administration.DefaultPassword),
                 IsAdmin = true,
                 IsDisabled = false
             });
