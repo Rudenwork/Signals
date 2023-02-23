@@ -1,6 +1,8 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Services;
@@ -30,13 +32,13 @@ namespace Signals.App.Extensions
             if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
 
+            var settings = scope.ServiceProvider.GetService<IOptions<Settings.Settings>>().Value;
             var passwordHasher = scope.ServiceProvider.GetService<IPasswordHasher<UserEntity>>();
 
             signalsContext.Users.Add(new UserEntity
             {
-                Id = Guid.Parse("78911115-ed98-4e96-c6b1-08dae7620d69"),
-                Username = "admin",
-                PasswordHash = passwordHasher.HashPassword(null, "admin"),
+                Username = settings.Administration.AdminUsername,
+                PasswordHash = passwordHasher.HashPassword(null, settings.Administration.AdminPassword),
                 IsAdmin = true,
                 IsDisabled = false
             });

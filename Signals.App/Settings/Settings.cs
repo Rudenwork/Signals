@@ -2,15 +2,18 @@
 {
     public class Settings
     {
+        public AdministrationSettings Administration { get; set; }
         public IdentitySettings Identity { get; set; }
-
         public RabbitMqSettings RabbitMq { get; set; }
-
         public EmailSettings Email { get; set; }
-
         public TelegramSettings Telegram { get; set; }
-
         public BinanceSettings Binance { get; set; }
+
+        public class AdministrationSettings
+        {
+            public string AdminUsername { get; set; }
+            public string AdminPassword { get; set; }
+        }
 
         public class IdentitySettings
         {
