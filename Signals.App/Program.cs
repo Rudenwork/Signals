@@ -123,7 +123,7 @@ builder.Services.AddMassTransit(options =>
 
     options.UsingRabbitMq((context, config) =>
     {
-        config.Host(settings.RabbitMq.Host, "/", host =>
+        config.Host(settings.RabbitMq.Host, settings.RabbitMq.Port, "/", host =>
         {
             host.Username(settings.RabbitMq.Username);
             host.Password(settings.RabbitMq.Password);
