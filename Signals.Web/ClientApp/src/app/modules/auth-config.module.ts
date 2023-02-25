@@ -6,9 +6,10 @@ import { AuthModule } from 'angular-auth-oidc-client';
   imports: [AuthModule.forRoot({
     config: {
       authority: 'http://localhost:5020',
+      redirectUrl: 'login',
       clientId: 'client',
       scope: 'openid profile offline_access',
-      responseType: 'password',
+      responseType: 'id_token token',
       silentRenew: true,
       useRefreshToken: true
     }

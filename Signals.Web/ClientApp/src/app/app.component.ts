@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from './services/settings.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -7,17 +7,22 @@ import { SettingsService } from './services/settings.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  constructor(public oidcSecurityService: OidcSecurityService) { }
 
-  constructor(private settingsService: SettingsService) {
-
+  ngOnInit() {
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData, accessToken, idToken }) => {
+      console.log("isAuthenticated", isAuthenticated);
+      console.log("userData", userData);
+      console.log("accessToken", accessToken);
+      console.log("idToken", idToken);
+    });
   }
 
-  ngOnInit(): void {
-
-    this.settingsService.getSettings().subscribe(settings => {
-      this.apiBaseUrl = settings.apiBaseAddress;
-    })
+  login() {
+    this.oidcSecurityService.authorize();
   }
 
-  apiBaseUrl!: string;
+  logout() {
+    this.oidcSecurityService.logoff();
+  }
 }

@@ -6,9 +6,16 @@ import { AppRoutingModule } from './modules/app-routing.module';
 import { AuthConfigModule } from './modules/auth-config.module';
 import { AppComponent } from './app.component';
 
+import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
+import { SignalsComponent } from './components/signals/signals.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    SignalsComponent
   ],
   imports: [
     BrowserModule,
