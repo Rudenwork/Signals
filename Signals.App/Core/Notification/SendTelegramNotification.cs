@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
-using static Signals.App.Settings.Settings;
+using Signals.App.Settings;
 
 namespace Signals.App.Core.Notification
 {
@@ -16,9 +16,9 @@ namespace Signals.App.Core.Notification
 
         public class Consumer : IConsumer<Request>
         {
-            private TelegramSettings Settings { get; }
+            private AppSettings.TelegramSettings Settings { get; }
 
-            public Consumer(IOptions<Settings.Settings> options)
+            public Consumer(IOptions<AppSettings> options)
             {
                 Settings = options.Value.Telegram;
             }

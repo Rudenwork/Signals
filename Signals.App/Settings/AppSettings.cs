@@ -1,6 +1,6 @@
 ﻿namespace Signals.App.Settings
 {
-    public class Settings
+    public class AppSettings
     {
         public AdministrationSettings Administration { get; set; }
         public IdentitySettings Identity { get; set; }

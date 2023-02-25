@@ -1,11 +1,10 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
-using Signals.App.Services;
+using Signals.App.Settings;
 
 namespace Signals.App.Extensions
 {
@@ -32,7 +31,7 @@ namespace Signals.App.Extensions
             if (signalsContext.Users.Any(x => x.IsAdmin))
                 return;
 
-            var settings = scope.ServiceProvider.GetService<IOptions<Settings.Settings>>().Value;
+            var settings = scope.ServiceProvider.GetService<IOptions<AppSettings>>().Value;
             var passwordHasher = scope.ServiceProvider.GetService<IPasswordHasher<UserEntity>>();
 
             signalsContext.Users.Add(new UserEntity

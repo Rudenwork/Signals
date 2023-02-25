@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Signals.App.Database;
 using Signals.App.Database.Entities.Channels;
+using Signals.App.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -16,7 +17,7 @@ namespace Signals.App.Extensions
 
             var provider = serviceCollection.BuildServiceProvider();
 
-            var settings = provider.GetService<IOptions<Settings.Settings>>().Value.Telegram;
+            var settings = provider.GetService<IOptions<AppSettings>>().Value.Telegram;
             var updateHandler = provider.GetService<IUpdateHandler>();
 
             var client = new TelegramBotClient(settings.Token);

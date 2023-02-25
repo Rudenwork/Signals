@@ -2,7 +2,7 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using static Signals.App.Settings.Settings;
+using Signals.App.Settings;
 
 namespace Signals.App.Core.Notification
 {
@@ -17,9 +17,9 @@ namespace Signals.App.Core.Notification
 
         public class Consumer : IConsumer<Request>
         {
-            private EmailSettings Settings { get; }
+            private AppSettings.EmailSettings Settings { get; }
 
-            public Consumer(IOptions<Settings.Settings> options)
+            public Consumer(IOptions<AppSettings> options)
             {
                 Settings = options.Value.Email;
             }
