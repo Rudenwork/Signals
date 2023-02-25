@@ -1,14 +1,13 @@
-﻿using Duende.IdentityServer.Extensions;
-using Mapster;
+﻿using Mapster;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
 using Signals.App.Core.Notification;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Channels;
-using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using System.Data;
 
@@ -43,16 +42,16 @@ namespace Signals.App.Controllers
             }
 
             if (filter.Description is not null)
-                query = query.Where(x => x.Description.Contains(filter.Description));
+                query = query.Where(x => EF.Functions.ILike(x.Description, $"%{filter.Description}%"));
 
             if (filter.IsVerified is not null)
                 query = query.Where(x => x.IsVerified == filter.IsVerified.Value);
 
             if (filter.Address is not null)
-                query = query.Where(x => (x as EmailChannelEntity).Address.Contains(filter.Address));
+                query = query.Where(x => EF.Functions.ILike((x as EmailChannelEntity).Address, $"%{filter.Address}%"));
 
             if (filter.Username is not null)
-                query = query.Where(x => (x as TelegramChannelEntity).Username.Contains(filter.Username));
+                query = query.Where(x => EF.Functions.ILike((x as TelegramChannelEntity).Username, $"%{filter.Username}%"));
 
             var result = query
                 .Where(x => x.UserId == User.GetId())

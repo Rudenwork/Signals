@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Signals.App.Database;
 using Signals.App.Database.Entities.Channels;
 using Telegram.Bot;
@@ -44,8 +45,8 @@ namespace Signals.App.Extensions
 
             var chatId = message.Chat.Id;
 
-            var channel = SignalsContext.Channels.FirstOrDefault(x => (x as TelegramChannelEntity).Username == message.From.Username) as TelegramChannelEntity;
-
+            var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike((x as TelegramChannelEntity).Username, $"{message.From.Username}")) as TelegramChannelEntity;
+            
             if (channel is null)
             {
                 await client.SendTextMessageAsync(chatId, $"Channel is not created for your username");

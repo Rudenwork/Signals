@@ -78,9 +78,9 @@ namespace Signals.App.Controllers
         public ActionResult<List<SignalModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] SignalModel.Read.Filter filter) 
         {
             var query = SignalsContext.Signals.AsQueryable();
-
+            
             if (filter.Name is not null)
-                query = query.Where(x => x.Name.Contains(filter.Name));
+                query = query.Where(x => EF.Functions.ILike(x.Name, $"%{filter.Name}%"));
 
             if (filter.IsDisabled is not null)
                 query = query.Where(x => x.IsDisabled == filter.IsDisabled);

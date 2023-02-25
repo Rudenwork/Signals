@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
@@ -28,9 +29,9 @@ namespace Signals.App.Controllers
         public ActionResult<List<UserModel.Read>> Get([FromQuery] SubsetModel subset, [FromQuery] UserModel.Read.Filter filter)
         {
             var query = SignalsContext.Users.AsQueryable();
-
+            
             if (filter.Username is not null)
-                query = query.Where(x => x.Username.Contains(filter.Username));
+                query = query.Where(x => EF.Functions.ILike(x.Username, $"%{filter.Username}%"));
 
             if (filter.IsAdmin is not null)
                 query = query.Where(x => x.IsAdmin == filter.IsAdmin);
@@ -62,7 +63,7 @@ namespace Signals.App.Controllers
         [HttpPost]
         public ActionResult<UserModel.Read> Post(UserModel.Create model)
         {
-            if (SignalsContext.Users.Any(x => x.Username == model.Username))
+            if (SignalsContext.Users.Any(x => EF.Functions.ILike(x.Username, $"{model.Username}")))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
                 return ValidationProblem();
@@ -88,7 +89,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NoContent();
 
-            if (SignalsContext.Users.Any(x => x.Username == model.Username))
+            if (SignalsContext.Users.Any(x => EF.Functions.ILike(x.Username, $"{model.Username}")))
             {
                 ModelState.AddModelError(nameof(model.Username), "Already taken");
                 return ValidationProblem();

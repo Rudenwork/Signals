@@ -1,6 +1,7 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Validation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 
@@ -19,7 +20,7 @@ namespace Signals.App.Identity
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            var user = SignalsContext.Users.FirstOrDefault(x => x.Username == context.UserName);
+            var user = SignalsContext.Users.FirstOrDefault(x => EF.Functions.ILike(x.Username, $"{context.UserName}"));
 
             if (user is null)
                 return;
