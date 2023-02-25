@@ -68,7 +68,8 @@
               "browserTarget": "Signals.Web:build:production"
             },
             "development": {
-              "browserTarget": "Signals.Web:build:development"
+              "browserTarget": "Signals.Web:build:development",
+              "proxyConfig": "proxy.json"
             }
           },
           "defaultConfiguration": "development"
