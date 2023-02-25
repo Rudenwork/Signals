@@ -91,9 +91,8 @@ namespace Signals.App.Controllers
             entity.UserId = User.GetId();
             entity.Code = GenerateCode();
 
-            ///TODO: if(entity is EmailChannelEntity emailEntity)
-            if (entity is EmailChannelEntity)
-                await SendVerificationEmail(entity as EmailChannelEntity);
+            if (entity is EmailChannelEntity emailEntity)
+                await SendVerificationEmail(emailEntity);
 
             SignalsContext.Channels.Add(entity);
             SignalsContext.SaveChanges();
@@ -140,8 +139,8 @@ namespace Signals.App.Controllers
 
             model.Adapt(entity, model.GetType(), entity.GetType());
 
-            if (shouldReset && entity is EmailChannelEntity)
-                await SendVerificationEmail(entity as EmailChannelEntity);
+            if (shouldReset && entity is EmailChannelEntity emailEntity)
+                await SendVerificationEmail(emailEntity);
 
             SignalsContext.Channels.Update(entity);
             SignalsContext.SaveChanges();
