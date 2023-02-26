@@ -69,6 +69,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(configure =>
+{
+    configure.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -164,6 +171,7 @@ builder.Services.AddScoped<Scheduler>();
 
 var app = builder.Build();
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseIdentityServer();
