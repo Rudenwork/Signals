@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -7,22 +6,9 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(public oidcSecurityService: OidcSecurityService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData, accessToken, idToken }) => {
-      console.log("isAuthenticated", isAuthenticated);
-      console.log("userData", userData);
-      console.log("accessToken", accessToken);
-      console.log("idToken", idToken);
-    });
-  }
-
-  login() {
-    this.oidcSecurityService.authorize();
-  }
-
-  logout() {
-    this.oidcSecurityService.logoff();
+    
   }
 }
