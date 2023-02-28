@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { SettingsService } from './services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,22 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private oAuthService: OAuthService, private router: Router) { }
+  constructor(private oAuthService: OAuthService, private router: Router, private settingsService: SettingsService) { }
 
   ngOnInit() {
-    this.oAuthService.setStorage(localStorage);
-    this.oAuthService.oidc = false;
-    this.oAuthService.clientId = 'client';
-    this.oAuthService.scope = 'openid profile offline_access';
-    this.oAuthService.tokenEndpoint = 'http://localhost:5020/connect/token';
-    this.oAuthService.userinfoEndpoint = 'http://localhost:5020/connect/userinfo';
+    this.settingsService.getSettings()
+      .subscribe(settings => {
 
-    if (!this.oAuthService.hasValidAccessToken()) {
-      this.router.navigate(['login']);
-    }
+        this.oAuthService.setStorage(localStorage);
+        this.oAuthService.oidc = false;
+        this.oAuthService.clientId = 'client';
+        this.oAuthService.scope = 'openid profile offline_access';
+        this.oAuthService.tokenEndpoint = `${settings.apiBaseAddress}/connect/token`;
+        this.oAuthService.userinfoEndpoint = `${settings.apiBaseAddress}/connect/userinfo`;
+
+        if (!this.oAuthService.hasValidAccessToken()) {
+          this.router.navigate(['login']);
+        }
+      });
   }
 }
