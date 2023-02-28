@@ -10,13 +10,15 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { FormsModule } from '@angular/forms';
+import { ChannelsComponent } from './components/channels/channels.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    SignalsComponent
+    SignalsComponent,
+    ChannelsComponent
   ],
   imports: [
     BrowserModule,
