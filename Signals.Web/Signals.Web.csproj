@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<SpaRoot>ClientApp\</SpaRoot>
-		<SpaProxyServerUrl>http://localhost:5010</SpaProxyServerUrl>
+		<SpaProxyServerUrl>http://localhost:5000</SpaProxyServerUrl>
 		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>30d28611-0164-470e-a85b-ff658f01d109</UserSecretsId>
