@@ -1,5 +1,3 @@
-using Signals.Web.Settings;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var proxySection = builder.Configuration.GetSection("ReverseProxy");
@@ -15,7 +13,5 @@ app.MapReverseProxy();
 
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");
-
-app.Map("settings", () => app.Configuration.Get<AppSettings>());
 
 app.Run();
