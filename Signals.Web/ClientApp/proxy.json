@@ -1,6 +1,11 @@
-{
-  "/settings": {
+[
+  {
+    "context": [
+      "/settings",
+      "/api",
+      "/connect"
+    ],
     "target": "http://localhost:5000",
     "secure": false
   }
-}
+]
