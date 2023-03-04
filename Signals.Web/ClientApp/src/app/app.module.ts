@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { FormsModule } from '@angular/forms';
 import { ChannelsComponent } from './components/channels/channels.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChannelsComponent } from './components/channels/channels.component';
     LoginComponent,
     HomeComponent,
     SignalsComponent,
-    ChannelsComponent
+    ChannelsComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
