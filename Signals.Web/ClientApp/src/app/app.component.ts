@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
       if (!isAuthenticated) {
         this.router.navigate(['login']);
       }
-      console.log('ZZZ', isAuthenticated);
 
       this.isAuthenticated = isAuthenticated;
     });

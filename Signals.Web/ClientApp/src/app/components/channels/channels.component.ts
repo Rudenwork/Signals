@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { DataService, Channel } from '../../services/data.service';
 
 @Component({
   selector: 'app-channels',
@@ -8,17 +7,13 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./channels.component.scss']
 })
 export class ChannelsComponent implements OnInit {
-  constructor(private authService: AuthService, private http: HttpClient) { }
+  constructor(private dataService: DataService) { }
 
-  test!: string;
+  channels!: Channel[];
 
   ngOnInit() {
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    })
-
-    this.http.get(`${window.origin}/api/channels`, { headers: headers })
-      .subscribe(response => this.test = JSON.stringify(response));
+    this.dataService.getChannels()
+      .subscribe(response => this.channels = response);
   }
 }

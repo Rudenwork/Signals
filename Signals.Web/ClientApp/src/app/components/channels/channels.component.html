@@ -1,3 +1,7 @@
 <p>channels works!</p>
 <br />
-<p>{{ test }}</p>
+<ul>
+    <li *ngFor="let channel of channels">
+        {{channel.id}} - {{channel.description}}
+    </li>
+</ul>
