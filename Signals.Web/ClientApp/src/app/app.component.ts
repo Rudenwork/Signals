@@ -8,19 +8,40 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private oAuthService: OAuthService, private router: Router) { }
+  constructor(private authService: OAuthService, private router: Router) { }
+
+  hasValidAccessToken: boolean = false;
 
   ngOnInit() {
 
-    this.oAuthService.setStorage(localStorage);
-    this.oAuthService.oidc = false;
-    this.oAuthService.clientId = 'client';
-    this.oAuthService.scope = 'openid profile offline_access';
-    this.oAuthService.tokenEndpoint = `${window.origin}/connect/token`;
-    this.oAuthService.userinfoEndpoint = `${window.origin}/connect/userinfo`;
+    this.authService.setStorage(localStorage);
+    this.authService.oidc = false;
+    this.authService.clockSkewInSec = 0;
+    this.authService.tokenEndpoint = `${window.origin}/connect/token`;
+    this.authService.userinfoEndpoint = `${window.origin}/connect/userinfo`;
+    this.authService.clientId = 'client';
+    this.authService.scope = 'openid profile offline_access';
 
-    if (!this.oAuthService.hasValidAccessToken()) {
-      this.router.navigate(['login']);
-    }
+    this.hasValidAccessToken = this.authService.hasValidAccessToken();
+
+    this.authService.events.subscribe(event => {
+      if (event.type == 'token_expires') {
+        console.log(event.type);
+        this.refreshToken();
+      }
+
+      if (event.type == 'token_received') {
+        console.log(event.type);
+        this.hasValidAccessToken = true;
+      }
+    });
+  }
+
+  refreshToken(): Promise<any> {
+    return this.authService.refreshToken()
+      .catch(() => {
+        this.hasValidAccessToken = false;
+        this.router.navigate(['logout']);
+      });
   }
 }

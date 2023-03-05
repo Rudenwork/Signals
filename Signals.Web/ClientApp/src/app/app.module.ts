@@ -12,6 +12,7 @@ import { SignalsComponent } from './components/signals/signals.component';
 import { FormsModule } from '@angular/forms';
 import { ChannelsComponent } from './components/channels/channels.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MenuComponent } from './components/menu/menu.component';
     HomeComponent,
     SignalsComponent,
     ChannelsComponent,
-    MenuComponent
+    MenuComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

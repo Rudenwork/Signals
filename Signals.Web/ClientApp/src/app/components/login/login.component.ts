@@ -8,19 +8,19 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private oAuthService: OAuthService, private router: Router) { }
+  constructor(private authService: OAuthService, private router: Router) { }
 
   username: string = 'admin';
   password: string = 'admin';
 
   ngOnInit() {
-    if (this.oAuthService.hasValidAccessToken()) {
+    if (this.authService.hasValidAccessToken()) {
       this.router.navigate(['/']);
     }
   }
 
   login() {
-    this.oAuthService.fetchTokenUsingPasswordFlow(this.username, this.password)
+    this.authService.fetchTokenUsingPasswordFlow(this.username, this.password)
       .then(() => {
         this.router.navigate(['/']);
       });

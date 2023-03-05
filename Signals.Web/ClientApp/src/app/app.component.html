@@ -1,6 +1,6 @@
 <body>
   <div class="container">
-    <app-menu></app-menu>
+    <app-menu *ngIf="hasValidAccessToken"></app-menu>
     <router-outlet></router-outlet>
   </div>
 </body>
