@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-channels',
@@ -8,14 +8,14 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./channels.component.scss']
 })
 export class ChannelsComponent implements OnInit {
-  constructor(private oAuthService: OAuthService, private http: HttpClient) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   test!: string;
 
   ngOnInit() {
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      'Authorization': `Bearer ${this.authService.getToken()}`
     })
 
     this.http.get(`${window.origin}/api/channels`, { headers: headers })
