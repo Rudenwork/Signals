@@ -31,7 +31,11 @@ builder.Services.AddDbContext<SignalsContext>(options =>
 builder.Services.AddDbContext<QuartzContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString($"{nameof(Signals)}.{nameof(Quartz)}")));
 
-builder.Services.AddIdentityServer(options => options.KeyManagement.KeyPath = $"{AppContext.BaseDirectory}/keys")
+builder.Services.AddIdentityServer(options =>
+    {
+        options.IssuerUri = settings.Identity.Authority;
+        options.KeyManagement.KeyPath = $"{AppContext.BaseDirectory}/keys";
+    })
     .AddInMemoryIdentityResources(new List<IdentityResource>
     {
         new IdentityResources.OpenId(),
