@@ -3,17 +3,34 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Signals.Web": {
+    "signals.web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "inlineTemplate": true,
+          "inlineStyle": true,
           "style": "scss",
           "skipTests": true
         },
-        "@schematics/angular:service": {
+        "@schematics/angular:class": {
           "skipTests": true
         },
-        "@schematics/angular:module": {
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
           "skipTests": true
         }
       },
@@ -72,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Signals.Web:build:production"
+              "browserTarget": "signals.web:build:production"
             },
             "development": {
-              "browserTarget": "Signals.Web:build:development",
+              "browserTarget": "signals.web:build:development",
               "proxyConfig": "proxy.json"
             }
           },
@@ -84,26 +101,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Signals.Web:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": []
+            "browserTarget": "signals.web:build"
           }
         }
       }

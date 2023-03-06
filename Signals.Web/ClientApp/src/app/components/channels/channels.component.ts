@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService, Channel } from '../../services/data.service';
+import { Channel, DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-channels',
-  templateUrl: './channels.component.html',
-  styleUrls: ['./channels.component.scss']
+  template: `
+    <p>Channels</p>
+    <ul>
+        <li *ngFor="let channel of channels">
+            [{{channel.$type}}] {{channel.id}}
+        </li>
+    </ul>
+  `
 })
 export class ChannelsComponent implements OnInit {
   constructor(private dataService: DataService) { }
