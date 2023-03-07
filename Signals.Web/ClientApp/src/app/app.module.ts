@@ -11,24 +11,30 @@ import { ChannelsComponent } from './components/channels/channels.component';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule } from '@angular/forms';
+import { ChannelItemComponent } from './components/channels/channel-item.component';
+import { ChannelItemTelegramComponent } from './components/channels/channel-item-telegram.component';
+import { ChannelItemEmailComponent } from './components/channels/channel-item-email.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    LogoutComponent,
-    MenuComponent,
-    ChannelsComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    OAuthModule.forRoot()
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        LogoutComponent,
+        MenuComponent,
+        ChannelsComponent,
+        ChannelItemComponent,
+        ChannelItemTelegramComponent,
+        ChannelItemEmailComponent
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        OAuthModule.forRoot()
+    ]
 })
 export class AppModule { }

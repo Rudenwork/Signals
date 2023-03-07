@@ -7,7 +7,7 @@ import { Channel, DataService } from 'src/app/services/data.service';
     <p>Channels</p>
     <ul>
         <li *ngFor="let channel of channels">
-            [{{channel.$type}}] {{channel.id}}
+            <app-channel-item [channel]="channel"/>
         </li>
     </ul>
   `
