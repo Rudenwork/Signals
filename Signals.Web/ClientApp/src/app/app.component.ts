@@ -5,13 +5,17 @@ import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   template: `
-    <body>
-        <div class="container">
-            <app-menu *ngIf="isAuthenticated"></app-menu>
-            <router-outlet></router-outlet>
-        </div>
-    </body>
-  `
+    <app-menu *ngIf="isAuthenticated"></app-menu>
+    <router-outlet></router-outlet>
+  `,
+  styles: [`
+    :host {
+      background: rgb(53, 54, 58);
+      height: 100%;
+      width: 100%;
+      display: flex;
+    }
+  `]
 })
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
