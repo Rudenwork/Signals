@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
   styles:[`
     :host {
       background-color: grey;
-      width: 150px;
+      min-width: 150px;
 
       ul li a {
         color: white;
