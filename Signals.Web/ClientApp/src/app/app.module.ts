@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { ChannelItemComponent } from './components/channels/channel-item.component';
 import { ChannelItemTelegramComponent } from './components/channels/channel-item-telegram.component';
 import { ChannelItemEmailComponent } from './components/channels/channel-item-email.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { ModalChannelAddComponent } from './components/channels/modals/modal-channel-add.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,9 @@ import { ChannelItemEmailComponent } from './components/channels/channel-item-em
         ChannelsComponent,
         ChannelItemComponent,
         ChannelItemTelegramComponent,
-        ChannelItemEmailComponent
+        ChannelItemEmailComponent,
+        ModalComponent,
+        ModalChannelAddComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
