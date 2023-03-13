@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-modal',
   template: `
     <div id="modal-background" *ngIf="isOpened" (click)="close()">
-      <div id="modal-window" (click)="onContentClick($event)">
+      <div id="modal-window" (click)="onWindowClick($event)">
         <div id="modal-close-container">
           <button id="modal-close" (click)="close()">x</button>
         </div>
@@ -25,6 +25,12 @@ import { Component } from '@angular/core';
       height:100%;
       width: 100%;
       backdrop-filter: blur(2px);
+      animation: blur 1s forwards;
+    }
+
+    @keyframes blur {
+      from { backdrop-filter: blur(0); }
+      to { backdrop-filter: blur(2px); }
     }
 
     #modal-window {
@@ -32,6 +38,12 @@ import { Component } from '@angular/core';
       background: white;
       border-radius: 10px;
       box-shadow: 0px 0px 20px 0px black;
+      animation: fade-out 1s forwards;
+    }
+
+    @keyframes fade-out {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     #modal-close-container {
@@ -56,7 +68,7 @@ export class ModalComponent {
     this.isOpened = false;
   }
 
-  onContentClick(event: Event) {
+  onWindowClick(event: Event) {
     event.stopPropagation();
   }
 }
