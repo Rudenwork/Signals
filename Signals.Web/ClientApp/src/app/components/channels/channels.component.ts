@@ -24,11 +24,16 @@ export class ChannelsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.getChannels();
+  }
+
+  getChannels() {
     this.dataService.getChannels()
       .subscribe(response => this.channels = response);
   }
 
   add() {
-    this.modalAdd.open();
+    this.modalAdd.open()
+      .then(() => this.getChannels());
   }
 }

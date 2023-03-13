@@ -59,13 +59,16 @@ import { Component } from '@angular/core';
 export class ModalComponent {
 
   isOpened: boolean = false;
+  private resolve: any;
 
-  open() {
+  open() : Promise<any> {
     this.isOpened = true;
+    return new Promise<any>(resolve => this.resolve = resolve);
   }
 
   close() {
     this.isOpened = false;
+    this.resolve();
   }
 
   onWindowClick(event: Event) {
