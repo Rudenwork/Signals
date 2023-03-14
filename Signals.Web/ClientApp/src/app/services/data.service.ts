@@ -7,22 +7,33 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class DataService {
-
+  
   constructor(private authService: AuthService, private http: HttpClient) { }
 
-  private get<T>(endpoint: string): Observable<T> {
+  getUrl(endpoint: string): string {
+    return `${window.origin}/api/${endpoint}`;
+  }
 
-    let url = `${window.origin}/api/${endpoint}`;
-
-    let headers = new HttpHeaders({
+  private getHeaders(): any {
+    return new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`
     });
+  }
 
-    return this.http.get<T>(url, { headers: headers })
+  private get<T>(endpoint: string): Observable<T> {
+    return this.http.get<T>(this.getUrl(endpoint), { headers: this.getHeaders() });
+  }
+
+  private post<T>(endpoint: string, item: T): Observable<T> {
+    return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() })
   }
 
   getChannels(): Observable<Channel[]> {
     return this.get<Channel[]>('channels');
+  }
+
+  createChannel(channel: Channel): Observable<Channel> {
+    return this.post<Channel>('channels', channel);
   }
 }
 

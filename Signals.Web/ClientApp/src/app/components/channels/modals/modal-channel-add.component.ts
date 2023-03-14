@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChannelType, DataService, TelegramChannel } from 'src/app/services/data.service';
 import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
@@ -7,14 +8,19 @@ import { ModalComponent } from '../../modal/modal.component';
     <p>
       modal-channel-add works!
     </p>
-    <button (click)="close()">Internal Close</button>
+    <button (click)="test()">Test</button>
   `,
   styles: [
   ]
 })
 export class ModalChannelAddComponent {
-  constructor(private modal: ModalComponent) { }
-  close() {
-    this.modal.close();
+  constructor(private modal: ModalComponent, private dataService: DataService) { }
+  test() {
+    let channel = new TelegramChannel();
+    channel.$type = ChannelType.Telegram;
+    channel.username = 'test';
+
+    this.dataService.createChannel(channel)
+      .subscribe(channel => this.modal.close());
   }
 }
