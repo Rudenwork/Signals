@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Channel } from '../models/channel';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -35,25 +36,4 @@ export class DataService {
   createChannel(channel: Channel): Observable<Channel> {
     return this.post<Channel>('channels', channel);
   }
-}
-
-export class Channel {
-  $type!: ChannelType;
-  id!: string;
-  userId!: string;
-  description!: string;
-  isVerified!: boolean;
-}
-
-export class TelegramChannel extends Channel {
-  username!: string;
-}
-
-export class EmailChannel extends Channel {
-  address!: string;
-}
-
-export enum ChannelType {
-  Telegram = 'Telegram',
-  Email = 'Email'
 }

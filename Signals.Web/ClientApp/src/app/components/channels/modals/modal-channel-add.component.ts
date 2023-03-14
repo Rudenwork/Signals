@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ChannelType, DataService, TelegramChannel } from 'src/app/services/data.service';
+import { ChannelType, TelegramChannel } from 'src/app/models/channel';
+import { DataService } from 'src/app/services/data.service';
 import { ModalComponent } from '../../modal/modal.component';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Channel, EmailChannel, TelegramChannel, ChannelType } from 'src/app/services/data.service';
+import { Channel, ChannelType } from 'src/app/models/channel';
 
 @Component({
   selector: 'app-channel-item',

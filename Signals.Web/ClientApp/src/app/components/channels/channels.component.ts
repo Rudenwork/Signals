@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Channel, DataService } from 'src/app/services/data.service';
+import { Channel } from 'src/app/models/channel';
+import { DataService } from 'src/app/services/data.service';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EmailChannel } from 'src/app/services/data.service';
+import { EmailChannel } from 'src/app/models/channel';
 
 @Component({
   selector: 'app-channel-item-email',
