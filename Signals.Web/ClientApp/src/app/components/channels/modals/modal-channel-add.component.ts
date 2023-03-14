@@ -4,24 +4,24 @@ import { DataService } from 'src/app/services/data.service';
 import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
-  selector: 'app-modal-channel-add',
-  template: `
-    <p>
-      modal-channel-add works!
-    </p>
-    <button (click)="test()">Test</button>
-  `,
-  styles: [
-  ]
+    selector: 'app-modal-channel-add',
+    template: `
+        <p>
+            modal-channel-add works!
+        </p>
+        <button (click)="test()">Test</button>
+    `,
+    styles: [
+    ]
 })
 export class ModalChannelAddComponent {
-  constructor(private modal: ModalComponent, private dataService: DataService) { }
-  test() {
-    let channel = new TelegramChannel();
-    channel.$type = ChannelType.Telegram;
-    channel.username = 'test';
+    constructor(private modal: ModalComponent, private dataService: DataService) { }
+    test() {
+        let channel = new TelegramChannel();
+        channel.$type = ChannelType.Telegram;
+        channel.username = 'test';
 
-    this.dataService.createChannel(channel)
-      .subscribe(channel => this.modal.close());
-  }
+        this.dataService.createChannel(channel)
+            .subscribe(channel => this.modal.close());
+    }
 }

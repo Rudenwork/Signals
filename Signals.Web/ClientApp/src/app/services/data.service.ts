@@ -5,35 +5,35 @@ import { Channel } from '../models/channel';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DataService {
-  
-  constructor(private authService: AuthService, private http: HttpClient) { }
 
-  getUrl(endpoint: string): string {
-    return `${window.origin}/api/${endpoint}`;
-  }
+    constructor(private authService: AuthService, private http: HttpClient) { }
 
-  private getHeaders(): any {
-    return new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    });
-  }
+    getUrl(endpoint: string): string {
+        return `${window.origin}/api/${endpoint}`;
+    }
 
-  private get<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(this.getUrl(endpoint), { headers: this.getHeaders() });
-  }
+    private getHeaders(): any {
+        return new HttpHeaders({
+            'Authorization': `Bearer ${this.authService.getToken()}`
+        });
+    }
 
-  private post<T>(endpoint: string, item: T): Observable<T> {
-    return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() })
-  }
+    private get<T>(endpoint: string): Observable<T> {
+        return this.http.get<T>(this.getUrl(endpoint), { headers: this.getHeaders() });
+    }
 
-  getChannels(): Observable<Channel[]> {
-    return this.get<Channel[]>('channels');
-  }
+    private post<T>(endpoint: string, item: T): Observable<T> {
+        return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() })
+    }
 
-  createChannel(channel: Channel): Observable<Channel> {
-    return this.post<Channel>('channels', channel);
-  }
+    getChannels(): Observable<Channel[]> {
+        return this.get<Channel[]>('channels');
+    }
+
+    createChannel(channel: Channel): Observable<Channel> {
+        return this.post<Channel>('channels', channel);
+    }
 }

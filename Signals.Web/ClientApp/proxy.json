@@ -1,11 +1,11 @@
 [
-  {
-    "context": [
-      "/api",
-      "/connect"
-    ],
-    "target": "http://localhost:5020",
-    "changeOrigin": true,
-    "secure": false
-  }
+    {
+        "context": [
+            "/api",
+            "/connect"
+        ],
+        "target": "http://localhost:5020",
+        "changeOrigin": true,
+        "secure": false
+    }
 ]
