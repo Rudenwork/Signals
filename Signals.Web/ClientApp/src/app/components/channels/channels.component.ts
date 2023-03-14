@@ -1,21 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Channel } from 'src/app/models/channel';
+import { Channel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
     selector: 'app-channels',
-    template: `
-        <p>Channels <button (click)="add()">Add</button></p>
-        <ul>
-            <li *ngFor="let channel of channels">
-                <app-channel-item [channel]="channel"/>
-            </li>
-        </ul>
-        <app-modal #modalAdd>
-            <app-modal-channel-add/>
-        </app-modal>
-    `
+    templateUrl: './channels.component.html',
+    styleUrls: ['./channels.component.scss']
 })
 export class ChannelsComponent implements OnInit {
     constructor(private dataService: DataService) { }

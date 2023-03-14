@@ -4,11 +4,8 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-login',
-    template: `
-        <input type="text" [(ngModel)]="username" placeholder="Username">
-        <input type="text" [(ngModel)]="password" placeholder="Password">
-        <button (click)="login()">Login</button>
-    `
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
     constructor(private authService: AuthService, private router: Router) { }

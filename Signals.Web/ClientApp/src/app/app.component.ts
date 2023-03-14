@@ -4,18 +4,8 @@ import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
-    template: `
-    <app-menu *ngIf="isAuthenticated"></app-menu>
-    <router-outlet></router-outlet>
-  `,
-    styles: [`
-        :host {
-            background: rgb(53, 54, 58);
-            height: 100%;
-            width: 100%;
-            display: flex;
-        }
-    `]
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
     constructor(private authService: AuthService, private router: Router) { }

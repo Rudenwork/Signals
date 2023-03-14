@@ -4,7 +4,7 @@
             "/api",
             "/connect"
         ],
-        "target": "http://localhost:5020",
+        "target": "https://signals.pp.ua",
         "changeOrigin": true,
         "secure": false
     }

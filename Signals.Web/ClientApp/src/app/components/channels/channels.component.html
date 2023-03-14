@@ -1,0 +1,9 @@
+<p>Channels <button (click)="add()">Add</button></p>
+<ul>
+    <li *ngFor="let channel of channels">
+        <app-channel-item [channel]="channel" />
+    </li>
+</ul>
+<app-modal #modalAdd>
+    <app-channel-add />
+</app-modal>

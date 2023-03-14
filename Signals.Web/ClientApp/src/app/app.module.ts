@@ -11,11 +11,11 @@ import { ChannelsComponent } from './components/channels/channels.component';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule } from '@angular/forms';
-import { ChannelItemComponent } from './components/channels/channel-item.component';
-import { ChannelItemTelegramComponent } from './components/channels/channel-item-telegram.component';
-import { ChannelItemEmailComponent } from './components/channels/channel-item-email.component';
+import { ChannelItemComponent } from './components/channels/channel-item/channel-item.component';
+import { ChannelItemTelegramComponent } from './components/channels/channel-item/channel-item-telegram/channel-item-telegram.component';
+import { ChannelItemEmailComponent } from './components/channels/channel-item/channel-item-email/channel-item-email.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { ModalChannelAddComponent } from './components/channels/modals/modal-channel-add.component';
+import { ChannelAddComponent } from './components/channels/channel-add/channel-add.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +29,7 @@ import { ModalChannelAddComponent } from './components/channels/modals/modal-cha
         ChannelItemTelegramComponent,
         ChannelItemEmailComponent,
         ModalComponent,
-        ModalChannelAddComponent
+        ChannelAddComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

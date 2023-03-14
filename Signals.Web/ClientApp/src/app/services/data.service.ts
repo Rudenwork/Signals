@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Channel } from '../models/channel';
+import { Channel } from '../models/channel.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
