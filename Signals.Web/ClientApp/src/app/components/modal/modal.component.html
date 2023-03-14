@@ -1,7 +1,7 @@
 <div id="modal-background" *ngIf="isOpened" (click)="close()">
     <div id="modal-window" (click)="onWindowClick($event)">
         <div id="modal-close-container">
-            <button id="modal-close" (click)="close()">x</button>
+            <button id="modal-close" (click)="close()">&times;</button>
         </div>
         <div id="modal-content-container">
             <ng-content />

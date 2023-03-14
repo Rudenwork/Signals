@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'app-modal',
@@ -6,18 +6,16 @@ import { Component } from '@angular/core';
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
+    @Output() closed: EventEmitter<any> = new EventEmitter();
+    @Input() isOpened: boolean = false;
 
-    isOpened: boolean = false;
-    private resolve: any;
-
-    open(): Promise<any> {
+    open() {
         this.isOpened = true;
-        return new Promise<any>(resolve => this.resolve = resolve);
     }
 
     close() {
         this.isOpened = false;
-        this.resolve();
+        this.closed.emit();
     }
 
     onWindowClick(event: Event) {

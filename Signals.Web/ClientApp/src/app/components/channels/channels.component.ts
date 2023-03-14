@@ -11,21 +11,14 @@ import { ModalComponent } from '../modal/modal.component';
 export class ChannelsComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
-    @ViewChild('modalAdd') modalAdd!: ModalComponent;
     channels!: Channel[];
 
     ngOnInit() {
-
         this.getChannels();
     }
 
     getChannels() {
         this.dataService.getChannels()
-            .subscribe(response => this.channels = response);
-    }
-
-    add() {
-        this.modalAdd.open()
-            .then(() => this.getChannels());
+            .subscribe(channels => this.channels = channels);
     }
 }
