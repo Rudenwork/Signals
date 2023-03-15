@@ -12,6 +12,7 @@ export class ChannelAddComponent {
     
     @Output() completed: EventEmitter<any> = new EventEmitter();
     channel: Channel = new TelegramChannel();
+    isCreating: boolean = false;
 
     ChannelType: typeof ChannelType = ChannelType;
 
@@ -37,6 +38,7 @@ export class ChannelAddComponent {
     }
 
     create() {
+        this.isCreating = true;
         this.dataService.createChannel(this.channel)
             .subscribe(() => this.completed.emit());
     }

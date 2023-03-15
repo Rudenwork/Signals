@@ -1,11 +1,13 @@
-<select [ngModel]="channel.$type" (change)="changeChannelType(type.value)" #type>
-    <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
-</select>
-<input type="text" [(ngModel)]="channel.description" placeholder="Description">
-<div [ngSwitch]="channel.$type">
-    <app-channel-add-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
-    <app-channel-add-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+<div *ngIf="!isCreating">
+    <select [ngModel]="channel.$type" (change)="changeChannelType(type.value)" #type>
+        <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+    </select>
+    <input type="text" [(ngModel)]="channel.description" placeholder="Description">
+    <div [ngSwitch]="channel.$type">
+        <app-channel-add-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
+        <app-channel-add-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+    </div>
 </div>
 <div>
-    <button (click)="create()">Create</button>
+    <button [disabled]="isCreating" (click)="create()">Create</button>
 </div>
