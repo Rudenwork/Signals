@@ -15,9 +15,9 @@ import { ChannelItemComponent } from './components/channels/channel-item/channel
 import { ChannelItemTelegramComponent } from './components/channels/channel-item/channel-item-telegram/channel-item-telegram.component';
 import { ChannelItemEmailComponent } from './components/channels/channel-item/channel-item-email/channel-item-email.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { ChannelAddComponent } from './components/channels/channel-add/channel-add.component';
-import { ChannelAddTelegramComponent } from './components/channels/channel-add/channel-add-telegram/channel-add-telegram.component';
-import { ChannelAddEmailComponent } from './components/channels/channel-add/channel-add-email/channel-add-email.component';
+import { ChannelCreateComponent } from './components/channels/channel-create/channel-create.component';
+import { ChannelCreateTelegramComponent } from './components/channels/channel-create/channel-create-telegram/channel-create-telegram.component';
+import { ChannelCreateEmailComponent } from './components/channels/channel-create/channel-create-email/channel-create-email.component';
 import { ChannelDeleteComponent } from './components/channels/channel-delete/channel-delete.component';
 import { ChannelDeleteTelegramComponent } from './components/channels/channel-delete/channel-delete-telegram/channel-delete-telegram.component';
 import { ChannelDeleteEmailComponent } from './components/channels/channel-delete/channel-delete-email/channel-delete-email.component';
@@ -37,9 +37,9 @@ import { ChannelUpdateTelegramComponent } from './components/channels/channel-up
         ChannelItemTelegramComponent,
         ChannelItemEmailComponent,
         ModalComponent,
-        ChannelAddComponent,
-        ChannelAddTelegramComponent,
-        ChannelAddEmailComponent,
+        ChannelCreateComponent,
+        ChannelCreateTelegramComponent,
+        ChannelCreateEmailComponent,
         ChannelDeleteComponent,
         ChannelDeleteTelegramComponent,
         ChannelDeleteEmailComponent,

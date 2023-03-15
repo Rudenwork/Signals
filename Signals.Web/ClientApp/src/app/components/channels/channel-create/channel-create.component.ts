@@ -3,11 +3,11 @@ import { Channel, ChannelType, EmailChannel, TelegramChannel } from 'src/app/mod
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
-    selector: 'app-channel-add',
-    templateUrl: './channel-add.component.html',
-    styleUrls: ['./channel-add.component.scss']
+    selector: 'app-channel-create',
+    templateUrl: './channel-create.component.html',
+    styleUrls: ['./channel-create.component.scss']
 })
-export class ChannelAddComponent {
+export class ChannelCreateComponent {
     constructor(private dataService: DataService) { }
     
     @Output() created: EventEmitter<any> = new EventEmitter();

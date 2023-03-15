@@ -5,5 +5,5 @@
     </li>
 </ul>
 <app-modal #modalAdd>
-    <app-channel-add *ngIf="modalAdd.isOpened" (created)="modalAdd.close(); getChannels()"/>
+    <app-channel-create *ngIf="modalAdd.isOpened" (created)="modalAdd.close(); getChannels()"/>
 </app-modal>

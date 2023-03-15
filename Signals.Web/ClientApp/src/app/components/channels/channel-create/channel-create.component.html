@@ -4,8 +4,8 @@
     </select>
     <input type="text" [(ngModel)]="channel.description" placeholder="Description">
     <div [ngSwitch]="channel.$type">
-        <app-channel-add-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
-        <app-channel-add-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+        <app-channel-create-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
+        <app-channel-create-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
     </div>
 </div>
 <div>
