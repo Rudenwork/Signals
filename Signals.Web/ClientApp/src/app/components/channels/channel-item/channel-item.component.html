@@ -2,8 +2,12 @@
     [{{channel.$type}}]
     <app-channel-item-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
     <app-channel-item-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+    <button *ngIf="!channel.isVerified" (click)="modalVerify.open()">V</button>
     <button (click)="modalUpdate.open()">U</button>
     <button (click)="modalDelete.open()">D</button>
+    <app-modal #modalVerify>
+        <app-channel-verify [channel]="channel" *ngIf="modalVerify.isOpened" (verified)="verified.emit(); modalVerify.close()"/>
+    </app-modal>
     <app-modal #modalUpdate>
         <app-channel-update [channel]="channel" *ngIf="modalUpdate.isOpened" (updated)="updated.emit(); modalUpdate.close()"/>
     </app-modal>

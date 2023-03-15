@@ -1,0 +1,6 @@
+<div [ngSwitch]="channel.$type">
+    <app-channel-verify-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
+    <app-channel-verify-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+</div>
+<input type="text" [(ngModel)]="code" placeholder="Code">
+<button [disabled]="isVerifying" (click)="verify()">Verify</button>

@@ -57,11 +57,15 @@ export class DataService {
         return this.post<Channel>('channels', this.trimChannel(channel));
     }
 
+    verifyChannel(id: string, code: string): Observable<any> {
+        return this.post(`channels/${id}/verify`, { code: code });
+    }
+
     updateChannel(id: string, channel: Channel): Observable<Channel> {
         return this.patch<Channel>(`channels/${id}`, this.trimChannel(channel));
     }
 
-    deleteChannel(id: string): Observable<Object> {
+    deleteChannel(id: string): Observable<any> {
         return this.delete(`channels/${id}`);
     }
 }
