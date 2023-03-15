@@ -41,7 +41,7 @@ export class DataService {
         return this.post<Channel>('channels', channel);
     }
 
-    deleteChannel(id: string): Observable<Object> {
+    deleteChannel(id?: string): Observable<Object> {
         return this.delete(`channels/${id}`);
     }
 }

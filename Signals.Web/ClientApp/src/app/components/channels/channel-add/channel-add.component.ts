@@ -10,7 +10,7 @@ import { DataService } from 'src/app/services/data.service';
 export class ChannelAddComponent {
     constructor(private dataService: DataService) { }
     
-    @Output() completed: EventEmitter<any> = new EventEmitter();
+    @Output() created: EventEmitter<any> = new EventEmitter();
     channel: Channel = new TelegramChannel();
     isCreating: boolean = false;
 
@@ -40,6 +40,6 @@ export class ChannelAddComponent {
     create() {
         this.isCreating = true;
         this.dataService.createChannel(this.channel)
-            .subscribe(() => this.completed.emit());
+            .subscribe(() => this.created.emit());
     }
 }

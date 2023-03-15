@@ -10,15 +10,10 @@ import { DataService } from 'src/app/services/data.service';
 export class ChannelItemComponent {
     constructor(private dataService: DataService) { }
 
-    @Output() completed: EventEmitter<any> = new EventEmitter();
+    @Output() deleted: EventEmitter<any> = new EventEmitter();
     @Input() channel!: Channel;
 
     ChannelType: typeof ChannelType = ChannelType;
-
-    del() {
-        this.dataService.deleteChannel(this.channel.id as string)
-            .subscribe(() => this.completed.emit());
-    }
 
     castChannel<T>(): T {
         return this.channel as T;

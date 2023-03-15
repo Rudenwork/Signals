@@ -1,9 +1,9 @@
 <p>Channels <button (click)="modalAdd.open()">Add</button></p>
 <ul>
     <li *ngFor="let channel of channels">
-        <app-channel-item [channel]="channel" (completed)="getChannels()"/>
+        <app-channel-item [channel]="channel" (deleted)="getChannels()"/>
     </li>
 </ul>
-<app-modal (closed)="getChannels()" #modalAdd>
-    <app-channel-add *ngIf="modalAdd.isOpened" (completed)="modalAdd.close()"/>
+<app-modal #modalAdd>
+    <app-channel-add *ngIf="modalAdd.isOpened" (created)="modalAdd.close(); getChannels()"/>
 </app-modal>

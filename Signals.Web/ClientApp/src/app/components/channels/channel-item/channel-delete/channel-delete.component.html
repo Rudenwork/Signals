@@ -1,0 +1,5 @@
+<div *ngIf="!isDeleting">
+    <p>channel-delete works!</p>
+</div>
+
+<button [disabled]="isDeleting" (click)="del()">Del</button>
