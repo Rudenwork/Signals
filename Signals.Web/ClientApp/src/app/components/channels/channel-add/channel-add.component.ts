@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ChannelType, TelegramChannel } from 'src/app/models/channel.model';
+import { Channel, ChannelType, EmailChannel, TelegramChannel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -9,15 +9,35 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ChannelAddComponent {
     constructor(private dataService: DataService) { }
-
+    
     @Output() completed: EventEmitter<any> = new EventEmitter();
+    channel: Channel = new TelegramChannel();
 
-    test() {
-        let channel = new TelegramChannel();
-        channel.$type = ChannelType.Telegram;
-        channel.username = 'test';
+    ChannelType: typeof ChannelType = ChannelType;
 
-        this.dataService.createChannel(channel)
+    changeChannelType(type: string) {
+        let oldChannel = this.channel;
+
+        if (type == ChannelType.Telegram) {
+            this.channel = new TelegramChannel();
+        }
+        else if (type == ChannelType.Email) {
+            this.channel = new EmailChannel();
+        }
+
+        this.channel.description = oldChannel.description;
+    }
+
+    castChannel<T>(): T {
+        return this.channel as T;
+    }
+
+    getTypeOptions(): string[] {
+        return Object.keys(ChannelType);
+    }
+
+    create() {
+        this.dataService.createChannel(this.channel)
             .subscribe(() => this.completed.emit());
     }
 }

@@ -16,6 +16,8 @@ import { ChannelItemTelegramComponent } from './components/channels/channel-item
 import { ChannelItemEmailComponent } from './components/channels/channel-item/channel-item-email/channel-item-email.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ChannelAddComponent } from './components/channels/channel-add/channel-add.component';
+import { ChannelAddTelegramComponent } from './components/channels/channel-add/channel-add-telegram/channel-add-telegram.component';
+import { ChannelAddEmailComponent } from './components/channels/channel-add/channel-add-email/channel-add-email.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,9 @@ import { ChannelAddComponent } from './components/channels/channel-add/channel-a
         ChannelItemTelegramComponent,
         ChannelItemEmailComponent,
         ModalComponent,
-        ChannelAddComponent
+        ChannelAddComponent,
+        ChannelAddTelegramComponent,
+        ChannelAddEmailComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

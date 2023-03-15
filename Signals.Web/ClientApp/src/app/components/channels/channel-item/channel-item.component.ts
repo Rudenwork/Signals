@@ -11,7 +11,7 @@ export class ChannelItemComponent {
 
     ChannelType: typeof ChannelType = ChannelType;
 
-    getChannel<T>(): T {
+    castChannel<T>(): T {
         return this.channel as T;
     }
 }
