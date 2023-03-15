@@ -17,8 +17,4 @@ export class ModalComponent {
         this.isOpened = false;
         this.closed.emit();
     }
-
-    onWindowClick(event: Event) {
-        event.stopPropagation();
-    }
 }
