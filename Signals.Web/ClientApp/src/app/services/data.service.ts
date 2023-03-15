@@ -29,8 +29,20 @@ export class DataService {
         return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() });
     }
 
+    private patch<T>(endpoint: string, item: T): Observable<T> {
+        return this.http.patch<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() });
+    }
+
     private delete(endpoint: string): Observable<Object> {
         return this.http.delete(this.getUrl(endpoint), { headers: this.getHeaders() });
+    }
+
+    private trimChannel(channel: Channel): Channel {
+        delete channel.id;
+        delete channel.userId;
+        delete channel.isVerified;
+
+        return channel;
     }
 
     getChannels(): Observable<Channel[]> {
@@ -42,10 +54,14 @@ export class DataService {
     }
 
     createChannel(channel: Channel): Observable<Channel> {
-        return this.post<Channel>('channels', channel);
+        return this.post<Channel>('channels', this.trimChannel(channel));
     }
 
-    deleteChannel(id?: string): Observable<Object> {
+    updateChannel(id: string, channel: Channel): Observable<Channel> {
+        return this.patch<Channel>(`channels/${id}`, this.trimChannel(channel));
+    }
+
+    deleteChannel(id: string): Observable<Object> {
         return this.delete(`channels/${id}`);
     }
 }

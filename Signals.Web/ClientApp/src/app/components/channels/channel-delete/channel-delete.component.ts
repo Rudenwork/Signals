@@ -7,7 +7,7 @@ import { DataService } from 'src/app/services/data.service';
     templateUrl: './channel-delete.component.html',
     styleUrls: ['./channel-delete.component.scss']
 })
-export class ChannelDeleteComponent{
+export class ChannelDeleteComponent {
     constructor(private dataService: DataService) { }
 
     @Output() deleted: EventEmitter<any> = new EventEmitter();
@@ -22,7 +22,7 @@ export class ChannelDeleteComponent{
 
     del() {
         this.isDeleting = true;
-        this.dataService.deleteChannel(this.channel.id)
+        this.dataService.deleteChannel(this.channel.id ?? '')
             .subscribe(() => this.deleted.emit());
     }
 }

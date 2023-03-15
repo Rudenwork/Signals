@@ -21,6 +21,9 @@ import { ChannelAddEmailComponent } from './components/channels/channel-add/chan
 import { ChannelDeleteComponent } from './components/channels/channel-delete/channel-delete.component';
 import { ChannelDeleteTelegramComponent } from './components/channels/channel-delete/channel-delete-telegram/channel-delete-telegram.component';
 import { ChannelDeleteEmailComponent } from './components/channels/channel-delete/channel-delete-email/channel-delete-email.component';
+import { ChannelUpdateComponent } from './components/channels/channel-update/channel-update.component';
+import { ChannelUpdateEmailComponent } from './components/channels/channel-update/channel-update-email/channel-update-email.component';
+import { ChannelUpdateTelegramComponent } from './components/channels/channel-update/channel-update-telegram/channel-update-telegram.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +42,10 @@ import { ChannelDeleteEmailComponent } from './components/channels/channel-delet
         ChannelAddEmailComponent,
         ChannelDeleteComponent,
         ChannelDeleteTelegramComponent,
-        ChannelDeleteEmailComponent
+        ChannelDeleteEmailComponent,
+        ChannelUpdateComponent,
+        ChannelUpdateEmailComponent,
+        ChannelUpdateTelegramComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

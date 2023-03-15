@@ -10,6 +10,7 @@ import { DataService } from 'src/app/services/data.service';
 export class ChannelItemComponent {
     constructor(private dataService: DataService) { }
 
+    @Output() updated: EventEmitter<any> = new EventEmitter();
     @Output() deleted: EventEmitter<any> = new EventEmitter();
     @Input() channel!: Channel;
 
