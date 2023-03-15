@@ -18,7 +18,9 @@ import { ModalComponent } from './components/modal/modal.component';
 import { ChannelAddComponent } from './components/channels/channel-add/channel-add.component';
 import { ChannelAddTelegramComponent } from './components/channels/channel-add/channel-add-telegram/channel-add-telegram.component';
 import { ChannelAddEmailComponent } from './components/channels/channel-add/channel-add-email/channel-add-email.component';
-import { ChannelDeleteComponent } from './components/channels/channel-item/channel-delete/channel-delete.component';
+import { ChannelDeleteComponent } from './components/channels/channel-delete/channel-delete.component';
+import { ChannelDeleteTelegramComponent } from './components/channels/channel-delete/channel-delete-telegram/channel-delete-telegram.component';
+import { ChannelDeleteEmailComponent } from './components/channels/channel-delete/channel-delete-email/channel-delete-email.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +37,9 @@ import { ChannelDeleteComponent } from './components/channels/channel-item/chann
         ChannelAddComponent,
         ChannelAddTelegramComponent,
         ChannelAddEmailComponent,
-        ChannelDeleteComponent
+        ChannelDeleteComponent,
+        ChannelDeleteTelegramComponent,
+        ChannelDeleteEmailComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

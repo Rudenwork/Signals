@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { EmailChannel } from 'src/app/models/channel.model';
 
 @Component({
-    selector: 'app-channel-add-email',
+    selector: 'app-channel-add-email[channel]',
     templateUrl: './channel-add-email.component.html',
     styleUrls: ['./channel-add-email.component.scss']
 })

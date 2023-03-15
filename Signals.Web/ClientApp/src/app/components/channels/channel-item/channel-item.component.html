@@ -4,6 +4,6 @@
     <app-channel-item-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
     <button (click)="modalDelete.open()">Del</button>
     <app-modal #modalDelete>
-        <app-channel-delete [id]="channel.id" *ngIf="modalDelete.isOpened" (deleted)="deleted.emit(); modalDelete.close()"/>
+        <app-channel-delete [channel]="channel" *ngIf="modalDelete.isOpened" (deleted)="deleted.emit(); modalDelete.close()"/>
     </app-modal>
 </div>

@@ -3,28 +3,26 @@ import { Channel, ChannelType } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
-    selector: 'app-channel-delete[id]',
+    selector: 'app-channel-delete[channel]',
     templateUrl: './channel-delete.component.html',
     styleUrls: ['./channel-delete.component.scss']
 })
-export class ChannelDeleteComponent implements OnInit{
+export class ChannelDeleteComponent{
     constructor(private dataService: DataService) { }
 
-    ngOnInit() {
-        this.dataService.getChannel(this.id)
-            .subscribe(channel => this.channel = channel);
-    }
-
     @Output() deleted: EventEmitter<any> = new EventEmitter();
-    @Input() id?: string;
+    @Input() channel!: Channel;
     isDeleting: boolean = false;
-    channel!: any;
 
     ChannelType: typeof ChannelType = ChannelType;
 
+    castChannel<T>(): T {
+        return this.channel as T;
+    }
+
     del() {
         this.isDeleting = true;
-        this.dataService.deleteChannel(this.id)
+        this.dataService.deleteChannel(this.channel.id)
             .subscribe(() => this.deleted.emit());
     }
 }
