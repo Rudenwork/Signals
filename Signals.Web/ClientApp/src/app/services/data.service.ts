@@ -37,6 +37,10 @@ export class DataService {
         return this.get<Channel[]>('channels');
     }
 
+    getChannel(id?: string): Observable<Channel> {
+        return this.get<Channel>(`channels/${id}`);
+    }
+
     createChannel(channel: Channel): Observable<Channel> {
         return this.post<Channel>('channels', channel);
     }
