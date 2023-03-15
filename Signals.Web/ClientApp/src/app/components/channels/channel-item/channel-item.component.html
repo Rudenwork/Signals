@@ -1,6 +1,6 @@
-[{{channel.$type}}]
 <div [ngSwitch]="channel.$type">
+    [{{channel.$type}}]
     <app-channel-item-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
     <app-channel-item-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+    <button (click)="del()">Del</button>
 </div>
-({{channel.id}})

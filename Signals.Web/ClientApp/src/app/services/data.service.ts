@@ -11,7 +11,7 @@ export class DataService {
 
     constructor(private authService: AuthService, private http: HttpClient) { }
 
-    getUrl(endpoint: string): string {
+    private getUrl(endpoint: string): string {
         return `${window.origin}/api/${endpoint}`;
     }
 
@@ -26,7 +26,11 @@ export class DataService {
     }
 
     private post<T>(endpoint: string, item: T): Observable<T> {
-        return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() })
+        return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() });
+    }
+
+    private delete(endpoint: string): Observable<Object> {
+        return this.http.delete(this.getUrl(endpoint), { headers: this.getHeaders() });
     }
 
     getChannels(): Observable<Channel[]> {
@@ -35,5 +39,9 @@ export class DataService {
 
     createChannel(channel: Channel): Observable<Channel> {
         return this.post<Channel>('channels', channel);
+    }
+
+    deleteChannel(id: string): Observable<Object> {
+        return this.delete(`channels/${id}`);
     }
 }
