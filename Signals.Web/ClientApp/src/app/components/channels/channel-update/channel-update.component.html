@@ -1,9 +1,9 @@
 <select disabled="true" [ngModel]="channel.$type" #type>
     <option>{{channel.$type}}</option>
 </select>
-<input type="text" [(ngModel)]="channel.description" placeholder="Description">
+<input type="text" [formControl]="description" placeholder="Description">
 <div [ngSwitch]="channel.$type">
-    <app-channel-update-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
-    <app-channel-update-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
+    <app-channel-update-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" (formInitialized)="setChildForm($event)" />
+    <app-channel-update-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" (formInitialized)="setChildForm($event)" />
 </div>
-<button [disabled]="isUpdating" (click)="update()">Update</button>
+<button [disabled]="form.invalid || isUpdating" (click)="update()">Update</button>

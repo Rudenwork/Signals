@@ -10,7 +10,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { ChannelsComponent } from './components/channels/channels.component';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChannelItemComponent } from './components/channels/channel-item/channel-item.component';
 import { ChannelItemTelegramComponent } from './components/channels/channel-item/channel-item-telegram/channel-item-telegram.component';
 import { ChannelItemEmailComponent } from './components/channels/channel-item/channel-item-email/channel-item-email.component';
@@ -58,6 +58,7 @@ import { ChannelVerifyEmailComponent } from './components/channels/channel-verif
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         AppRoutingModule,
         HttpClientModule,
         OAuthModule.forRoot()
