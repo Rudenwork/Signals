@@ -1,3 +1,7 @@
-<input type="text" [(ngModel)]="username" placeholder="Username">
-<input type="text" [(ngModel)]="password" placeholder="Password">
-<button (click)="login()">Login</button>
+<div id="loginBack">
+    <div id="loginWindow">
+        <input type="text" placeholder="Username" [formControl]="username">
+        <input type="text" placeholder="Password" [formControl]="password">
+        <button [disabled]="form.invalid" (click)="login()">Login</button>
+    </div>
+</div>
