@@ -10,6 +10,7 @@ using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Channels;
 using Signals.App.Extensions;
 using System.Data;
+using System.Runtime.InteropServices;
 
 namespace Signals.App.Controllers
 {
@@ -81,6 +82,24 @@ namespace Signals.App.Controllers
         [HttpPost]
         public async Task<ActionResult<ChannelModel.Read>> Post(ChannelModel.Create model)
         {
+            switch (model)
+            {
+                case ChannelModel.Create.Email emailModel:
+                    if (SignalsContext.Channels.Any(x => (x as EmailChannelEntity).Address.ToLower() == emailModel.Address.ToLower()))
+                    {
+                        ModelState.AddModelError(nameof(emailModel.Address), "Already created");
+                        return ValidationProblem();
+                    }
+                    break;
+                case ChannelModel.Create.Telegram telegramModel:
+                    if (SignalsContext.Channels.Any(x => (x as TelegramChannelEntity).Username.ToLower() == telegramModel.Username.ToLower()))
+                    {
+                        ModelState.AddModelError(nameof(telegramModel.Username), "Already created");
+                        return ValidationProblem();
+                    }
+                    break;
+            }
+
             ChannelEntity entity = model switch
             {
                 ChannelModel.Create.Email => model.Adapt<EmailChannelEntity>(),
@@ -111,6 +130,24 @@ namespace Signals.App.Controllers
 
             if (entity.UserId != User.GetId())
                 return Forbid();
+
+            switch (model)
+            {
+                case ChannelModel.Update.Email emailModel:
+                    if (SignalsContext.Channels.Any(x => (x as EmailChannelEntity).Address.ToLower() == emailModel.Address.ToLower()))
+                    {
+                        ModelState.AddModelError(nameof(emailModel.Address), "Already created");
+                        return ValidationProblem();
+                    }
+                    break;
+                case ChannelModel.Update.Telegram telegramModel:
+                    if (SignalsContext.Channels.Any(x => (x as TelegramChannelEntity).Username.ToLower() == telegramModel.Username.ToLower()))
+                    {
+                        ModelState.AddModelError(nameof(telegramModel.Username), "Already created");
+                        return ValidationProblem();
+                    }
+                    break;
+            }
 
             var patchEntityType = model switch
             {
