@@ -47,7 +47,8 @@ export class ChannelCreateComponent implements OnInit {
     }
 
     setChildForm(form: FormGroup) {
-        this.form.setControl('childForm', form);
+        Promise.resolve()
+            .then(() => this.form.setControl('childForm', form));
     }
 
     getTypeOptions(): string[] {

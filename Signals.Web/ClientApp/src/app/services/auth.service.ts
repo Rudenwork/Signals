@@ -52,9 +52,11 @@ export class AuthService {
     }
 
     logout(): Promise<any> {
-        localStorage.clear();
-        this.isAuthenticated = false;
-        return Promise.resolve();
+        return Promise.resolve()
+            .then(() => {
+                localStorage.clear();
+                this.isAuthenticated = false
+            });
     }
 
     getToken(): string {
