@@ -10,7 +10,6 @@ using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Channels;
 using Signals.App.Extensions;
 using System.Data;
-using System.Runtime.InteropServices;
 
 namespace Signals.App.Controllers
 {
@@ -134,14 +133,14 @@ namespace Signals.App.Controllers
             switch (model)
             {
                 case ChannelModel.Update.Email emailModel:
-                    if (SignalsContext.Channels.Any(x => (x as EmailChannelEntity).Address.ToLower() == emailModel.Address.ToLower()))
+                    if (SignalsContext.Channels.Any(x => x.Id != id && (x as EmailChannelEntity).Address.ToLower() == emailModel.Address.ToLower()))
                     {
                         ModelState.AddModelError(nameof(emailModel.Address), "Already created");
                         return ValidationProblem();
                     }
                     break;
                 case ChannelModel.Update.Telegram telegramModel:
-                    if (SignalsContext.Channels.Any(x => (x as TelegramChannelEntity).Username.ToLower() == telegramModel.Username.ToLower()))
+                    if (SignalsContext.Channels.Any(x => x.Id != id && (x as TelegramChannelEntity).Username.ToLower() == telegramModel.Username.ToLower()))
                     {
                         ModelState.AddModelError(nameof(telegramModel.Username), "Already created");
                         return ValidationProblem();
