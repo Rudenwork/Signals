@@ -46,8 +46,9 @@ namespace Signals.App.Extensions
 
             var chatId = message.Chat.Id;
 
-            var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike((x as TelegramChannelEntity).Username, $"{message.From.Username}")) as TelegramChannelEntity;
-            
+            var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike((x as TelegramChannelEntity).Username, message.From.Username)) as TelegramChannelEntity;
+            SignalsContext.Entry(channel).Reload();
+
             if (channel is null)
             {
                 await client.SendTextMessageAsync(chatId, $"Channel is not created for your username");
@@ -69,7 +70,7 @@ namespace Signals.App.Extensions
 
         public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
