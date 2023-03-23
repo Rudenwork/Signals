@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Channel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
-import { ModalComponent } from '../modal/modal.component';
 
 @Component({
     selector: 'app-channels',

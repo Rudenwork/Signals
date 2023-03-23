@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.model';
+import { Signal } from '../models/signal.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -49,10 +50,6 @@ export class DataService {
         return this.get<Channel[]>('channels');
     }
 
-    getChannel(id?: string): Observable<Channel> {
-        return this.get<Channel>(`channels/${id}`);
-    }
-
     createChannel(channel: Channel): Observable<Channel> {
         return this.post<Channel>('channels', this.trimChannel(channel));
     }
@@ -67,5 +64,9 @@ export class DataService {
 
     deleteChannel(id: string): Observable<any> {
         return this.delete(`channels/${id}`);
+    }
+
+    getSignals(): Observable<Signal[]> {
+        return this.get<Signal[]>('signals');
     }
 }

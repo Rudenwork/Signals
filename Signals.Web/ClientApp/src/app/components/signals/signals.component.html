@@ -1,0 +1,5 @@
+<ul>
+    <li *ngFor="let signal of signals">
+        <app-signal-item [signal]="signal" (changed)="getSignals()"/>
+    </li>
+</ul>
