@@ -5,13 +5,13 @@
     <button *ngIf="!channel.isVerified" (click)="modalVerify.open()">V</button>
     <button (click)="modalUpdate.open()">U</button>
     <button (click)="modalDelete.open()">D</button>
-    <app-modal #modalVerify>
-        <app-channel-verify [channel]="channel" *ngIf="modalVerify.isOpened" (verified)="verified.emit(); modalVerify.close()"/>
+    <app-modal title="Verify Channel" #modalVerify>
+        <app-channel-verify [channel]="channel" *ngIf="modalVerify.isOpened" (verified)="changed.emit(); modalVerify.close()"/>
     </app-modal>
-    <app-modal #modalUpdate>
-        <app-channel-update [channel]="channel" *ngIf="modalUpdate.isOpened" (updated)="updated.emit(); modalUpdate.close()"/>
+    <app-modal title="Update Channel" #modalUpdate>
+        <app-channel-update [channel]="channel" *ngIf="modalUpdate.isOpened" (updated)="changed.emit(); modalUpdate.close()"/>
     </app-modal>
-    <app-modal #modalDelete>
-        <app-channel-delete [channel]="channel" *ngIf="modalDelete.isOpened" (deleted)="deleted.emit(); modalDelete.close()"/>
+    <app-modal title="Delete Channel" #modalDelete>
+        <app-channel-delete [channel]="channel" *ngIf="modalDelete.isOpened" (deleted)="changed.emit(); modalDelete.close()"/>
     </app-modal>
 </div>

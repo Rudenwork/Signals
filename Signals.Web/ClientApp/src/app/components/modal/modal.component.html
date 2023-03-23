@@ -1,6 +1,7 @@
 <div id="modal-background" *ngIf="isOpened">
     <div id="modal-window">
         <div id="modal-close-container">
+            <span>{{title}}</span>
             <button id="modal-close" (click)="close()">&times;</button>
         </div>
         <div id="modal-content-container">
