@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
+using Signals.App.Core.Execution;
 using Signals.App.Core.Notification;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Channels;
+using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 using System.Data;
+using System.Security.Cryptography.Xml;
 
 namespace Signals.App.Controllers
 {
@@ -148,16 +151,51 @@ namespace Signals.App.Controllers
                     break;
             }
 
-            var patchEntityType = model switch
+            ChannelEntity altEntity = model switch
             {
-                ChannelModel.Update.Email => typeof(EmailChannelEntity),
-                ChannelModel.Update.Telegram => typeof(TelegramChannelEntity)
+                ChannelModel.Update.Email => new EmailChannelEntity { Address = (model as ChannelModel.Update.Email).Address },
+                ChannelModel.Update.Telegram => new TelegramChannelEntity { Username = (model as ChannelModel.Update.Telegram).Username }
             };
 
-            if (entity.GetType() != patchEntityType)
+            if (entity.GetType() != altEntity.GetType())
             {
-                ModelState.AddModelError(nameof(model), "Type is not correct");
-                return ValidationProblem();
+                altEntity.UserId = entity.UserId;
+                altEntity.Description = entity.Description;
+                altEntity.Code = entity.Code;
+
+                SignalsContext.Channels.Add(altEntity);
+
+                var stages = SignalsContext.Stages
+                    .Where(x => (x as NotificationStageEntity).ChannelId == id)
+                    .Cast<NotificationStageEntity>()
+                    .ToList();
+
+                var signalIds = stages
+                    .Select(x => x.SignalId)
+                    .ToList();
+
+                var executions = SignalsContext.Executions
+                    .Where(x => signalIds.Contains(x.SignalId))
+                    .ToList();
+
+                foreach (var execution in executions)
+                {
+                    await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id }); 
+                }
+
+                foreach (var stage in stages)
+                {
+                    stage.ChannelId = altEntity.Id;
+                }
+
+                SignalsContext.SaveChanges();
+                SignalsContext.Channels.Remove(entity);
+                entity = altEntity;
+
+                foreach (var execution in executions)
+                {
+                    await Mediator.Publish(new Start.Message { SignalId = execution.SignalId });
+                }
             }
 
             var shouldReset = model switch
