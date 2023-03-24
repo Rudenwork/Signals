@@ -10,7 +10,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ChannelCreateComponent implements OnInit {
     constructor(private dataService: DataService) { }
-    
+
     @Output() created: EventEmitter<any> = new EventEmitter();
 
     ChannelType: typeof ChannelType = ChannelType;
