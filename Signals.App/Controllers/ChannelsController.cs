@@ -282,12 +282,16 @@ namespace Signals.App.Controllers
 
         private async Task SendVerificationEmail(EmailChannelEntity entity)
         {
-            await Mediator.Send(new SendEmailNotification.Request
+            try
             {
-                Address = entity.Address,
-                Topic = "Signals Verification Code",
-                Text = $"Verification Code: {entity.Code}"
-            });
+                await Mediator.Send(new SendEmailNotification.Request
+                {
+                    Address = entity.Address,
+                    Topic = "Signals Verification Code",
+                    Text = $"Verification Code: {entity.Code}"
+                });
+            }
+            catch (Exception) { }
         }
     }
 }
