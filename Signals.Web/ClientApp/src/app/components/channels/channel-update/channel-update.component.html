@@ -1,5 +1,5 @@
-<select disabled="true" [ngModel]="channel.$type" #type>
-    <option>{{channel.$type}}</option>
+<select [ngModel]="channel.$type" (change)="changeChannelType(type.value)" #type>
+    <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
 </select>
 <input type="text" [formControl]="description" placeholder="Description">
 <div [ngSwitch]="channel.$type">

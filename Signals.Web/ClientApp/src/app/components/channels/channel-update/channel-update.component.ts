@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Channel, ChannelType } from 'src/app/models/channel.model';
+import { Channel, ChannelType, EmailChannel, TelegramChannel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -31,12 +31,31 @@ export class ChannelUpdateComponent implements OnInit {
         ]);
     }
 
+    changeChannelType(type: string) {
+        let oldChannel = this.channel;
+
+        if (type == ChannelType.Telegram) {
+            this.channel = new TelegramChannel();
+        }
+        else if (type == ChannelType.Email) {
+            this.channel = new EmailChannel();
+        }
+
+        this.channel.id = oldChannel.id;
+        this.channel.description = oldChannel.description;
+    }
+
     castChannel<T>(): T {
         return this.channel as T;
     }
 
     setChildForm(form: FormGroup) {
-        this.form.setControl('childForm', form);
+        Promise.resolve()
+            .then(() => this.form.setControl('childForm', form));
+    }
+
+    getTypeOptions(): string[] {
+        return Object.keys(ChannelType);
     }
 
     update() {
