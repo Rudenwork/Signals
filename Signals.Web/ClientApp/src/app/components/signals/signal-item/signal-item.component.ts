@@ -7,6 +7,7 @@ import { Signal } from 'src/app/models/signal.model';
     styleUrls: ['./signal-item.component.scss']
 })
 export class SignalItemComponent {
+    @Output() changing: EventEmitter<any> = new EventEmitter();
     @Output() changed: EventEmitter<any> = new EventEmitter();
     @Input() signal!: Signal;
 }

@@ -2,10 +2,10 @@
 
 <ul>
     <li *ngFor="let signal of signals">
-        <app-signal-item [signal]="signal" (changed)="getSignals()"/>
+        <app-signal-item [signal]="signal" (changing)="stopFetching()" (changed)="startFetching()"/>
     </li>
 </ul>
 
-<app-modal title="Create Signal" #modalCreate >
-    <app-signal *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); getSignals()"/>
+<app-modal title="Create Signal" (opened)="stopFetching()" (closed)="startFetching()" #modalCreate >
+    <app-signal *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close()"/>
 </app-modal>

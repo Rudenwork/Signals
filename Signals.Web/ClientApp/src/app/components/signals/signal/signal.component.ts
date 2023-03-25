@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Signal, Stage } from 'src/app/models/signal.model';
+import { Signal } from 'src/app/models/signal.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
