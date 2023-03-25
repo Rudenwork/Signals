@@ -56,8 +56,16 @@ export class ChannelCreateComponent implements OnInit {
     }
 
     create() {
+        this.trimChannel();
+
         this.isCreating = true;
         this.dataService.createChannel(this.channel)
             .subscribe(() => this.created.emit());
+    }
+
+    trimChannel() {
+        delete this.channel.id;
+        delete this.channel.userId;
+        delete this.channel.isVerified;
     }
 }

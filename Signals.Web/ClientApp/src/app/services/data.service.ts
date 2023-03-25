@@ -9,7 +9,6 @@ import { AuthService } from './auth.service';
     providedIn: 'root'
 })
 export class DataService {
-
     constructor(private authService: AuthService, private http: HttpClient) { }
 
     private getUrl(endpoint: string): string {
@@ -38,20 +37,12 @@ export class DataService {
         return this.http.delete(this.getUrl(endpoint), { headers: this.getHeaders() });
     }
 
-    private trimChannel(channel: Channel): Channel {
-        delete channel.id;
-        delete channel.userId;
-        delete channel.isVerified;
-
-        return channel;
-    }
-
     getChannels(): Observable<Channel[]> {
         return this.get<Channel[]>('channels');
     }
 
     createChannel(channel: Channel): Observable<Channel> {
-        return this.post<Channel>('channels', this.trimChannel(channel));
+        return this.post<Channel>('channels', channel);
     }
 
     verifyChannel(id: string, code: string): Observable<any> {
@@ -59,7 +50,7 @@ export class DataService {
     }
 
     updateChannel(id: string, channel: Channel): Observable<Channel> {
-        return this.patch<Channel>(`channels/${id}`, this.trimChannel(channel));
+        return this.patch<Channel>(`channels/${id}`, channel);
     }
 
     deleteChannel(id: string): Observable<any> {

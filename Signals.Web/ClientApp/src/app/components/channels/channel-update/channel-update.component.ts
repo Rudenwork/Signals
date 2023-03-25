@@ -59,8 +59,17 @@ export class ChannelUpdateComponent implements OnInit {
     }
 
     update() {
+        let id = this.channel.id  ?? '';
+        this.trimChannel();
+
         this.isUpdating = true;
-        this.dataService.updateChannel(this.channel.id ?? '', this.channel)
+        this.dataService.updateChannel(id, this.channel)
             .subscribe(() => this.updated.emit());
+    }
+
+    trimChannel() {
+        delete this.channel.id;
+        delete this.channel.userId;
+        delete this.channel.isVerified;
     }
 }
