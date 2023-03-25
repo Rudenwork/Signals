@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Signal } from 'src/app/models/signal.model';
 
 @Component({
-    selector: 'app-signal-item',
+    selector: 'app-signal-item[signal]',
     templateUrl: './signal-item.component.html',
     styleUrls: ['./signal-item.component.scss']
 })

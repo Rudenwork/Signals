@@ -1,5 +1,11 @@
+<button (click)="modalCreate.open()">Create</button>
+
 <ul>
     <li *ngFor="let signal of signals">
         <app-signal-item [signal]="signal" (changed)="getSignals()"/>
     </li>
 </ul>
+
+<app-modal title="Create Signal" #modalCreate >
+    <app-signal *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); getSignals()"/>
+</app-modal>

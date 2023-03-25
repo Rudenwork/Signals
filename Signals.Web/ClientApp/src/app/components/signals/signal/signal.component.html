@@ -1,1 +1,11 @@
-<p>signal works!</p>
+<input type="text" [formControl]="name" placeholder="Name">
+<input type="text" [formControl]="schedule" placeholder="Schedule">
+
+<ul>
+    <li *ngFor="let stage of signal.stages">
+        {{stage.name}}
+    </li>
+</ul>
+
+<button *ngIf="!signal.id" [disabled]="form.invalid" (click)="create()">Create</button>
+<button *ngIf="signal.id" [disabled]="form.invalid" (click)="update()">Update</button>
