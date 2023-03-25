@@ -26,6 +26,7 @@ export class SignalComponent implements OnInit {
         }
         else {
             this.signal = { ...this.signal };
+            this.signal.stages = this.signal.stages?.slice();
         }
 
         this.name = new FormControl(this.signal.name, [
