@@ -1,62 +1,83 @@
-#modal-background {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    backdrop-filter: blur(2px);
-    animation: blur 1s forwards;
-}
-
-@keyframes blur {
-    from {
-        backdrop-filter: blur(0);
-    }
-
-    to {
+:host {
+    #background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
         backdrop-filter: blur(2px);
-    }
-}
-
-#modal-window {
-    padding: 10px;
-    color: white;
-    background: rgb(43, 43, 43);
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px 0px black;
-    animation: fade-out 1s forwards;
-}
-
-@keyframes fade-out {
-    from {
-        opacity: 0;
+        animation: blur 1s forwards;
     }
 
-    to {
-        opacity: 1;
+    @keyframes blur {
+        from {
+            backdrop-filter: blur(0);
+        }
+
+        to {
+            backdrop-filter: blur(2px);
+        }
     }
-}
 
-#modal-close-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
+    #window {
+        padding: 15px;
+        color: white;
+        background: rgb(43, 43, 43);
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px 0px black;
+        animation: fade-out 1s forwards;
+    }
 
-#modal-close {
-    width: 20px;
-    height: 20px;
-    padding: 0px;
-    background-color: red;
-    color: white;
-    border-style: none;
-    border-radius: 3px;
-    box-shadow: 0px 0px 3px 0px black;
-}
+    @keyframes fade-out {
+        from {
+            opacity: 0;
+        }
 
-#modal-content-container {
-    padding: 10px;
+        to {
+            opacity: 1;
+        }
+    }
+
+    #header {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    #close {
+        width: 20px;
+        height: 20px;
+        padding: 0px;
+        background-color: red;
+        color: white;
+        border-style: none;
+        border-radius: 3px;
+        box-shadow: 0px 0px 3px 0px black;
+    }
+
+    #content {
+        padding: 25px;
+    }
+
+    #footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    #confirm {
+        padding: 5px;
+        background-color: tomato;
+        color: white;
+        border-style: none;
+        border-radius: 3px;
+        box-shadow: 0px 0px 3px 0px black;
+        transition: .5s;
+
+        &:hover {
+            background-color: red;
+        }
+    }
 }

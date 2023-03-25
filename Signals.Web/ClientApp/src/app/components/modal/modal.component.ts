@@ -8,7 +8,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ModalComponent implements OnInit {
     @Output() opened: EventEmitter<any> = new EventEmitter();
     @Output() closed: EventEmitter<any> = new EventEmitter();
+    @Output() confirmed: EventEmitter<any> = new EventEmitter();
     @Input() isOpened: boolean = false;
+    @Input() showConfirm: boolean = false;
+    @Input() confirmText: string = 'OK';
     @Input() title: string = "";
 
     ngOnInit() {

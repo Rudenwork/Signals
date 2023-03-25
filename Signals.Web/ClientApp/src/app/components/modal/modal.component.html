@@ -1,11 +1,14 @@
-<div id="modal-background" *ngIf="isOpened">
-    <div id="modal-window">
-        <div id="modal-close-container">
+<div id="background" *ngIf="isOpened">
+    <div id="window">
+        <div id="header">
             <span>{{title}}</span>
-            <button id="modal-close" (click)="close()">&times;</button>
+            <button id="close" (click)="close()">&times;</button>
         </div>
-        <div id="modal-content-container">
+        <div id="content">
             <ng-content />
+        </div>
+        <div *ngIf="showConfirm" id="footer">
+            <button id="confirm" (click)="confirmed.emit(); close()">{{ confirmText }}</button>
         </div>
     </div>
 </div>

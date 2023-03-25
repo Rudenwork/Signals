@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Channel, ChannelType } from 'src/app/models/channel.model';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
     selector: 'app-channel-item[channel]',
@@ -7,12 +8,19 @@ import { Channel, ChannelType } from 'src/app/models/channel.model';
     styleUrls: ['./channel-item.component.scss']
 })
 export class ChannelItemComponent {
-    @Output() changed: EventEmitter<any> = new EventEmitter();
+    constructor(private dataService: DataService) { }
+    
     @Input() channel!: Channel;
+    @Output() changed: EventEmitter<any> = new EventEmitter();
 
     ChannelType: typeof ChannelType = ChannelType;
 
     castChannel<T>(): T {
         return this.channel as T;
+    }
+
+    del() {
+        this.dataService.deleteChannel(this.channel.id ?? '')
+            .subscribe(() => this.changed.emit());
     }
 }

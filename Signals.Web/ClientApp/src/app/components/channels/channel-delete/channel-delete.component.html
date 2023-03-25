@@ -1,5 +1,0 @@
-<div [ngSwitch]="channel.$type">
-    <app-channel-delete-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" />
-    <app-channel-delete-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" />
-</div>
-<button [disabled]="isDeleting" (click)="del()">Delete</button>
