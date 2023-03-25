@@ -29,6 +29,10 @@ import { ChannelVerifyTelegramComponent } from './components/channels/channel-ve
 import { ChannelVerifyEmailComponent } from './components/channels/channel-verify/channel-verify-email/channel-verify-email.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { SignalItemComponent } from './components/signals/signal-item/signal-item.component';
+import { SignalComponent } from './components/signals/signal/signal.component';
+import { StageComponent } from './components/signals/stage/stage.component';
+import { BlockComponent } from './components/signals/block/block.component';
+import { IndicatorComponent } from './components/signals/indicator/indicator.component';
 
 @NgModule({
     declarations: [
@@ -55,7 +59,11 @@ import { SignalItemComponent } from './components/signals/signal-item/signal-ite
         ChannelVerifyTelegramComponent,
         ChannelVerifyEmailComponent,
         SignalsComponent,
-        SignalItemComponent
+        SignalItemComponent,
+        SignalComponent,
+        StageComponent,
+        BlockComponent,
+        IndicatorComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
