@@ -1,0 +1,5 @@
+{{user.username}} <button (click)="modalDelete.open()">Delete</button>
+
+<app-modal title="Delete User" [showConfirm]="true" confirmText="Delete" (confirmed)="del()" #modalDelete >
+    {{user.username}}
+</app-modal>

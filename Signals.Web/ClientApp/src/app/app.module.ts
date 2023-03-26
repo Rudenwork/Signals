@@ -31,6 +31,9 @@ import { StageComponent } from './components/signals/stage/stage.component';
 import { BlockComponent } from './components/signals/block/block.component';
 import { IndicatorComponent } from './components/signals/indicator/indicator.component';
 import { StageItemComponent } from './components/signals/stage-item/stage-item.component';
+import { UsersComponent } from './components/users/users.component';
+import { UserComponent } from './components/users/user/user.component';
+import { UserFormComponent } from './components/users/user-form/user-form.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +62,10 @@ import { StageItemComponent } from './components/signals/stage-item/stage-item.c
         StageComponent,
         BlockComponent,
         IndicatorComponent,
-        StageItemComponent
+        StageItemComponent,
+        UsersComponent,
+        UserComponent,
+        UserFormComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
