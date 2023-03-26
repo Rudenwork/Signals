@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
     selector: 'app-user-form',
@@ -8,6 +9,8 @@ import { User } from 'src/app/models/user.model';
     styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit {
+    constructor(private modal: ModalComponent) {}
+
     @Input() user!: User;
 
     username!: FormControl;
@@ -25,5 +28,7 @@ export class UserFormComponent implements OnInit {
         this.form = new FormGroup([
             this.username
         ]);
+
+        this.modal.form.addControl("form", this.form);
     }
 }

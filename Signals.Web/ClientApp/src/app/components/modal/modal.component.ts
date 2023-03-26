@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-modal',
@@ -14,7 +15,11 @@ export class ModalComponent implements OnInit {
     @Input() confirmText: string = 'OK';
     @Input() title: string = "";
 
+    form!: FormGroup;
+
     ngOnInit() {
+        this.form = new FormGroup([]);
+
         if (this.isOpened) {
             this.opened.emit();
         }

@@ -8,7 +8,7 @@
             <ng-content />
         </div>
         <div *ngIf="showConfirm" id="footer">
-            <button id="confirm" (click)="confirmed.emit(); close()">{{ confirmText }}</button>
+            <button id="confirm" [disabled]="form.invalid" (click)="confirmed.emit(); close()">{{ confirmText }}</button>
         </div>
     </div>
 </div>
