@@ -9,10 +9,10 @@ import { FormGroup } from '@angular/forms';
 export class ModalComponent implements OnInit {
     @Output() opened: EventEmitter<any> = new EventEmitter();
     @Output() closed: EventEmitter<any> = new EventEmitter();
-    @Output() confirmed: EventEmitter<any> = new EventEmitter();
+    @Output() submitted: EventEmitter<any> = new EventEmitter();
     @Input() isOpened: boolean = false;
-    @Input() showConfirm: boolean = false;
-    @Input() confirmText: string = 'OK';
+    @Input() showSubmit: boolean = false;
+    @Input() submitText: string = 'OK';
     @Input() title: string = "";
 
     form!: FormGroup;

@@ -5,6 +5,6 @@
     <app-stage [stage]="stage" (submitted)="modalUpdate.close(); updated.emit($event)"></app-stage>
 </app-modal>
 
-<app-modal title="Delete Stage" [showConfirm]="true" confirmText="Delete" (confirmed)="deleted.emit()" #modalDelete>
+<app-modal title="Delete Stage" [showSubmit]="true" submitText="Delete" (submitted)="deleted.emit()" #modalDelete>
     Do you want to delete?
 </app-modal>

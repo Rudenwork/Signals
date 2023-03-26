@@ -1,5 +1,5 @@
 {{user.username}} <button (click)="modalUpdate.open()">U</button>
 
-<app-modal title="Update User" [showConfirm]="true" confirmText="Update" (confirmed)="update()" #modalUpdate >
+<app-modal title="Update User" [showSubmit]="true" submitText="Update" (submitted)="update()" #modalUpdate >
     <app-user-form *ngIf="modalUpdate.isOpened" [user]="user"></app-user-form>
 </app-modal>
