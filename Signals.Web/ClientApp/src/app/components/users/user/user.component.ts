@@ -8,8 +8,4 @@ import { User } from 'src/app/models/user.model';
 })
 export class UserComponent {
     @Input() user!: User;
-
-    update() {
-
-    }
 }

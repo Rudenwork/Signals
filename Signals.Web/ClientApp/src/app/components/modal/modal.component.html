@@ -8,7 +8,12 @@
             <ng-content />
         </div>
         <div *ngIf="showSubmit" id="footer">
-            <button id="submit" [disabled]="form.invalid" (click)="submitted.emit(); close()">{{ submitText }}</button>
+            <button 
+                id="submit"
+                [disabled]="form.invalid"
+                [style.background-color]="submitColor"
+                (click)="submitted.emit(); close()">{{ submitText }}
+            </button>
         </div>
     </div>
 </div>
