@@ -10,5 +10,5 @@
 <button *ngIf="signal.id" [disabled]="form.invalid" (click)="update()">Update</button>
 
 <app-modal title="Create Stage" #modalCreate >
-    <app-stage *ngIf="modalCreate.isOpened" (submitted)="createStage($event)"/>
+    <app-stage *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); createStage($event)"/>
 </app-modal>
