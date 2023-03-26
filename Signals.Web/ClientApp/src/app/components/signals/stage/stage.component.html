@@ -1,1 +1,6 @@
-<p>stage works!</p>
+<input type="text" [formControl]="name" placeholder="Name">
+
+<button [disabled]="form.invalid" (click)="submit()">
+    <span *ngIf="!stage.id">Create</span>
+    <span *ngIf="stage.id">Update</span>
+</button>

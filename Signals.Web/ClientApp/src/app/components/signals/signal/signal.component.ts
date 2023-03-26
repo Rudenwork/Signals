@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Signal } from 'src/app/models/signal.model';
+import { Signal, Stage } from 'src/app/models/signal.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -46,6 +46,19 @@ export class SignalComponent implements OnInit {
             this.name,
             this.schedule
         ]);
+    }
+
+    createStage(stage: Stage) {
+        this.signal.stages?.push(stage);
+    }
+
+    updateStage(index: number, stage: Stage) {
+        let stages = this.signal.stages ?? [];
+        stages[index] = stage;
+    }
+
+    deleteStage(index: number) {
+        this.signal.stages?.splice(index, 1);
     }
 
     create() {

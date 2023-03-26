@@ -30,6 +30,7 @@ import { SignalComponent } from './components/signals/signal/signal.component';
 import { StageComponent } from './components/signals/stage/stage.component';
 import { BlockComponent } from './components/signals/block/block.component';
 import { IndicatorComponent } from './components/signals/indicator/indicator.component';
+import { StageItemComponent } from './components/signals/stage-item/stage-item.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { IndicatorComponent } from './components/signals/indicator/indicator.com
         SignalComponent,
         StageComponent,
         BlockComponent,
-        IndicatorComponent
+        IndicatorComponent,
+        StageItemComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

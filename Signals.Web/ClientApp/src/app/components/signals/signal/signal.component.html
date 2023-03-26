@@ -1,11 +1,14 @@
 <input type="text" [formControl]="name" placeholder="Name">
 <input type="text" [formControl]="schedule" placeholder="Schedule">
 
-<ul>
-    <li *ngFor="let stage of signal.stages">
-        {{stage.name}}
-    </li>
-</ul>
+<div id="stages-container">
+    <button (click)="modalCreate.open()">Create</button>
+    <app-stage-item *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/>
+</div>
 
 <button *ngIf="!signal.id" [disabled]="form.invalid" (click)="create()">Create</button>
 <button *ngIf="signal.id" [disabled]="form.invalid" (click)="update()">Update</button>
+
+<app-modal title="Create Stage" #modalCreate >
+    <app-stage *ngIf="modalCreate.isOpened" (submitted)="createStage($event)"/>
+</app-modal>
