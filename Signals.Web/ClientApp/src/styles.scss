@@ -31,7 +31,24 @@ button {
     }
 }
 
+input {
+    color: white;
+    padding: 5px;
+    outline: none;
+    background-color: #242424;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: .5s;
+}
+
 :root {
     --color-button-bad: red;
     --color-button-neutral: #1177bb;
+}
+
+.ng-invalid {
+    border: 1px solid red;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
 }
