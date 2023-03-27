@@ -17,12 +17,15 @@ export class UserFormComponent implements OnInit {
     username!: FormControl;
     password!: FormControl;
     isAdmin!: FormControl;
+    isDisabled!: FormControl;
 
     form!: FormGroup;
+    isCreating: boolean = false;
 
     ngOnInit() {
         if (this.user == undefined) {
             this.user = new User();
+            this.isCreating = true;
         }
         else {
             this.user = { ...this.user };
@@ -31,15 +34,25 @@ export class UserFormComponent implements OnInit {
         }
 
         this.username = new FormControl(this.user.username, [
-            Validators.required
+            Validators.required,
+            Validators.pattern(/^(?!\.)[a-zA-Z0-9._]{1,50}$/)
         ]);
 
-        this.password = new FormControl(this.user.password);
+        this.password = new FormControl(this.user.password, [
+            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+        ]);
+
+        if (this.isCreating) {
+            this.password.addValidators([ Validators.required ]);
+        }
+
         this.isAdmin = new FormControl(this.user.isAdmin);
+        this.isDisabled = new FormControl(this.user.isDisabled);
 
         this.username.valueChanges.subscribe(username => this.user.username = username);
         this.password.valueChanges.subscribe(password => this.user.password = password);
         this.isAdmin.valueChanges.subscribe(isAdmin => this.user.isAdmin = isAdmin);
+        this.isDisabled.valueChanges.subscribe(isDisabled => this.user.isDisabled = isDisabled);
 
         this.form = new FormGroup([
             this.username,
@@ -47,7 +60,11 @@ export class UserFormComponent implements OnInit {
             this.isAdmin
         ]);
 
-        this.modal.form.addControl("form", this.form);
+        if (this.isCreating) {
+            this.form.addControl('isDisabled', this.isDisabled);
+        }
+
+        this.modal.form.addControl('form', this.form);
         this.modal.submitted.subscribe(() => this.submit());
     }
 
@@ -67,6 +84,10 @@ export class UserFormComponent implements OnInit {
 
         if (this.isAdmin.pristine) {
             delete this.user.isAdmin;
+        }
+
+        if (this.isDisabled.pristine) {
+            delete this.user.isDisabled;
         }
         
         this.submitted.emit(this.user);

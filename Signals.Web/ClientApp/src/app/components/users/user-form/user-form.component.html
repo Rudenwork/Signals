@@ -1,3 +1,4 @@
 <input type="text" [formControl]="username" placeholder="Username">
 <input type="text" [formControl]="password" placeholder="Password">
 <span>Is Admin: <input type="checkbox" [formControl]="isAdmin"></span>
+<span *ngIf="isCreating">Is Disabled: <input type="checkbox" [formControl]="isDisabled"></span>
