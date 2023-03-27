@@ -1,5 +1,9 @@
-{{user.username}} <button (click)="modalUpdate.open()">U</button>
+{{user.username}} <button (click)="modalUpdate.open()">U</button> <button (click)="modalDelete.open()">D</button>
 
-<app-modal title="Update User" submitText="Update" #modalUpdate >
-    <app-user-form *ngIf="modalUpdate.isOpened" [user]="user"></app-user-form>
+<app-modal title="Update User" submitText="Update" #modalUpdate>
+    <app-user-form *ngIf="modalUpdate.isOpened" [user]="user" (submitted)="update($event)" #userForm></app-user-form>
+</app-modal>
+
+<app-modal title="Delete User" submitText="Delete" submitColor="red" (submitted)="del()" #modalDelete>
+    {{user.username}}
 </app-modal>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
     selector: 'app-users',
@@ -7,16 +8,21 @@ import { User } from 'src/app/models/user.model';
     styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+    constructor(private dataService: DataService) {}
+    
     users!: User[];
 
     ngOnInit() {
+        this.dataService.getUsers()
+            .subscribe(users => this.users = users);
+    }
 
-        let firstUser = new User();
-        let secondUser = new User();
+    create(user: User) {
+        this.dataService.createUser(user)
+            .subscribe(user => this.users.push(user));
+    }
 
-        firstUser.username = 'JackSparrow';
-        secondUser.username = 'Rudenvad';
-
-        this.users = [ firstUser, secondUser ];
+    remove(index: number) {
+        this.users.splice(index, 1);
     }
 }

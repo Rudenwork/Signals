@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.model';
 import { Signal } from '../models/signal.model';
+import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -10,6 +11,8 @@ import { AuthService } from './auth.service';
 })
 export class DataService {
     constructor(private authService: AuthService, private http: HttpClient) { }
+
+    //#region Common
 
     private getUrl(endpoint: string): string {
         return `${window.origin}/api/${endpoint}`;
@@ -37,6 +40,9 @@ export class DataService {
         return this.http.delete(this.getUrl(endpoint), { headers: this.getHeaders() });
     }
 
+    //#endregion Common
+    //#region Channel
+
     getChannels(): Observable<Channel[]> {
         return this.get<Channel[]>('channels');
     }
@@ -57,7 +63,31 @@ export class DataService {
         return this.delete(`channels/${id}`);
     }
 
+    //#endregion Channel
+    //#region Signal
+
     getSignals(): Observable<Signal[]> {
         return this.get<Signal[]>('signals');
     }
+
+    //#endregion Signal
+    //#region User
+
+    getUsers(): Observable<User[]> {
+        return this.get<User[]>('users');
+    }
+
+    createUser(user: User): Observable<User> {
+        return this.post<User>('users', user);
+    }
+
+    updateUser(id: string, user: User): Observable<User> {
+        return this.patch<User>(`users/${id}`, user);
+    }
+
+    deleteUser(id: string): Observable<any> {
+        return this.delete(`users/${id}`);
+    }
+
+    //#endregion User
 }

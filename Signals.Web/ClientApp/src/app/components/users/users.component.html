@@ -1,1 +1,7 @@
-<app-user *ngFor="let user of users" [user]="user"></app-user>
+<button (click)="createModal.open()">Create</button>
+
+<app-user *ngFor="let user of users; let index = index" [user]="user" (deleted)="remove(index)"></app-user>
+
+<app-modal title="Create User" submitText="Create" #createModal>
+    <app-user-form *ngIf="createModal.isOpened" (submitted)="create($event)"></app-user-form>
+</app-modal>
