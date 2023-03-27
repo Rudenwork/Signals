@@ -1,5 +1,38 @@
 body {
-    margin: 0;
+    margin: 0px;
     height: 100vh;
     width: 100vw;
+    color: white;
+}
+
+button {
+    filter: saturate(50%);
+    color: white;
+    padding: 5px;
+    background-color: var(--color-button-neutral);
+    border-style: none;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px black;
+    transition: .5s;
+
+    &:enabled {
+        &:hover {
+            filter: saturate(100%);
+
+            &:active {
+                box-shadow: 0px 0px 5px 0px grey;
+                transition: 0s;
+            }
+        }
+    }
+
+    &:disabled {
+        filter: saturate(0%);
+        color: lightgrey;
+    }
+}
+
+:root {
+    --color-button-bad: red;
+    --color-button-neutral: orange;
 }
