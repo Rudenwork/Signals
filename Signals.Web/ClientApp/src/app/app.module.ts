@@ -34,6 +34,7 @@ import { StageItemComponent } from './components/signals/stage-item/stage-item.c
 import { UsersComponent } from './components/users/users.component';
 import { UserComponent } from './components/users/user/user.component';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
+import { SignalFormComponent } from './components/signals/signal-form/signal-form.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { UserFormComponent } from './components/users/user-form/user-form.compon
         StageItemComponent,
         UsersComponent,
         UserComponent,
-        UserFormComponent
+        UserFormComponent,
+        SignalFormComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
