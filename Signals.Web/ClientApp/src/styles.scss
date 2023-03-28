@@ -54,6 +54,6 @@ input {
     --font-main: 100% "Brush Script MT", cursive;
 }
 
-.ng-invalid {
+.ng-invalid.ng-touched {
     border-bottom-color: red;
 }
