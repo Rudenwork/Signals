@@ -1,8 +1,8 @@
 <div id="background" *ngIf="isOpened">
     <div id="window">
         <div id="header">
-            <span>{{title}}</span>
-            <button id="close" (click)="close()">&times;</button>
+            <span id="title">{{title}}</span>
+            <button id="close" (click)="close()">X</button>
         </div>
         <div id="content">
             <ng-content />

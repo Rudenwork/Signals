@@ -1,13 +1,14 @@
 :host {
     #background {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        z-index: 1;
         position: absolute;
         top: 0;
         left: 0;
         height: 100%;
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         backdrop-filter: blur(2px);
         animation: blur 1s forwards;
     }
@@ -23,7 +24,10 @@
     }
 
     #window {
-        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
         background: #2b2b2b;
         border-radius: 10px;
         box-shadow: 0px 0px 20px 0px black;
@@ -46,15 +50,21 @@
         gap: 10px;
     }
 
+    #title {
+        font-size: large;
+    }
+
     #close {
-        width: 20px;
-        height: 20px;
+        height: 25px;
+        width: 25px;
         padding: 0px;
         background-color: var(--color-button-bad);
     }
 
     #content {
         padding: 25px;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px 0px black;
     }
 
     #footer {
