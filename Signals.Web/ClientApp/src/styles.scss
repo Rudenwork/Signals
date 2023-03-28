@@ -24,7 +24,7 @@ button {
             &:active {
                 filter: brightness(80%);
                 transform: scale(100%);
-                box-shadow: 0px 0px 1px 0px black;;
+                box-shadow: 0px 0px 1px 0px black;
                 transition: 0s;
             }
         }
@@ -39,12 +39,37 @@ button {
 input {
     color: white;
     font: var(--font-main);
-    padding: 5px;
     outline: none;
     background-color: transparent;
-    border: 2px solid transparent;
-    border-bottom-color: grey;
+    border-style: none;
     transition: .5s;
+}
+
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+    transition: 0s;
+    box-shadow: inset 0px 0px 0px 100px #2b2b2b;
+    caret-color: white;
+    -webkit-text-fill-color: white;
+}
+
+label {
+    color: grey;
+}
+
+.input-container {
+    padding: 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid grey;
+    transition: .5s;
+
+    &:has(input.ng-invalid.ng-touched) {
+        border-color: red;
+    }
 }
 
 :root {

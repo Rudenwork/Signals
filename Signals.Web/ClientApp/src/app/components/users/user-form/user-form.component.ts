@@ -38,9 +38,7 @@ export class UserFormComponent implements OnInit {
             Validators.pattern(/^(?!\.)[a-zA-Z0-9._]{1,50}$/)
         ]);
 
-        this.password = new FormControl(this.user.password, [
-            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-        ]);
+        this.password = new FormControl(this.user.password);
 
         if (this.isCreating) {
             this.password.addValidators([ Validators.required ]);

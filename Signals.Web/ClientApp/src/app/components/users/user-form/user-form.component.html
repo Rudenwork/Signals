@@ -1,4 +1,11 @@
-<input type="text" [formControl]="username" placeholder="Username">
-<input type="text" [formControl]="password" placeholder="Password">
+<div class="input-container">
+    <label for="username">Username:</label>
+    <input id="username" type="text" autocomplete="off" [formControl]="username">
+</div>
+<div class="input-container">
+    <label for="password">Password:</label>
+    <input id="password" type="text" autocomplete="off" [formControl]="password">
+</div>
+
 <span>Is Admin: <input type="checkbox" [formControl]="isAdmin"></span>
 <span *ngIf="isCreating">Is Disabled: <input type="checkbox" [formControl]="isDisabled"></span>

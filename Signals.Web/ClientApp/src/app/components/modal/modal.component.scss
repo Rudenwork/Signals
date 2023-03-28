@@ -26,8 +26,7 @@
     #window {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        padding: 10px;
+        padding: 20px;
         background: #2b2b2b;
         border-radius: 10px;
         box-shadow: 0px 0px 20px 0px black;
@@ -48,23 +47,22 @@
         display: flex;
         justify-content: space-between;
         gap: 10px;
-    }
 
-    #title {
-        font-size: large;
-    }
-
-    #close {
-        height: 25px;
-        width: 25px;
-        padding: 0px;
-        background-color: var(--color-button-bad);
+        #title {
+            font-size: large;
+        }
+    
+        #close {
+            height: 25px;
+            width: 25px;
+            padding: 0px;
+            background-color: var(--color-button-bad);
+        }
     }
 
     #content {
         padding: 25px;
         border-radius: 10px;
-        box-shadow: inset 0px 0px 5px 0px black;
     }
 
     #footer {
