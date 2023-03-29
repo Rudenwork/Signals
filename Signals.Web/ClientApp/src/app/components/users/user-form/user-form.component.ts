@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { ModalComponent } from '../../modal/modal.component';
@@ -8,11 +8,12 @@ import { ModalComponent } from '../../modal/modal.component';
     templateUrl: './user-form.component.html',
     styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, AfterViewInit {
     constructor(private modal: ModalComponent) { }
 
     @Input() user!: User;
     @Output() submitted: EventEmitter<User> = new EventEmitter();
+    @ViewChild('focusable') focusable!: ElementRef;
 
     username!: FormControl;
     password!: FormControl;
@@ -64,6 +65,11 @@ export class UserFormComponent implements OnInit {
 
         this.modal.form.addControl('form', this.form);
         this.modal.submitted.subscribe(() => this.submit());
+    }
+
+    ngAfterViewInit() {
+        Promise.resolve()
+            .then(() => this.focusable.nativeElement.focus());
     }
 
     submit() {

@@ -54,6 +54,10 @@ button {
     border-bottom: 1px solid grey;
     transition: .5s;
 
+    &.borderless {
+        border-style: none;
+    }
+
     &:has(input.ng-invalid.ng-touched) {
         border-color: red;
     }

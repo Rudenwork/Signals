@@ -26,6 +26,7 @@
     #window {
         display: flex;
         flex-direction: column;
+        gap: 20px;
         padding: 20px;
         background: #2b2b2b;
         border-radius: 10px;
@@ -62,7 +63,8 @@
 
     #content {
         padding: 25px;
-        border-radius: 10px;
+        border-radius: 5px;
+        box-shadow: inset 0px 0px 10px 0px black;
     }
 
     #footer {

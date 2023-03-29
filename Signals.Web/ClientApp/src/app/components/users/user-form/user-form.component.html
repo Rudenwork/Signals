@@ -1,19 +1,19 @@
 <div class="input-container">
     <label for="username">Username:</label>
-    <input id="username" type="text" autocomplete="off" [formControl]="username">
+    <input id="username" type="text" autocomplete="off" [formControl]="username" #focusable>
 </div>
 
 <div class="input-container">
     <label for="password">Password:</label>
-    <input id="password" type="text" autocomplete="off" [formControl]="password">
+    <input id="password" type="password" autocomplete="off" [formControl]="password">
 </div>
 
-<div class="input-container">
+<div class="input-container borderless">
     <label for="isAdmin">Is Admin:</label>
     <input id="isAdmin" type="checkbox" class="toggle" [formControl]="isAdmin">
 </div>
 
-<div *ngIf="isCreating" class="input-container">
+<div *ngIf="isCreating" class="input-container borderless">
     <label for="isDisabled">Is Disabled:</label>
     <input id="isDisabled" type="checkbox" class="toggle" [formControl]="isDisabled">
 </div>
