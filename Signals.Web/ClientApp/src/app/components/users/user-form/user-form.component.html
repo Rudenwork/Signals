@@ -2,10 +2,18 @@
     <label for="username">Username:</label>
     <input id="username" type="text" autocomplete="off" [formControl]="username">
 </div>
+
 <div class="input-container">
     <label for="password">Password:</label>
     <input id="password" type="text" autocomplete="off" [formControl]="password">
 </div>
 
-<span>Is Admin: <input type="checkbox" [formControl]="isAdmin"></span>
-<span *ngIf="isCreating">Is Disabled: <input type="checkbox" [formControl]="isDisabled"></span>
+<div class="input-container">
+    <label for="isAdmin">Is Admin:</label>
+    <input id="isAdmin" type="checkbox" class="toggle" [formControl]="isAdmin">
+</div>
+
+<div *ngIf="isCreating" class="input-container">
+    <label for="isDisabled">Is Disabled:</label>
+    <input id="isDisabled" type="checkbox" class="toggle" [formControl]="isDisabled">
+</div>

@@ -72,6 +72,42 @@ button {
     }
 }
 
+input[type="checkbox"].toggle {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    height: 24px;
+    width: 44px;
+    border-radius: 20px;
+    background-color: grey;
+    box-shadow: 0px 0px 3px 0px black;
+    transition: .5s;
+    will-change: transform;
+    cursor: pointer;
+
+    &:before {
+        content: "";
+        border-radius: 50%; 
+        height: 100%;
+        aspect-ratio: 1/1;
+        background-color: white;
+        transition: .5s;
+    }
+
+    &:checked {
+        background-color: var(--color-button-neutral);
+
+        &:before {
+            transform: translateX(100%);
+        }
+    }
+
+    &:hover {
+        transform: scale(110%);
+    }
+}
+
 :root {
     --color-button-bad: red;
     --color-button-neutral: #1177bb;
