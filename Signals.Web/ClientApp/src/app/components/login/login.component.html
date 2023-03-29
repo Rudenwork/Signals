@@ -1,7 +1,16 @@
-<div id="loginBack">
-    <div id="loginWindow">
-        <input type="text" placeholder="Username" [formControl]="username">
-        <input type="text" placeholder="Password" [formControl]="password">
-        <button [disabled]="form.invalid" (click)="login()">Login</button>
+<app-modal title="Easter Egg" submitText="Go To Login" (submitted)="modalLogin.open()" #modalEgg>
+    <div id="egg">
+        <span>Why have you done that?</span>
+        <span>Why have you closed login window?</span>
     </div>
-</div>
+</app-modal>
+
+<app-modal [isOpened]="true" title="Signals" submitText="Login" (closed)="modalEgg.open()" (submitted)="login()" #modalLogin>
+    <div class="input-container">
+        <input id="username" type="text" placeholder="Username" [formControl]="username">
+    </div>
+    
+    <div class="input-container">
+        <input id="password" type="password" placeholder="Password" [formControl]="password">
+    </div>
+</app-modal>

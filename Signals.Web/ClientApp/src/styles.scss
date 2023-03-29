@@ -36,15 +36,15 @@ button {
     }
 }
 
-// input:autofill,
-// input:autofill:hover,
-// input:autofill:focus,
-// input:autofill:active {
-//     transition: 0s;
-//     box-shadow: inset 0px 0px 0px 100px #2b2b2b;
-//     caret-color: white;
-//     -webkit-text-fill-color: white;
-// }
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    transition: 0s;
+    box-shadow: inset 0px 0px 0px 100px #2b2b2b;
+    caret-color: white;
+    -webkit-text-fill-color: white;
+}
 
 .input-container {
     padding: 5px;
@@ -68,6 +68,7 @@ button {
         outline: none;
         background-color: transparent;
         border-style: none;
+        width: 100%;
         transition: .5s;
     }
 
@@ -84,6 +85,7 @@ input[type="checkbox"].toggle {
     height: 24px;
     width: 44px;
     border-radius: 20px;
+    -webkit-tap-highlight-color: transparent;
     background-color: grey;
     box-shadow: 0px 0px 3px 0px black;
     transition: .5s;
@@ -116,7 +118,7 @@ input[type="checkbox"].toggle {
     --color-button-bad: red;
     --color-button-neutral: #1177bb;
 
-    --font-main: 100% "Brush Script MT", cursive;
+    --font-main: 100% cursive;
 }
 
 .ng-invalid.ng-touched {
