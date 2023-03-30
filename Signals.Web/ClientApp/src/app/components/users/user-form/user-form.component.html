@@ -1,11 +1,11 @@
 <div class="input-container">
     <label for="username">Username:</label>
-    <input id="username" type="text" autocomplete="off" [formControl]="username">
+    <input id="username" type="text" [formControl]="username">
 </div>
 
 <div class="input-container">
     <label for="password">Password:</label>
-    <input id="password" type="password" autocomplete="off" [formControl]="password">
+    <input id="password" type="password" name="-" autocomplete="new-password" [formControl]="password">
 </div>
 
 <div class="input-container borderless">
