@@ -97,7 +97,7 @@ input:-webkit-autofill:active {
     }
 
     label {
-        color: --color-font-secondary;
+        color: var(--color-font-secondary);
     }
 }
 
