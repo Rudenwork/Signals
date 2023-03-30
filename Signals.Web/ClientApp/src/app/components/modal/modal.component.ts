@@ -12,11 +12,13 @@ export class ModalComponent implements OnInit {
     @Output() submitted: EventEmitter<any> = new EventEmitter();
 
     @Input() isOpened: boolean = false;
+
+    @Input() showClose: boolean = true;
     @Input() title: string = "";
 
     @Input() showSubmit: boolean = true;
     @Input() submitText: string = 'Okay';
-    @Input() submitColor: string = 'var(--color-good)';
+    @Input() submitColor: string = 'var(--color-neutral)';
 
     form!: FormGroup;
 
