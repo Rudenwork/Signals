@@ -1,9 +1,9 @@
 :host {
-    background: var(--color-background);
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
+    background: var(--color-background-secondary);
 }
 
 #page {
@@ -15,4 +15,5 @@
     width: 100%;
     max-width: 800px;
     box-shadow: 0px 0px 10px 0px var(--color-shadow);
+    background: var(--color-background-primary);
 }

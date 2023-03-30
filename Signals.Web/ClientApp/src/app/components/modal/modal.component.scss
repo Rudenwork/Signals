@@ -28,7 +28,7 @@
         gap: 20px;
         width: 260px;
         padding: 20px;
-        background: var(--color-modal);
+        background: var(--color-background-secondary);
         border-radius: 10px;
         box-shadow: 0px 0px 20px 0px var(--color-shadow);
         animation: fade-out 1s forwards;
@@ -57,7 +57,7 @@
             height: 25px;
             width: 25px;
             padding: 0px;
-            background-color: var(--color-bad);
+            background: var(--color-bad);
         }
     }
 
@@ -67,6 +67,7 @@
         gap: 5px;
         padding: 25px;
         border-radius: 5px;
+        background: var(--color-background-primary);
         box-shadow: inset 0px 0px 10px 0px var(--color-shadow);
     }
 

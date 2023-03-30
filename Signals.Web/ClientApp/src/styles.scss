@@ -13,9 +13,8 @@
     --color-font-primary: white;
     --color-font-secondary: grey;
     --color-shadow: black;
-    --color-modal: #202124;
-    --color-background: #202124;
-    --color-menu: #35363a;
+    --color-background-primary: #202124;
+    --color-background-secondary: #35363a;
 
     --font-main: 100% "Comic Sans MS";
 }
@@ -30,7 +29,7 @@ button {
     color: var(--color-font-primary);
     font: var(--font-main);
     padding: 5px 10px 5px 10px;
-    background-color: var(--color-neutral);
+    background: var(--color-neutral);
     border-style: none;
     border-radius: 3px;
     box-shadow: 0px 0px 3px 0px var(--color-shadow);
@@ -65,7 +64,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
     transition: 0s;
-    box-shadow: inset 0px 0px 0px 100px var(--color-modal);
+    box-shadow: inset 0px 0px 0px 100px var(--color-background-primary);
     caret-color: var(--color-font-primary);
     -webkit-text-fill-color: var(--color-font-primary);
 }
@@ -90,8 +89,8 @@ input:-webkit-autofill:active {
         color: var(--color-font-primary);
         font: var(--font-main);
         outline: none;
-        background-color: transparent;
-        border-style: none;
+        background: transparent;
+        border: none;
         width: 100%;
         transition: .5s;
     }
@@ -110,7 +109,7 @@ input[type="checkbox"].toggle {
     width: 44px;
     border-radius: 20px;
     -webkit-tap-highlight-color: transparent;
-    background-color: var(--color-font-secondary);
+    background: var(--color-font-secondary);
     box-shadow: 0px 0px 3px 0px var(--color-shadow);
     transition: .3s;
     will-change: transform;
@@ -121,12 +120,12 @@ input[type="checkbox"].toggle {
         border-radius: 50%; 
         height: 100%;
         aspect-ratio: 1/1;
-        background-color: var(--color-font-primary);
+        background: var(--color-font-primary);
         transition: .3s;
     }
 
     &:checked {
-        background-color: var(--color-neutral);
+        background: var(--color-neutral);
 
         &:before {
             transform: translateX(100%);
