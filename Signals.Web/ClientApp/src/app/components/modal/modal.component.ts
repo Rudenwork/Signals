@@ -27,6 +27,7 @@ export class ModalComponent implements OnInit {
         this.form = new FormGroup([]);
 
         if (this.isOpened) {
+            this.createHistory();
             this.opened.emit();
         }
 
@@ -37,20 +38,22 @@ export class ModalComponent implements OnInit {
         });
     }
 
-    open() {
+    private createHistory() {
         this.state = (Math.random() + 1).toString(36).substring(7);
-
         history.replaceState(this.state, '', location.href);
         history.pushState(null, '', location.href);
-
-        this.isOpened = true;
-        this.opened.emit();
     }
 
     private markClosed() {
         this.isOpened = false;
         this.form = new FormGroup([]);
         this.closed.emit();
+    }
+
+    open() {
+        this.isOpened = true;
+        this.createHistory();
+        this.opened.emit();
     }
 
     close() {
