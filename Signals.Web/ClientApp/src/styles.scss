@@ -37,18 +37,15 @@ button {
     will-change: transform;
 
     &:enabled {
-        &:hover {
-            transform: scale(110%);
-
-            &:active {
-                filter: brightness(80%);
-                transform: scale(100%);
-                box-shadow: 0px 0px 1px 0px var(--color-shadow);
-                transition: 0s;
-            }
-
-            @media only screen and (max-width: 768px) {
-                transform: scale(100%);
+        @media(hover: hover) and (pointer: fine) {
+            &:hover {
+                transform: scale(120%);
+    
+                &:active {
+                    filter: brightness(80%);
+                    transform: scale(100%);
+                    box-shadow: 0px 0px 1px 0px var(--color-shadow);
+                }
             }
         }
     }
@@ -132,11 +129,9 @@ input[type="checkbox"].toggle {
         }
     }
 
-    &:hover {
-        transform: scale(110%);
-
-        @media only screen and (max-width: 768px) {
-            transform: scale(100%);
+    @media(hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: scale(120%);
         }
     }
 }

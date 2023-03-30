@@ -17,29 +17,25 @@
         font-size: large;
         font-weight: bold;
         text-shadow: 2px 2px 3px var(--color-shadow);
-        transition: 0.3s;
+        transition: .3s;
         will-change: transform;
 
-        &:hover {
-            transform: scale(120%);
+        &.active {
+            color: var(--color-warning);
+            transform: brigtness(180%);
+        }
 
-            &:active {
-                transform: scale(100%);
-                transition: 0s;
+        @media(hover: hover) and (pointer: fine) {
+            &:hover {
+                transform: scale(120%);
+
+                &:active {
+                    transform: scale(100%);
+                }
             }
         }
 
-        &.active {
-            color: var(--color-neutral);
-            transform: scale(100%);
-            transition: 0s;
-        }
-
-        @media only screen and (max-width: 768px) {
-            transform: scale(100%);
-        }
-
-        @media only screen and (max-width: 420px) {
+        @media only screen and (max-width: 450px) {
             font-size: small;
         }
     }
