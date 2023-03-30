@@ -21,6 +21,7 @@ export class ModalComponent implements OnInit {
     @Input() submitColor: string = 'var(--color-neutral)';
 
     form!: FormGroup;
+    private state!: string;
 
     ngOnInit() {
         this.form = new FormGroup([]);
@@ -28,16 +29,31 @@ export class ModalComponent implements OnInit {
         if (this.isOpened) {
             this.opened.emit();
         }
+
+        window.addEventListener('popstate', () => {
+            if (this.isOpened && history.state == this.state) {
+                this.markClosed();
+            }
+        });
     }
 
     open() {
+        this.state = (Math.random() + 1).toString(36).substring(7);
+
+        history.replaceState(this.state, '', location.href);
+        history.pushState(null, '', location.href);
+
         this.isOpened = true;
         this.opened.emit();
     }
 
-    close() {
+    private markClosed() {
         this.isOpened = false;
         this.form = new FormGroup([]);
         this.closed.emit();
+    }
+
+    close() {
+        history.back();
     }
 }
