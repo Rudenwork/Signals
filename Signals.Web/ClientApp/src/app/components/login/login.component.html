@@ -1,11 +1,4 @@
-<app-modal title="Easter Egg" submitText="Go To Login" (submitted)="modalLogin.open()" #modalEgg>
-    <div id="egg">
-        <span>Why have you done that?</span>
-        <span>Why have you closed login window?</span>
-    </div>
-</app-modal>
-
-<app-modal [isOpened]="true" title="Signals" submitText="Login" (closed)="modalEgg.open()" (submitted)="login()" #modalLogin>
+<app-modal [isOpened]="true" title="Signals" submitText="Login" (closed)="modalLogin.open()" (submitted)="login()" #modalLogin>
     <div class="input-container">
         <input id="username" type="text" placeholder="Username" [formControl]="username">
     </div>

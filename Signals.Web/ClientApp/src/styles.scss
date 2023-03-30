@@ -1,20 +1,40 @@
+@font-face {
+    font-family: "Comic Sans MS";
+    src: local("Comic Sans MS"), local("ComicSansMS"), url("./assets/fonts/ComicSansMS.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --color-good: green;
+    --color-bad: red;
+    --color-neutral: #1177bb;
+    --color-warning: orange;
+    --color-font-primary: white;
+    --color-font-secondary: grey;
+    --color-shadow: black;
+    --color-modal: #202124;
+    --color-background: #202124;
+    --color-menu: #35363a;
+
+    --font-main: 100% "Comic Sans MS";
+}
+
 body {
     margin: 0px;
-    height: 100vh;
-    width: 100vw;
-    color: white;
+    color: var(--color-font-primary);
     font: var(--font-main);
 }
 
 button {
-    color: white;
+    color: var(--color-font-primary);
     font: var(--font-main);
     padding: 5px 10px 5px 10px;
-    background-color: var(--color-button-neutral);
+    background-color: var(--color-neutral);
     border-style: none;
     border-radius: 3px;
-    box-shadow: 0px 0px 3px 0px black;
-    transition: .5s;
+    box-shadow: 0px 0px 3px 0px var(--color-shadow);
+    transition: .3s;
     will-change: transform;
 
     &:enabled {
@@ -24,15 +44,19 @@ button {
             &:active {
                 filter: brightness(80%);
                 transform: scale(100%);
-                box-shadow: 0px 0px 1px 0px black;
+                box-shadow: 0px 0px 1px 0px var(--color-shadow);
                 transition: 0s;
+            }
+
+            @media only screen and (max-width: 768px) {
+                transform: scale(100%);
             }
         }
     }
 
     &:disabled {
         filter: saturate(0%);
-        color: lightgrey;
+        color: var(--color-font-secondary);
     }
 }
 
@@ -41,9 +65,9 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
     transition: 0s;
-    box-shadow: inset 0px 0px 0px 100px #2b2b2b;
-    caret-color: white;
-    -webkit-text-fill-color: white;
+    box-shadow: inset 0px 0px 0px 100px var(--color-modal);
+    caret-color: var(--color-font-primary);
+    -webkit-text-fill-color: var(--color-font-primary);
 }
 
 .input-container {
@@ -51,7 +75,7 @@ input:-webkit-autofill:active {
     display: flex;
     gap: 10px;
     align-items: center;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid var(--color-font-secondary);
     transition: .5s;
 
     &.borderless {
@@ -59,11 +83,11 @@ input:-webkit-autofill:active {
     }
 
     &:has(input.ng-invalid.ng-touched) {
-        border-color: red;
+        border-color: var(--color-bad);
     }
 
     input {
-        color: white;
+        color: var(--color-font-primary);
         font: var(--font-main);
         outline: none;
         background-color: transparent;
@@ -73,7 +97,7 @@ input:-webkit-autofill:active {
     }
 
     label {
-        color: grey;
+        color: --color-font-secondary;
     }
 }
 
@@ -86,9 +110,9 @@ input[type="checkbox"].toggle {
     width: 44px;
     border-radius: 20px;
     -webkit-tap-highlight-color: transparent;
-    background-color: grey;
-    box-shadow: 0px 0px 3px 0px black;
-    transition: .5s;
+    background-color: var(--color-font-secondary);
+    box-shadow: 0px 0px 3px 0px var(--color-shadow);
+    transition: .3s;
     will-change: transform;
     cursor: pointer;
 
@@ -97,12 +121,12 @@ input[type="checkbox"].toggle {
         border-radius: 50%; 
         height: 100%;
         aspect-ratio: 1/1;
-        background-color: white;
-        transition: .5s;
+        background-color: var(--color-font-primary);
+        transition: .3s;
     }
 
     &:checked {
-        background-color: var(--color-button-neutral);
+        background-color: var(--color-neutral);
 
         &:before {
             transform: translateX(100%);
@@ -111,16 +135,13 @@ input[type="checkbox"].toggle {
 
     &:hover {
         transform: scale(110%);
+
+        @media only screen and (max-width: 768px) {
+            transform: scale(100%);
+        }
     }
 }
 
-:root {
-    --color-button-bad: red;
-    --color-button-neutral: #1177bb;
-
-    --font-main: 100% cursive;
-}
-
 .ng-invalid.ng-touched {
-    border-bottom-color: red;
+    border-color: var(--color-bad);
 }

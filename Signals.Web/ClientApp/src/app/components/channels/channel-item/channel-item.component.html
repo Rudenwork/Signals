@@ -11,7 +11,7 @@
     <app-modal title="Update Channel" #modalUpdate>
         <app-channel-update [channel]="channel" *ngIf="modalUpdate.isOpened" (updated)="changed.emit(); modalUpdate.close()"/>
     </app-modal>
-    <app-modal title="Delete Channel" submitText="Delete" submitColor="red" (submitted)="del()" #modalDelete>
+    <app-modal title="Delete Channel" submitText="Delete" submitColor="var(--color-bad)" (submitted)="del()" #modalDelete>
         Do you want to delete?
     </app-modal>
 </div>

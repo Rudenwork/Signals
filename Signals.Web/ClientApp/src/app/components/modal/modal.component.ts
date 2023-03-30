@@ -16,7 +16,7 @@ export class ModalComponent implements OnInit {
 
     @Input() showSubmit: boolean = true;
     @Input() submitText: string = 'Okay';
-    @Input() submitColor: string = 'green';
+    @Input() submitColor: string = 'var(--color-good)';
 
     form!: FormGroup;
 

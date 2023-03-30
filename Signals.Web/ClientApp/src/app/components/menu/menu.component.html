@@ -1,17 +1,15 @@
-<ul>
-    <li>
-        <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
-    </li>
-    <li>
-        <a routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
-    </li>
-    <li>
-        <a routerLink="/channels" routerLinkActive="active" ariaCurrentWhenActive="page">Channels</a>
-    </li>
-    <li>
-        <a routerLink="/signals" routerLinkActive="active" ariaCurrentWhenActive="page">Signals</a>
-    </li>
-    <li>
-        <a routerLink="/logout" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a>
-    </li>
-</ul>
+<a class="menu-item" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{exact:true}" >
+    Home
+</a>
+<a class="menu-item" routerLink="/signals" routerLinkActive="active" ariaCurrentWhenActive="page">
+    Signals
+</a>
+<a class="menu-item" routerLink="/channels" routerLinkActive="active" ariaCurrentWhenActive="page">
+    Channels
+</a>
+<a class="menu-item" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">
+    Users
+</a>
+<a class="menu-item" routerLink="/logout" routerLinkActive="active" ariaCurrentWhenActive="page">
+    Logout
+</a>

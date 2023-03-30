@@ -9,17 +9,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        backdrop-filter: blur(3px);
         animation: blur 1s forwards;
     }
 
     @keyframes blur {
         from {
-            backdrop-filter: blur(0);
+            backdrop-filter: blur(0px)+brightness(100%);
         }
 
         to {
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px)+brightness(90%);
         }
     }
 
@@ -29,9 +28,9 @@
         gap: 20px;
         width: 260px;
         padding: 20px;
-        background: #2b2b2b;
+        background: var(--color-modal);
         border-radius: 10px;
-        box-shadow: 0px 0px 20px 0px black;
+        box-shadow: 0px 0px 20px 0px var(--color-shadow);
         animation: fade-out 1s forwards;
     }
 
@@ -58,7 +57,7 @@
             height: 25px;
             width: 25px;
             padding: 0px;
-            background-color: var(--color-button-bad);
+            background-color: var(--color-bad);
         }
     }
 
@@ -68,7 +67,7 @@
         gap: 5px;
         padding: 25px;
         border-radius: 5px;
-        box-shadow: inset 0px 0px 10px 0px black;
+        box-shadow: inset 0px 0px 10px 0px var(--color-shadow);
     }
 
     #footer {

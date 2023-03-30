@@ -1,6 +1,18 @@
 :host {
-    background: rgb(53, 54, 58);
+    background: var(--color-background);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px 20px 0px 20px;
     height: 100%;
     width: 100%;
-    display: flex;
+    max-width: 800px;
+    box-shadow: 0px 0px 10px 0px var(--color-shadow);
 }
