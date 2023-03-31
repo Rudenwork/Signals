@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { ModalComponent } from '../../modal/modal.component';
@@ -8,7 +8,7 @@ import { ModalComponent } from '../../modal/modal.component';
     templateUrl: './user-form.component.html',
     styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, OnDestroy {
     constructor(private modal: ModalComponent) { }
 
     @Input() user!: User;
@@ -62,8 +62,12 @@ export class UserFormComponent implements OnInit {
             this.form.addControl('isDisabled', this.isDisabled);
         }
 
-        this.modal.form.addControl('form', this.form);
+        this.modal.form.addControl('user-form', this.form);
         this.modal.submitted.subscribe(() => this.submit());
+    }
+
+    ngOnDestroy() {
+        this.modal.form.removeControl('user-form');
     }
 
     submit() {

@@ -46,7 +46,6 @@ export class ModalComponent implements OnInit {
 
     private markClosed() {
         this.isOpened = false;
-        this.form = new FormGroup([]);
         this.closed.emit();
     }
 
