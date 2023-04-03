@@ -19,23 +19,22 @@ export class ModalComponent implements OnInit {
     @Input() showSubmit: boolean = true;
     @Input() submitText: string = 'Okay';
     @Input() submitColor: string = 'var(--color-neutral)';
+    @Input() closeOnSubmit: boolean = false;
 
     form!: FormGroup;
     private state!: string;
+    isSubmitted: boolean = false;
+    isError: boolean = false;
 
     ngOnInit() {
         this.form = new FormGroup([]);
 
         if (this.isOpened) {
-            this.createHistory();
-            this.opened.emit();
+            this.isOpened = false;
+            this.open();
         }
 
-        window.addEventListener('popstate', () => {
-            if (this.isOpened && history.state == this.state) {
-                this.markClosed();
-            }
-        });
+        window.addEventListener('popstate', () => this.onBack());
     }
 
     private createHistory() {
@@ -44,18 +43,42 @@ export class ModalComponent implements OnInit {
         history.pushState(null, '', location.href);
     }
 
-    private markClosed() {
-        this.isOpened = false;
-        this.closed.emit();
+    error() {
+        this.isError = true;
+    }
+
+    submit() {
+        if (!this.isSubmitted) {
+            this.isSubmitted = true;
+            this.submitted.emit();
+            
+            if (this.closeOnSubmit) {
+                this.close();
+            }
+        }
     }
 
     open() {
-        this.isOpened = true;
-        this.createHistory();
-        this.opened.emit();
+        if (!this.isOpened) {
+            this.createHistory();
+            this.isOpened = true;
+            this.opened.emit();
+        }
     }
 
     close() {
-        history.back();
+        if (this.isOpened) {
+            history.back();
+        }
+    }
+
+    private onBack() {
+        if (this.isOpened && history.state == this.state) {
+            this.isOpened = false;
+            this.isSubmitted = false;
+            this.isError = false;
+            this.form = new FormGroup([]);
+            this.closed.emit();
+        }
     }
 }

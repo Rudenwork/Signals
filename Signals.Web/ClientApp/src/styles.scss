@@ -37,6 +37,8 @@ button {
     will-change: transform;
 
     &:enabled {
+        cursor: pointer;
+
         @media(hover: hover) and (pointer: fine) {
             &:hover {
                 transform: scale(120%);
@@ -94,6 +96,7 @@ input:-webkit-autofill:active {
 
     label {
         color: var(--color-font-secondary);
+        cursor: pointer;
     }
 }
 

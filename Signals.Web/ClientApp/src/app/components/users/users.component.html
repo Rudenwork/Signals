@@ -1,7 +1,7 @@
-<button (click)="createModal.open()">Create</button>
+<button (click)="modalCreate.open()">Create</button>
 
 <app-user *ngFor="let user of users; let index = index" [user]="user" (deleted)="remove(index)"></app-user>
 
-<app-modal title="Create User" submitText="Create" submitColor="var(--color-good)" #createModal>
-    <app-user-form *ngIf="createModal.isOpened" (submitted)="create($event)"></app-user-form>
+<app-modal title="Create User" submitText="Create" submitColor="var(--color-good)" #modalCreate>
+    <app-user-form *ngIf="modalCreate.isOpened" (submitted)="create($event)"></app-user-form>
 </app-modal>
