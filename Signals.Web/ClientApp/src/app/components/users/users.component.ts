@@ -14,10 +14,15 @@ export class UsersComponent implements OnInit {
     @ViewChild('modalCreate') modalCreate!: ModalComponent;
     
     users!: User[];
+    isLoading: boolean = true;
 
     ngOnInit() {
+        this.isLoading = true;
         this.dataService.getUsers()
-            .subscribe(users => this.users = users);
+            .subscribe(users => {
+                this.users = users;
+                this.isLoading = false;
+            });
     }
 
     create(user: User) {
@@ -27,7 +32,7 @@ export class UsersComponent implements OnInit {
                     this.users.push(user);
                     this.modalCreate.close();
                 },
-                error: error => {
+                error: () => {
                     this.modalCreate.error();
                 }
             });

@@ -42,7 +42,7 @@ button {
         @media(hover: hover) and (pointer: fine) {
             &:hover {
                 transform: scale(120%);
-    
+
                 &:active {
                     filter: brightness(80%);
                     transform: scale(100%);
@@ -59,8 +59,8 @@ button {
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: 0s;
     box-shadow: inset 0px 0px 0px 100px var(--color-background-primary);
@@ -117,7 +117,7 @@ input[type="checkbox"].toggle {
 
     &:before {
         content: "";
-        border-radius: 50%; 
+        border-radius: 50%;
         height: 100%;
         aspect-ratio: 1/1;
         background: var(--color-font-primary);
@@ -141,4 +141,47 @@ input[type="checkbox"].toggle {
 
 .ng-invalid.ng-touched {
     border-color: var(--color-bad);
+}
+
+*:has(.page-container.loading) {
+    height: 100%;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    &.loading {
+        justify-content: center;
+        height: 100%;
+
+        &>* {
+            display: none;
+        }
+
+        &:after {
+            content: "";
+            filter: blur(10px);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border-top: 20px solid var(--color-good);
+            border-right: 20px solid var(--color-warning);
+            border-bottom: 20px solid var(--color-bad);
+            border-left: 20px solid var(--color-neutral);
+            animation: spin 2s linear infinite;
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+    }
 }
