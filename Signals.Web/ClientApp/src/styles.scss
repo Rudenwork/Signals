@@ -37,7 +37,7 @@
     @media only screen and (max-width: 860px) {
         background-color: var(--color-background-secondary);
     }
-    
+
     &:hover {
         background-color: #2B2C2F;
     }
@@ -185,18 +185,23 @@ input[type="checkbox"].toggle {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-
+    height: 100%;
+    
     &.loading {
-        justify-content: center;
-        height: 100%;
-
         &>* {
-            display: none;
+            opacity: 0;
         }
+
+        pointer-events: none;
+        filter: blur(3px)+brightness(90%);
 
         &:after {
             content: "";
             filter: blur(10px);
+            opacity: 0;
+            position: fixed;
+            top: calc(50% - 100px);
+            left: calc(50% - 100px);
             width: 200px;
             height: 200px;
             border-radius: 50%;
@@ -204,14 +209,25 @@ input[type="checkbox"].toggle {
             border-right: 20px solid var(--color-warning);
             border-bottom: 20px solid var(--color-bad);
             border-left: 20px solid var(--color-neutral);
-            animation: spin 2s linear infinite;
+            animation: fade-out 1s .2s forwards, spin 2s linear infinite;
+
+            @keyframes fade-out {
+                from {
+                    opacity: 0%;
+                }
+
+                to {
+                    opacity: 100%;
+                }
+            }
 
             @keyframes spin {
-                0% {
+                from {
                     transform: rotate(0deg);
                 }
 
-                100% {
+                to {
+
                     transform: rotate(360deg);
                 }
             }
