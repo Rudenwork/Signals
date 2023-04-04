@@ -1,7 +1,9 @@
-<app-user-preview [user]="user"/>
-<div id="actions-container">
-    <button (click)="modalUpdate.open()">U</button>
-    <button (click)="modalDelete.open()">D</button>
+<div id="card">
+    <app-user-preview [user]="user" />
+    <div id="actions-container">
+        <button (click)="modalUpdate.open()">U</button>
+        <button (click)="modalDelete.open()">D</button>
+    </div>
 </div>
 
 <app-modal title="Update User" submitText="Update" submitColor="var(--color-warning)" #modalUpdate>

@@ -15,8 +15,32 @@
     --color-shadow: black;
     --color-background-primary: #202124;
     --color-background-secondary: #35363a;
+    --color-background-middle: #2b2c2f;
 
     --font-main: 100% "Comic Sans MS";
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--color-background-secondary);
+
+    @media only screen and (max-width: 860px) {
+        background-color: var(--color-background-primary);
+    }
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-background-primary);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    @media only screen and (max-width: 860px) {
+        background-color: var(--color-background-secondary);
+    }
+    
+    &:hover {
+        background-color: #2B2C2F;
+    }
 }
 
 body {
@@ -57,6 +81,13 @@ button {
     &:disabled {
         filter: saturate(0%);
         color: var(--color-font-secondary);
+    }
+
+    &.large {
+        height: 50px;
+        width: 150px;
+        font-size: x-large;
+        box-shadow: 0px 0px 10px 0px var(--color-shadow);
     }
 }
 

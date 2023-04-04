@@ -1,4 +1,6 @@
-<button (click)="modalCreate.open()">Create</button>
+<div id="action-container">
+    <button class="large" (click)="modalCreate.open()">Create</button>
+</div>
 
 <app-user *ngFor="let user of users; let index = index" [user]="user" (deleted)="remove(index)"></app-user>
 

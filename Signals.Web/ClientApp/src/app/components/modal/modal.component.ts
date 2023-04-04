@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,11 +7,12 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
+    @HostBinding('class.opened')
+    @Input() isOpened: boolean = false;
+
     @Output() opened: EventEmitter<any> = new EventEmitter();
     @Output() closed: EventEmitter<any> = new EventEmitter();
     @Output() submitted: EventEmitter<any> = new EventEmitter();
-
-    @Input() isOpened: boolean = false;
 
     @Input() showClose: boolean = true;
     @Input() title: string = "";

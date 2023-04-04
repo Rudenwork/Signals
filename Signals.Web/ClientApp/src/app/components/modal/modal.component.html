@@ -1,19 +1,17 @@
-<div id="background" *ngIf="isOpened">
-    <div id="window">
-        <div id="header" [style.justify-content]="showClose? 'space-between' : 'center'">
-            <span id="title">{{title}}</span>
-            <button *ngIf="showClose" id="close" (click)="close()">X</button>
-        </div>
-        <div id="content" [class.loading]="isSubmitted && !isError">
-            <ng-content *ngIf="!isError"/>
-            <span *ngIf="isError" id="error">Oops, something went wrong. Please try again later.</span>
-        </div>
-        <div *ngIf="showSubmit" id="footer">
-            <button 
-                [disabled]="form.invalid || isSubmitted"
-                [style.background-color]="submitColor"
-                (click)="submit()">{{ submitText }}
-            </button>
-        </div>
+<div id="window">
+    <div id="header" [style.justify-content]="showClose? 'space-between' : 'center'">
+        <span id="title">{{title}}</span>
+        <button *ngIf="showClose" id="close" (click)="close()">X</button>
+    </div>
+    <div id="content" [class.loading]="isSubmitted && !isError">
+        <ng-content *ngIf="!isError"/>
+        <span *ngIf="isError" id="error">Oops, something went wrong. Please try again later.</span>
+    </div>
+    <div *ngIf="showSubmit" id="footer">
+        <button 
+            [disabled]="form.invalid || isSubmitted"
+            [style.background-color]="submitColor"
+            (click)="submit()">{{ submitText }}
+        </button>
     </div>
 </div>
