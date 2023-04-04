@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { DataService } from 'src/app/services/data.service';
 import { ModalComponent } from '../modal/modal.component';
@@ -11,13 +11,14 @@ import { ModalComponent } from '../modal/modal.component';
 export class UsersComponent implements OnInit {
     constructor(private dataService: DataService) {}
 
+    @HostBinding('class.page') isPage: boolean = true;
+    @HostBinding('class.loading') isLoading: boolean = true;
+    
     @ViewChild('modalCreate') modalCreate!: ModalComponent;
     
     users!: User[];
-    isLoading: boolean = true;
 
     ngOnInit() {
-        this.isLoading = true;
         this.dataService.getUsers()
             .subscribe(users => {
                 this.users = users;

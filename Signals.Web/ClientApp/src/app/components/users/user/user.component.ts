@@ -9,7 +9,7 @@ import { ModalComponent } from '../../modal/modal.component';
     styleUrls: ['./user.component.scss']
 })
 export class UserComponent {
-    constructor(private dataService: DataService) {}
+    constructor(private dataService: DataService) { }
 
     @ViewChild('modalDelete') modalDelete!: ModalComponent;
     @ViewChild('modalUpdate') modalUpdate!: ModalComponent;

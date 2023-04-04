@@ -1,4 +1,8 @@
-{{user.username}} <button (click)="modalUpdate.open()">U</button> <button (click)="modalDelete.open()">D</button>
+<app-user-preview [user]="user"/>
+<div id="actions-container">
+    <button (click)="modalUpdate.open()">U</button>
+    <button (click)="modalDelete.open()">D</button>
+</div>
 
 <app-modal title="Update User" submitText="Update" submitColor="var(--color-warning)" #modalUpdate>
     <app-user-form *ngIf="modalUpdate.isOpened" [user]="user" (submitted)="update($event)" #userForm></app-user-form>
