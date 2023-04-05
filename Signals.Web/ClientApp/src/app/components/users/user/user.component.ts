@@ -13,6 +13,8 @@ export class UserComponent {
 
     @ViewChild('modalDelete') modalDelete!: ModalComponent;
     @ViewChild('modalUpdate') modalUpdate!: ModalComponent;
+    @ViewChild('modalEnable') modalEnable!: ModalComponent;
+    @ViewChild('modalDisable') modalDisable!: ModalComponent;
 
     @Input() user!: User;
     @Output() deleted: EventEmitter<any> = new EventEmitter();
@@ -24,7 +26,7 @@ export class UserComponent {
                     this.user = user;
                     this.modalUpdate.close();
                 },
-                error: error => {
+                error: () => {
                     this.modalUpdate.error();
                 }
             });
@@ -37,8 +39,34 @@ export class UserComponent {
                     this.deleted.emit();
                     this.modalDelete.close();
                 },
-                error: error => {
+                error: () => {
                     this.modalDelete.error();
+                }
+            });
+    }
+
+    enable() {
+        this.dataService.enableUser(this.user.id ?? '')
+            .subscribe({
+                next: user => {
+                    this.user = user;
+                    this.modalEnable.close();
+                },
+                error: () => {
+                    this.modalEnable.error();
+                }
+            });
+    }
+
+    disable() {
+        this.dataService.disableUser(this.user.id ?? '')
+            .subscribe({
+                next: user => {
+                    this.user = user;
+                    this.modalDisable.close();
+                },
+                error: () => {
+                    this.modalDisable.error();
                 }
             });
     }

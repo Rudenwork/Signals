@@ -10,6 +10,7 @@
     --color-bad: red;
     --color-neutral: #1177bb;
     --color-warning: orange;
+    --color-disabled: grey;
     --color-font-primary: white;
     --color-font-secondary: grey;
     --color-shadow: black;
@@ -80,7 +81,7 @@ button {
 
     &:disabled {
         filter: saturate(0%);
-        color: var(--color-font-secondary);
+        color: var(--color-disabled);
     }
 
     &.large {

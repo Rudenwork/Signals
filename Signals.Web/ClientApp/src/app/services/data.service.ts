@@ -28,7 +28,7 @@ export class DataService {
         return this.http.get<T>(this.getUrl(endpoint), { headers: this.getHeaders() });
     }
 
-    private post<T>(endpoint: string, item: T): Observable<T> {
+    private post<T>(endpoint: string, item?: T): Observable<T> {
         return this.http.post<T>(this.getUrl(endpoint), item, { headers: this.getHeaders() });
     }
 
@@ -87,6 +87,14 @@ export class DataService {
 
     deleteUser(id: string): Observable<any> {
         return this.delete(`users/${id}`);
+    }
+
+    enableUser(id: string): Observable<User> {
+        return this.post(`users/${id}/enable`);
+    }
+
+    disableUser(id: string): Observable<User> {
+        return this.post(`users/${id}/disable`);
     }
 
     //#endregion User

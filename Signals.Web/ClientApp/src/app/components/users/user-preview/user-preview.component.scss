@@ -5,11 +5,18 @@
     align-items: center;
     word-break: break-all;
 
-    #admin-tag {
+    .tag {
         border-radius: 3px;
         box-shadow: 0px 0px 3px 0px var(--color-shadow);
         padding: 2px 6px 5px 6px;
-        background: var(--color-warning);
         cursor: default;
+
+        &.admin {
+            background: var(--color-warning);
+        }
+
+        &.disabled {
+            background: var(--color-disabled);
+        }
     }
 }

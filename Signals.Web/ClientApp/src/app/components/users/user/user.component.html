@@ -1,6 +1,8 @@
 <div id="card">
     <app-user-preview [user]="user" />
     <div id="actions-container">
+        <button *ngIf="user.isDisabled" (click)="modalEnable.open()">Enable</button>
+        <button *ngIf="!user.isDisabled" (click)="modalDisable.open()">Disable</button>
         <button (click)="modalUpdate.open()">U</button>
         <button (click)="modalDelete.open()">D</button>
     </div>
@@ -11,5 +13,13 @@
 </app-modal>
 
 <app-modal title="Delete User" submitText="Delete" submitColor="var(--color-bad)" (submitted)="del()" #modalDelete>
-    {{user.username}}
+    <app-user-preview [user]="user" />
+</app-modal>
+
+<app-modal title="Enable User" submitText="Enable" submitColor="var(--color-good)" (submitted)="enable()" #modalEnable>
+    <app-user-preview [user]="user" />
+</app-modal>
+
+<app-modal title="Disable User" submitText="Disable" submitColor="var(--color-bad)" (submitted)="disable()" #modalDisable>
+    <app-user-preview [user]="user" />
 </app-modal>
