@@ -311,7 +311,8 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ParentBlockId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ParentBlockId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Index = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {

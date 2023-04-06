@@ -93,6 +93,7 @@ namespace Signals.App.Controllers
 
             var entities = query
                 .Where(x => x.UserId == User.GetId())
+                .OrderBy(x => x.Name)
                 .Subset(subset.Offset, subset.Limit)
                 .ToList();
 
@@ -160,6 +161,14 @@ namespace Signals.App.Controllers
             for (int i = 0; i < entity.Stages.Count; i++)
             {
                 entity.Stages[i].Index = i;
+
+                if (entity.Stages[i] is ConditionStageEntity stage && stage.Block is GroupBlockEntity block)
+                {
+                    for (int j = 0; j < block.Children.Count; j++)
+                    {
+                        block.Children[j].Index = j;
+                    }
+                }
             }
 
             SignalsContext.Signals.Add(entity);
@@ -230,6 +239,14 @@ namespace Signals.App.Controllers
 
                         stage.SignalId = entity.Id;
                         stage.Index = i;
+
+                        if (stage is ConditionStageEntity conditionStage && conditionStage.Block is GroupBlockEntity block)
+                        {
+                            for (int j = 0; j < block.Children.Count; j++)
+                            {
+                                block.Children[j].Index = j;
+                            }
+                        }
 
                         return stage;
                     })
@@ -421,6 +438,7 @@ namespace Signals.App.Controllers
 
             signal.Stages = SignalsContext.Stages
                 .Where(x => x.SignalId == signal.Id)
+                .OrderBy(x => x.Index)
                 .ToList();
 
             signal.Stages.ForEach(FillRelatedEntities);
@@ -463,6 +481,7 @@ namespace Signals.App.Controllers
             {
                 groupBlock.Children = SignalsContext.Blocks
                     .Where(x => x.ParentBlockId == block.Id)
+                    .OrderBy(x => x.Index)
                     .ToList();
 
                 groupBlock.Children.ForEach(FillRelatedEntities);

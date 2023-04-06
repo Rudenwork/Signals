@@ -47,6 +47,7 @@ namespace Signals.App.Controllers
                 query = query.Where(x => x.IsDisabled == filter.IsDisabled.Value);
 
             var result = query
+                .OrderBy(x => x.Username)
                 .Subset(subset.Offset, subset.Limit)
                 .Adapt<List<UserModel.Read>>();
 

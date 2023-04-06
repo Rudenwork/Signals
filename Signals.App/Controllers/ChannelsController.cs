@@ -58,6 +58,7 @@ namespace Signals.App.Controllers
 
             var result = query
                 .Where(x => x.UserId == User.GetId())
+                .OrderBy(x => x.Description)
                 .Subset(subset.Offset, subset.Limit)
                 .Select(x => AdaptToModel(x))
                 .ToList();

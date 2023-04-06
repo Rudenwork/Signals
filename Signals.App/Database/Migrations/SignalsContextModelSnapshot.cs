@@ -28,6 +28,9 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int?>("Index")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("ParentBlockId")
                         .HasColumnType("uuid");
 
