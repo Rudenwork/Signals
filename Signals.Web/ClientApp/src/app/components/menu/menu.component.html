@@ -7,7 +7,7 @@
 <a class="menu-item" routerLink="/channels" routerLinkActive="active" ariaCurrentWhenActive="page">
     Channels
 </a>
-<a class="menu-item" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">
+<a *ngIf="isAdmin" class="menu-item" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">
     Users
 </a>
 <a class="menu-item" routerLink="/logout" routerLinkActive="active" ariaCurrentWhenActive="page">

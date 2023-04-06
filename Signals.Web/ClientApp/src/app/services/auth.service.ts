@@ -39,15 +39,11 @@ export class AuthService {
                         .catch(() => this.logout());
                 }
             }
-
-            if (event.type == 'token_received') {
-                this.isAuthenticated = true;
-            }
         });
     }
 
     login(username: string, password: string): Promise<any> {
-        return this.oAuthService.fetchTokenUsingPasswordFlow(username, password)
+        return this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(username, password)
             .then(() => this.isAuthenticated = true);
     }
 
@@ -55,11 +51,16 @@ export class AuthService {
         return Promise.resolve()
             .then(() => {
                 localStorage.clear();
-                this.isAuthenticated = false
+                this.isAuthenticated = false;
             });
     }
 
     getToken(): string {
         return this.oAuthService.getAccessToken();
+    }
+
+    isAdmin(): boolean {
+        let claims = this.oAuthService.getIdentityClaims();
+        return claims?.['role'] === 'admin';
     }
 }
