@@ -3,7 +3,7 @@ using MassTransit.Mediator;
 using Signals.App.Core.Execution;
 using Signals.App.Core.Notification;
 using Signals.App.Database;
-using Signals.App.Database.Entities.Channels;
+using Signals.App.Database.Entities;
 using Signals.App.Database.Entities.Stages;
 using Signals.App.Extensions;
 
@@ -46,17 +46,17 @@ namespace Signals.App.Core.Stage
                 var topic = $"{signal.Name} - {stage.Name}";
                 var text = stage.Text;
 
-                object request = channel switch
+                object request = channel.Type switch
                 {
-                    EmailChannelEntity emailChannel => new SendEmailNotification.Request
+                    ChannelType.Email => new SendEmailNotification.Request
                     { 
-                        Address = emailChannel.Address,
+                        Address = channel.Destination,
                         Topic = topic,
                         Text = text
                     },
-                    TelegramChannelEntity telegramChannel => new SendTelegramNotification.Request
+                    ChannelType.Telegram => new SendTelegramNotification.Request
                     {
-                        ChatId = telegramChannel.ChatId.Value,
+                        ChatId = channel.ExternalId!.Value,
                         Topic = topic,
                         Text = text 
                     }

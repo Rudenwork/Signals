@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
 {
@@ -7,6 +6,8 @@ namespace Signals.App.Controllers.Models
     {
         public Guid? Id { get; set; }
         public Guid? UserId { get; set; }
+        public TypeEnum? Type { get; set; }
+        public string? Destination { get; set; }
         public string? Description { get; set; }
         public bool? IsVerified { get; set; }
 
@@ -14,8 +15,23 @@ namespace Signals.App.Controllers.Models
         {
             public Validator()
             {
+                RuleFor(x => x.Type)
+                    .IsInEnum();
+
+                When(x => x.Type is TypeEnum.Email, () =>
+                {
+                    RuleFor(x => x.Destination)
+                        .EmailAddress();
+                })
+                .Otherwise(() =>
+                {
+                    RuleFor(x => x.Destination)
+                        .MaximumLength(Constants.Telegram.Destination.Length)
+                        .Matches(Constants.Telegram.Destination.Regex);
+                });
+
                 RuleFor(x => x.Description)
-                    .MaximumLength(100);
+                    .MaximumLength(Constants.Description.Length);
 
                 RuleFor(x => x.Id)
                     .Null();
@@ -28,115 +44,48 @@ namespace Signals.App.Controllers.Models
             }
         }
 
-        [JsonDerivedType(typeof(Email), nameof(Email))]
-        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
-        public abstract class Create : ChannelModel
+        public class Create : ChannelModel
         {
-            public class Email : Create
+            public new class Validator : AbstractValidator<Create>
             {
-                public string? Address { get; set; }
-
-                public new class Validator : AbstractValidator<Email>
+                public Validator(ChannelModel.Validator validator)
                 {
-                    public Validator(ChannelModel.Validator validator)
-                    {
-                        Include(validator);
+                    Include(validator);
 
-                        RuleFor(x => x.Address)
-                            .NotNull()
-                            .EmailAddress();
-                    }
-                }
-            }
+                    RuleFor(x => x.Type)
+                        .NotNull();
 
-            public class Telegram : Create
-            {
-                public string? Username { get; set; }
-
-                public new class Validator : AbstractValidator<Telegram>
-                {
-                    public Validator(ChannelModel.Validator validator)
-                    {
-                        Include(validator);
-
-                        RuleFor(x => x.Username)
-                            .NotNull()
-                            .MaximumLength(100)
-                            .Matches(Constants.Username.Regex);
-                    }
+                    RuleFor(x => x.Destination)
+                        .NotNull();
                 }
             }
         }
 
-        [JsonDerivedType(typeof(Email), nameof(Email))]
-        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
-        public abstract class Update : ChannelModel
+        public class Update : ChannelModel
         {
-            public class Email : Update
+            public class Validator : AbstractValidator<Update>
             {
-                public string? Address { get; set; }
-
-                public new class Validator : AbstractValidator<Email>
+                public Validator(ChannelModel.Validator validator)
                 {
-                    public Validator(ChannelModel.Validator validator)
+                    Include(validator);
+
+                    When(x => x.Type is not null, () =>
                     {
-                        Include(validator);
-
-                        RuleFor(x => x.Address)
-                            .EmailAddress();
-                    }
-                }
-            }
-
-            public class Telegram : Update
-            {
-                public string? Username { get; set; }
-
-                public new class Validator : AbstractValidator<Telegram>
-                {
-                    public Validator(ChannelModel.Validator validator)
-                    {
-                        Include(validator);
-
-                        RuleFor(x => x.Username)
-                            .MaximumLength(100)
-                            .Matches(Constants.Username.Regex);
-                    }
+                        RuleFor(x => x.Destination)
+                            .NotNull();
+                    });
                 }
             }
         }
 
-        [JsonDerivedType(typeof(Email), nameof(Email))]
-        [JsonDerivedType(typeof(Telegram), nameof(Telegram))]
-        public abstract class Read : ChannelModel
+        public class Read : ChannelModel
         {
-            public class Email : Read
-            {
-                public string? Address { get; set; }
-            }
-
-            public class Telegram : Read
-            {
-                public string? Username { get; set; }
-            }
-
             public class Filter
             {
                 public TypeEnum? Type { get; set; }
                 public string? Description { get; set; }
                 public bool? IsVerified { get; set; }
-
-                //Email
-                public string? Address { get; set; }
-
-                //Telegram
-                public string? Username { get; set; }
-
-                public enum TypeEnum
-                {
-                    Email,
-                    Telegram
-                }
+                public string? Destination { get; set; }
             }
         }
 
@@ -147,11 +96,26 @@ namespace Signals.App.Controllers.Models
 
         private static class Constants
         {
-            public static class Username
+            public static class Description
             {
-                public const string Regex = @"^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$";
-                public const string ErrorMessage = "Not valid";
+                public const int Length = 100;
             }
+
+            public static class Telegram
+            {
+                public static class Destination
+                {
+                    public const int Length = 100;
+                    public const string Regex = @"^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$";
+                    public const string ErrorMessage = "Not valid";
+                }
+            }
+        }
+
+        public enum TypeEnum
+        {
+            Telegram,
+            Email
         }
     }
 }

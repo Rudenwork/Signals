@@ -150,8 +150,11 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "varchar", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExternalId = table.Column<long>(type: "bigint", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    Destination = table.Column<string>(type: "text", nullable: false),
                     Code = table.Column<string>(type: "text", nullable: false),
                     IsVerified = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -183,43 +186,6 @@ namespace Signals.App.Database.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Channels-Email",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Channels-Email", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Channels-Email_Channels_Id",
-                        column: x => x.Id,
-                        principalTable: "Channels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Channels-Telegram",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    ChatId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Channels-Telegram", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Channels-Telegram_Channels_Id",
-                        column: x => x.Id,
-                        principalTable: "Channels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -501,12 +467,6 @@ namespace Signals.App.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Blocks-Value");
-
-            migrationBuilder.DropTable(
-                name: "Channels-Email");
-
-            migrationBuilder.DropTable(
-                name: "Channels-Telegram");
 
             migrationBuilder.DropTable(
                 name: "Executions");

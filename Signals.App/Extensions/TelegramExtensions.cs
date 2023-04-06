@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Signals.App.Database;
-using Signals.App.Database.Entities.Channels;
 using Signals.App.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -46,7 +45,7 @@ namespace Signals.App.Extensions
 
             var chatId = message.Chat.Id;
 
-            var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike((x as TelegramChannelEntity).Username, message.From.Username)) as TelegramChannelEntity;
+            var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike(x.Destination, message.From.Username));
             SignalsContext.Entry(channel).Reload();
 
             if (channel is null)
@@ -55,9 +54,9 @@ namespace Signals.App.Extensions
                 return;
             }
 
-            if (channel.ChatId is null)
+            if (channel.ExternalId is null)
             {
-                channel.ChatId = chatId;
+                channel.ExternalId = chatId;
                 SignalsContext.Update(channel);
                 SignalsContext.SaveChanges();
             }

@@ -6,12 +6,6 @@ using Quartz.Impl.Matchers;
 using Signals.App.Core.Execution;
 using Signals.App.Core.Test;
 using Signals.App.Database;
-using Signals.App.Database.Entities;
-using Signals.App.Database.Entities.Blocks;
-using Signals.App.Database.Entities.Channels;
-using Signals.App.Database.Entities.Indicators;
-using Signals.App.Database.Entities.Stages;
-using Signals.App.Extensions;
 using Signals.App.Identity;
 using Signals.App.Services;
 

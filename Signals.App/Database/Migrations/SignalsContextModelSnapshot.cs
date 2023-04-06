@@ -56,8 +56,19 @@ namespace Signals.App.Database.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("Destination")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("ExternalId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -67,8 +78,6 @@ namespace Signals.App.Database.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Channels");
-
-                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.ExecutionEntity", b =>
@@ -254,31 +263,6 @@ namespace Signals.App.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Blocks-Value", (string)null);
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.Channels.EmailChannelEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.ChannelEntity");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.ToTable("Channels-Email", (string)null);
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.Channels.TelegramChannelEntity", b =>
-                {
-                    b.HasBaseType("Signals.App.Database.Entities.ChannelEntity");
-
-                    b.Property<long?>("ChatId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.ToTable("Channels-Telegram", (string)null);
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", b =>
@@ -479,24 +463,6 @@ namespace Signals.App.Database.Migrations
                     b.Navigation("LeftIndicator");
 
                     b.Navigation("RightIndicator");
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.Channels.EmailChannelEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.ChannelEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.Channels.EmailChannelEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Signals.App.Database.Entities.Channels.TelegramChannelEntity", b =>
-                {
-                    b.HasOne("Signals.App.Database.Entities.ChannelEntity", null)
-                        .WithOne()
-                        .HasForeignKey("Signals.App.Database.Entities.Channels.TelegramChannelEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Signals.App.Database.Entities.Indicators.BollingerBandsIndicatorEntity", b =>
