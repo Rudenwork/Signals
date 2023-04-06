@@ -10,7 +10,6 @@ namespace Signals.App.Database.Entities
 
         public Guid SignalId { get; set; }
         public string Name { get; set; }
-        public Guid? PreviousStageId { get; set; }
-        public Guid? NextStageId { get; set; }
+        public int Index { get; set; }
     }
 }

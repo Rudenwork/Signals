@@ -35,10 +35,13 @@ namespace Signals.App.Core.Execution
                 if (execution is null)
                     return;
 
-                var nextStage = execution.StageId switch
+                var stage = SignalsContext.Stages.Find(execution.StageId);
+                var stagesQuery = SignalsContext.Stages.Where(x => x.SignalId == execution.SignalId);
+
+                var nextStage = stage switch
                 {
-                    null => SignalsContext.Stages.First(x => x.SignalId == execution.SignalId && x.PreviousStageId == null),
-                    _ => SignalsContext.Stages.FirstOrDefault(x => x.PreviousStageId == execution.StageId)
+                    null => stagesQuery.First(x => x.Index == 0),
+                    _ => stagesQuery.OrderBy(x => x.Index).FirstOrDefault(x => x.Index > stage.Index)
                 };
 
                 execution.StageId = nextStage?.Id;
@@ -48,9 +51,9 @@ namespace Signals.App.Core.Execution
 
                 object message = nextStage switch
                 {
-                    WaitingStageEntity stage => new ExecuteWaiting.Message { ExecutionId = execution.Id, Stage = stage },
-                    ConditionStageEntity stage => new ExecuteCondition.Message { ExecutionId = execution.Id, Stage = stage },
-                    NotificationStageEntity stage => new ExecuteNotification.Message { ExecutionId = execution.Id, Stage = stage },
+                    WaitingStageEntity waiting => new ExecuteWaiting.Message { ExecutionId = execution.Id, Stage = waiting },
+                    ConditionStageEntity condition => new ExecuteCondition.Message { ExecutionId = execution.Id, Stage = condition },
+                    NotificationStageEntity notification => new ExecuteNotification.Message { ExecutionId = execution.Id, Stage = notification },
                     _ => new Stop.Message { ExecutionId = execution.Id }
                 };
 

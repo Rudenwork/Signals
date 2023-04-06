@@ -146,15 +146,12 @@ namespace Signals.App.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Index")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("NextStageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("PreviousStageId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SignalId")
                         .HasColumnType("uuid");

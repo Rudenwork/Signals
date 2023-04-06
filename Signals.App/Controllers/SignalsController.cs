@@ -157,14 +157,12 @@ namespace Signals.App.Controllers
 
             entity.UserId = userId;
 
-            SignalsContext.Signals.Add(entity);
-
-            for (int i = 1; i < entity.Stages.Count; i++)
+            for (int i = 0; i < entity.Stages.Count; i++)
             {
-                entity.Stages[i - 1].NextStageId = entity.Stages[i].Id;
-                entity.Stages[i].PreviousStageId = entity.Stages[i - 1].Id;
+                entity.Stages[i].Index = i;
             }
 
+            SignalsContext.Signals.Add(entity);
             await SignalsContext.SaveChangesAsync();
 
             if(!entity.IsDisabled && entity.Schedule is not null)
@@ -226,27 +224,16 @@ namespace Signals.App.Controllers
                 SignalsContext.Stages.RemoveRange(stages);
 
                 stages = model.Stages
-                    .Select(x =>
+                    .Select((x, i) =>
                     {
-                        StageEntity stage = x switch
-                        {
-                            StageModel.Condition => x.Adapt<ConditionStageEntity>(),
-                            StageModel.Waiting => x.Adapt<WaitingStageEntity>(),
-                            StageModel.Notification => x.Adapt<NotificationStageEntity>()
-                        };
+                        var stage = x.Adapt<StageEntity>();
 
-                        stage.Id = Guid.NewGuid();
                         stage.SignalId = entity.Id;
+                        stage.Index = i;
 
                         return stage;
                     })
                     .ToList();
-
-                for (int i = 1; i < stages.Count; i++)
-                {
-                    stages[i - 1].NextStageId = stages[i].Id;
-                    stages[i].PreviousStageId = stages[i - 1].Id;
-                }
 
                 SignalsContext.Stages.AddRange(stages);
             }
