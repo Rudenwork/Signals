@@ -51,15 +51,37 @@ namespace Signals.App.Controllers.Models
                 RuleFor(x => x.Id)
                     .Null();
 
-                RuleFor(x => x.Interval)
-                    .NotNull();
+                When(x => x is Constant, () =>
+                {
+                    RuleFor(x => x.Symbol)
+                        .Null();
 
-                RuleFor(x => x.LoopbackPeriod)
-                    .NotNull()
-                    .InclusiveBetween(Constants.LoopBackPeriod.Min, Constants.LoopBackPeriod.Max);
+                    RuleFor(x => x.Interval)
+                        .Null();
 
-                RuleFor(x => x.Symbol)
-                    .NotEmpty();
+                    RuleFor(x => x.LoopbackPeriod)
+                        .Null();
+                })
+                .Otherwise(() =>
+                {
+                    RuleFor(x => x.Symbol)
+                        .NotEmpty();
+
+                    RuleFor(x => x.Interval)
+                        .NotNull();
+
+                    When(x => x is Candle, () =>
+                    {
+                        RuleFor(x => x.LoopbackPeriod)
+                            .Null();
+                    })
+                    .Otherwise(() =>
+                    {
+                        RuleFor(x => x.LoopbackPeriod)
+                            .NotNull()
+                            .InclusiveBetween(Constants.LoopBackPeriod.Min, Constants.LoopBackPeriod.Max);
+                    });
+                });
             }
         }
 

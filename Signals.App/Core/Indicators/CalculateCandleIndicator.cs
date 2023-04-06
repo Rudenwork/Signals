@@ -10,7 +10,7 @@ namespace Signals.App.Core.Indicators
         public class Request : Request<CalculateIndicator.Response>
         {
             public CandleIndicatorEntity Indicator { get; set; }
-            public List<Quote> Quotes { get; set; }
+            public Quote Quote { get; set; }
         }
 
         public class Consumer : IConsumer<Request>
@@ -26,7 +26,7 @@ namespace Signals.App.Core.Indicators
             {
                 Logger.LogInformation($"Calculate Candle Indicator");
 
-                var quote = context.Message.Quotes.Last();
+                var quote = context.Message.Quote;
 
                 var result = context.Message.Indicator.ParameterType switch
                 {

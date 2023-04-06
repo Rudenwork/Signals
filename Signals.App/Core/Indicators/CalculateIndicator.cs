@@ -35,19 +35,18 @@ namespace Signals.App.Core.Indicators
 
             public async Task Consume(ConsumeContext<Request> context)
             {
-                var constantIndicator = context.Message.Indicator as ConstantIndicatorEntity;
-
-                if (constantIndicator is not null)
+                if (context.Message.Indicator is ConstantIndicatorEntity constantIndicator)
                 {
                     await context.RespondAsync(new Response { Result = constantIndicator.Value });
                     return;
                 }
 
                 var symbol = context.Message.Indicator.Symbol;
-                var interval = context.Message.Indicator.Interval.Adapt<KlineInterval>();
+                var interval = context.Message.Indicator.Interval!.Value.Adapt<KlineInterval>();
                 var endTime = context.Message.Time;
+                var limit = context.Message.Indicator is CandleIndicatorEntity ? 1 : 100;
 
-                var kLinesResult = await BinanceClient.SpotApi.ExchangeData.GetKlinesAsync(symbol, interval, endTime: endTime, limit: 100);
+                var kLinesResult = await BinanceClient.SpotApi.ExchangeData.GetKlinesAsync(symbol!, interval, null, endTime, limit);
 
                 var quotes = kLinesResult.Data
                     .Select(kline => new Quote
@@ -63,17 +62,17 @@ namespace Signals.App.Core.Indicators
 
                 var response = context.Message.Indicator switch
                 {
+                    CandleIndicatorEntity indicator => await Mediator.SendRequest(new CalculateCandleIndicator.Request
+                    {
+                        Indicator = indicator,
+                        Quote = quotes.Last()
+                    }),
                     RelativeStrengthIndexIndicatorEntity indicator => await Mediator.SendRequest(new CalculateRelativeStrengthIndexIndicator.Request
                     {
                         Indicator = indicator,
                         Quotes = quotes
                     }),
                     ExponentialMovingAverageIndicatorEntity indicator => await Mediator.SendRequest(new CalculateExponentialMovingAverageIndicator.Request
-                    {
-                        Indicator = indicator,
-                        Quotes = quotes
-                    }),
-                    CandleIndicatorEntity indicator => await Mediator.SendRequest(new CalculateCandleIndicator.Request
                     {
                         Indicator = indicator,
                         Quotes = quotes

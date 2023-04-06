@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20230406134656_Initial")]
+    [Migration("20230406150536_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -101,10 +101,9 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Interval")
-                        .IsRequired()
                         .HasColumnType("varchar");
 
-                    b.Property<int>("LoopbackPeriod")
+                    b.Property<int?>("LoopbackPeriod")
                         .HasColumnType("integer");
 
                     b.Property<string>("Symbol")

@@ -27,7 +27,7 @@ namespace Signals.App.Core.Indicators
                 Logger.LogInformation($"Calculate Relative Strength Index Indicator");
 
                 var result = context.Message.Quotes
-                    .GetRsi(context.Message.Indicator.LoopbackPeriod)
+                    .GetRsi(context.Message.Indicator.LoopbackPeriod!.Value)
                     .Last();
 
                 await context.RespondAsync(new CalculateIndicator.Response { Result = Convert.ToDecimal(result.Rsi) });

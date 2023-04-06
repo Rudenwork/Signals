@@ -27,7 +27,7 @@ namespace Signals.App.Core.Indicators
                 Logger.LogInformation($"Calculate Bollinger Bands Indicator");
 
                 var bollingerBandResult = context.Message.Quotes
-                    .GetBollingerBands(context.Message.Indicator.LoopbackPeriod)
+                    .GetBollingerBands(context.Message.Indicator.LoopbackPeriod!.Value)
                     .Last();
 
                 var result = context.Message.Indicator.BandType switch

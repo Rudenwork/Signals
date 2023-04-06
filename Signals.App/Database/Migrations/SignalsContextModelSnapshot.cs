@@ -98,10 +98,9 @@ namespace Signals.App.Database.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Interval")
-                        .IsRequired()
                         .HasColumnType("varchar");
 
-                    b.Property<int>("LoopbackPeriod")
+                    b.Property<int?>("LoopbackPeriod")
                         .HasColumnType("integer");
 
                     b.Property<string>("Symbol")

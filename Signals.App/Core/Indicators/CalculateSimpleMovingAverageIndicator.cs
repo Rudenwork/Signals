@@ -27,7 +27,7 @@ namespace Signals.App.Core.Indicators
                 Logger.LogInformation($"Calculate Moving Average Indicator");
 
                 var result = context.Message.Quotes
-                    .GetSma(context.Message.Indicator.LoopbackPeriod)
+                    .GetSma(context.Message.Indicator.LoopbackPeriod!.Value)
                     .Last();
 
                 await context.RespondAsync(new CalculateIndicator.Response { Result = Convert.ToDecimal(result.Sma) });

@@ -27,7 +27,7 @@ namespace Signals.App.Core.Indicators
                 Logger.LogInformation($"Calculate Exponential Moving Average Indicator");
 
                 var result = context.Message.Quotes
-                    .GetEma(context.Message.Indicator.LoopbackPeriod)
+                    .GetEma(context.Message.Indicator.LoopbackPeriod!.Value)
                     .Last();
 
                 await context.RespondAsync(new CalculateIndicator.Response { Result = Convert.ToDecimal(result.Ema) });

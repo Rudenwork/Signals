@@ -16,8 +16,8 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Interval = table.Column<string>(type: "varchar", nullable: false),
-                    LoopbackPeriod = table.Column<int>(type: "integer", nullable: false),
+                    Interval = table.Column<string>(type: "varchar", nullable: true),
+                    LoopbackPeriod = table.Column<int>(type: "integer", nullable: true),
                     Symbol = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

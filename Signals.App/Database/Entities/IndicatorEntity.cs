@@ -10,9 +10,9 @@ namespace Signals.App.Database.Entities
         public Guid Id { get; set; }
 
         [Column(TypeName = "varchar")]
-        public Interval Interval { get; set; }
+        public Interval? Interval { get; set; }
 
-        public int LoopbackPeriod { get; set; }
+        public int? LoopbackPeriod { get; set; }
         public string? Symbol { get; set; }
     }
 
