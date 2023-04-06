@@ -113,7 +113,7 @@ namespace Signals.App.Controllers
             if (entity == null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             FillRelatedEntities(entity);
@@ -185,7 +185,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             if (model.Name is not null)
@@ -269,7 +269,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             if (!entity.IsDisabled && entity.Schedule is not null)
@@ -291,14 +291,14 @@ namespace Signals.App.Controllers
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult> Enable(Guid id)
+        public async Task<ActionResult<SignalModel.Read>> Enable(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             if (!entity.IsDisabled)
@@ -317,18 +317,21 @@ namespace Signals.App.Controllers
             SignalsContext.Update(entity);
             SignalsContext.SaveChanges();
 
-            return Ok();
+            FillRelatedEntities(entity);
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult> Disable(Guid id)
+        public async Task<ActionResult<SignalModel.Read>> Disable(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             if (entity.IsDisabled)
@@ -354,18 +357,21 @@ namespace Signals.App.Controllers
             SignalsContext.Update(entity);
             SignalsContext.SaveChanges();
 
-            return Ok();
+            FillRelatedEntities(entity);
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult> Start(Guid id)
+        public async Task<ActionResult<SignalModel.Read>> Start(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             if (entity.IsDisabled)
@@ -384,18 +390,21 @@ namespace Signals.App.Controllers
 
             await Mediator.Publish(new Start.Message { SignalId = entity.Id });
 
-            return Ok();
+            FillRelatedEntities(entity);
+            var result = entity.Adapt<SignalModel.Read>();
+
+            return Ok(result);
         }
 
         [HttpPost("{id}/[action]")]
-        public async Task<ActionResult> Stop(Guid id)
+        public async Task<ActionResult<SignalModel.Read>> Stop(Guid id)
         {
             var entity = SignalsContext.Signals.Find(id);
 
             if (entity is null)
                 return NoContent();
 
-            if (entity.UserId != User.GetId())
+            if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
             var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == entity.Id);
@@ -409,7 +418,6 @@ namespace Signals.App.Controllers
             await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
 
             FillRelatedEntities(entity);
-
             var result = entity.Adapt<SignalModel.Read>();
 
             return Ok(result);

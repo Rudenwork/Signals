@@ -18,11 +18,13 @@ namespace Signals.App.Controllers
     {
         private SignalsContext SignalsContext { get; }
         private IPasswordHasher<UserEntity> PasswordHasher { get; }
+        private SignalsController SignalsController { get; }
 
-        public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher)
+        public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher, SignalsController signalsController)
         {
             SignalsContext = context;
             PasswordHasher = passwordHasher;
+            SignalsController = signalsController;
         }
 
         [HttpGet]
@@ -109,7 +111,7 @@ namespace Signals.App.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id)
         {
             var entity = SignalsContext.Users
                 .FirstOrDefault(x => x.Id == id);
@@ -117,10 +119,78 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NoContent();
 
+            var signalIds = SignalsContext.Signals
+                .Where(x => x.UserId == id && !x.IsDisabled)
+                .Select(x => x.Id)
+                .ToList();
+
+            foreach (var signalId in signalIds)
+            {
+                await SignalsController.Disable(signalId); 
+            }
+
             SignalsContext.Users.Remove(entity);
             SignalsContext.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<UserModel.Read>> Enable(Guid id)
+        {
+            var entity = SignalsContext.Users.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (!entity.IsDisabled)
+            {
+                ModelState.AddModelError(nameof(entity.IsDisabled), "Already enabled");
+                return ValidationProblem();
+            }
+
+            entity.IsDisabled = false;
+
+            SignalsContext.Update(entity);
+            SignalsContext.SaveChanges();
+
+            var result = entity.Adapt<UserModel.Read>();
+
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/[action]")]
+        public async Task<ActionResult<UserModel.Read>> Disable(Guid id)
+        {
+            var entity = SignalsContext.Users.Find(id);
+
+            if (entity is null)
+                return NoContent();
+
+            if (entity.IsDisabled)
+            {
+                ModelState.AddModelError(nameof(entity.IsDisabled), "Already disabled");
+                return ValidationProblem();
+            }
+
+            var signalIds = SignalsContext.Signals
+                .Where(x => x.UserId == id && !x.IsDisabled)
+                .Select(x => x.Id)
+                .ToList();
+
+            foreach (var signalId in signalIds)
+            {
+                await SignalsController.Disable(signalId);
+            }
+
+            entity.IsDisabled = true;
+
+            SignalsContext.Update(entity);
+            SignalsContext.SaveChanges();
+
+            var result = entity.Adapt<UserModel.Read>();
+
+            return Ok(result);
         }
     }
 }

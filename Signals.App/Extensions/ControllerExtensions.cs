@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Signals.App.Identity;
+using System.Security.Claims;
 
 namespace Signals.App.Extensions
 {
@@ -7,6 +8,11 @@ namespace Signals.App.Extensions
         public static Guid GetId(this ClaimsPrincipal principal)
         {
             return Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        }
+
+        public static bool IsAdmin(this ClaimsPrincipal principal)
+        {
+            return principal.IsInRole(IdentityRoles.Admin);
         }
 
         public static IQueryable<T> Subset<T>(this IQueryable<T> query, int? offset, int? limit)
