@@ -36,6 +36,7 @@ import { UserComponent } from './components/users/user/user.component';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
 import { SignalFormComponent } from './components/signals/signal-form/signal-form.component';
 import { UserPreviewComponent } from './components/users/user-preview/user-preview.component';
+import { LoginFormComponent } from './components/login/login-form/login-form.component';
 
 @NgModule({
     declarations: [
@@ -69,7 +70,8 @@ import { UserPreviewComponent } from './components/users/user-preview/user-previ
         UserComponent,
         UserFormComponent,
         SignalFormComponent,
-        UserPreviewComponent
+        UserPreviewComponent,
+        LoginFormComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
