@@ -1,13 +1,16 @@
 ﻿using Mapster;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Signals.App.Controllers.Models;
+using Signals.App.Core.Execution;
 using Signals.App.Database;
 using Signals.App.Database.Entities;
 using Signals.App.Extensions;
 using Signals.App.Identity;
+using Signals.App.Services;
 
 namespace Signals.App.Controllers
 {
@@ -18,13 +21,15 @@ namespace Signals.App.Controllers
     {
         private SignalsContext SignalsContext { get; }
         private IPasswordHasher<UserEntity> PasswordHasher { get; }
-        private SignalsController SignalsController { get; }
+        private Scheduler Scheduler { get; }
+        private IMediator Mediator { get; }
 
-        public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher, SignalsController signalsController)
+        public UsersController(SignalsContext context, IPasswordHasher<UserEntity> passwordHasher, Scheduler scheduler, IMediator mediator)
         {
             SignalsContext = context;
             PasswordHasher = passwordHasher;
-            SignalsController = signalsController;
+            Scheduler = scheduler;
+            Mediator = mediator;
         }
 
         [HttpGet]
@@ -119,15 +124,7 @@ namespace Signals.App.Controllers
             if (entity is null)
                 return NoContent();
 
-            var signalIds = SignalsContext.Signals
-                .Where(x => x.UserId == id && !x.IsDisabled)
-                .Select(x => x.Id)
-                .ToList();
-
-            foreach (var signalId in signalIds)
-            {
-                await SignalsController.Disable(signalId); 
-            }
+            await DisableSignals(id);
 
             SignalsContext.Users.Remove(entity);
             SignalsContext.SaveChanges();
@@ -173,15 +170,7 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            var signalIds = SignalsContext.Signals
-                .Where(x => x.UserId == id && !x.IsDisabled)
-                .Select(x => x.Id)
-                .ToList();
-
-            foreach (var signalId in signalIds)
-            {
-                await SignalsController.Disable(signalId);
-            }
+            await DisableSignals(id);
 
             entity.IsDisabled = true;
 
@@ -191,6 +180,33 @@ namespace Signals.App.Controllers
             var result = entity.Adapt<UserModel.Read>();
 
             return Ok(result);
+        }
+
+        private async Task DisableSignals(Guid userId)
+        {
+            var signals = SignalsContext.Signals
+                .Where(x => x.UserId == userId && !x.IsDisabled)
+                .ToList();
+
+            foreach (var signal in signals)
+            {
+                if (signal.Schedule is not null)
+                {
+                    await Scheduler.CancelPublish(signal.Id);
+                }
+
+                signal.IsDisabled = true;
+                SignalsContext.Update(signal);
+
+                var execution = SignalsContext.Executions.FirstOrDefault(x => x.SignalId == signal.Id);
+
+                if (execution is not null)
+                {
+                    await Mediator.Publish(new Stop.Message { ExecutionId = execution.Id });
+                }
+            }
+
+            SignalsContext.SaveChanges();
         }
     }
 }
