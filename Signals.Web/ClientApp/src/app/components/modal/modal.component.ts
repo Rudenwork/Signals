@@ -60,12 +60,10 @@ export class ModalComponent implements OnInit {
     @Input() closeOnSubmit: boolean = false;
 
     form!: FormGroup;
-    private state!: string;
     isSubmitted: boolean = false;
     isError: boolean = false;
 
     ngOnInit() {
-        this.state = (Math.random() + 1).toString(36).substring(7);
         this.form = new FormGroup([]);
 
         if (this.isOpened) {
@@ -95,7 +93,7 @@ export class ModalComponent implements OnInit {
         }
 
         ModalComponent.modals.push(this);
-        history.pushState(this.state, '', `${location.href}#${this.state}`);
+        history.pushState(null, '', location.href);
 
         this.isOpened = true;
         this.opened.emit();
