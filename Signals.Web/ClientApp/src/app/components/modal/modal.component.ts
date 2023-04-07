@@ -7,6 +7,43 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
+    constructor() {
+        ModalComponent.init();
+    }
+
+    public static init() {
+        if (this.isInitiated) {
+            return;
+        }
+
+        window.addEventListener('keyup', event => {
+            if (this.modals.length == 0) {
+                return;
+            }
+
+            if (event.key == 'Enter') {
+                this.modals.at(-1)?.submit();
+            }
+
+            if (event.key == 'Escape') {
+                this.modals.at(-1)?.close();
+            }
+        });
+
+        window.addEventListener('popstate', event => {
+            if (this.modals.length == 0) {
+                return;
+            }
+
+            this.modals.at(-1)?.onPopstate();
+        });
+
+        this.isInitiated = true;
+    }
+
+    public static isInitiated: boolean = false;
+    public static modals: ModalComponent[] = [];
+
     @HostBinding('class.opened')
     @Input() isOpened: boolean = false;
 
@@ -28,20 +65,13 @@ export class ModalComponent implements OnInit {
     isError: boolean = false;
 
     ngOnInit() {
+        this.state = (Math.random() + 1).toString(36).substring(7);
         this.form = new FormGroup([]);
 
         if (this.isOpened) {
             this.isOpened = false;
             this.open();
         }
-
-        window.addEventListener('popstate', () => this.onBack());
-    }
-
-    private createHistory() {
-        this.state = (Math.random() + 1).toString(36).substring(7);
-        history.replaceState(this.state, '', location.href);
-        history.pushState(null, '', location.href);
     }
 
     error() {
@@ -49,10 +79,10 @@ export class ModalComponent implements OnInit {
     }
 
     submit() {
-        if (!this.isSubmitted) {
+        if (!this.isSubmitted && this.form.valid) {
             this.isSubmitted = true;
             this.submitted.emit();
-            
+
             if (this.closeOnSubmit) {
                 this.close();
             }
@@ -60,26 +90,31 @@ export class ModalComponent implements OnInit {
     }
 
     open() {
-        if (!this.isOpened) {
-            this.createHistory();
-            this.isOpened = true;
-            this.opened.emit();
+        if (this.isOpened) {
+            return;
         }
+
+        ModalComponent.modals.push(this);
+        history.pushState(this.state, '', `${location.href}#${this.state}`);
+
+        this.isOpened = true;
+        this.opened.emit();
     }
 
     close() {
-        if (this.isOpened) {
+        if (this.isOpened && ModalComponent.modals.at(-1) == this) {
             history.back();
         }
     }
 
-    private onBack() {
-        if (this.isOpened && history.state == this.state) {
-            this.isOpened = false;
-            this.isSubmitted = false;
-            this.isError = false;
-            this.form = new FormGroup([]);
-            this.closed.emit();
-        }
+    onPopstate() {
+        ModalComponent.modals.pop();
+        
+        this.isOpened = false;
+        this.isSubmitted = false;
+        this.isError = false;
+        this.form = new FormGroup([]);
+
+        this.closed.emit();
     }
 }

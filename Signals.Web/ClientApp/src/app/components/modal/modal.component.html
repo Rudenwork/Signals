@@ -8,7 +8,7 @@
         <span *ngIf="isError" id="error">Oops, something went wrong. Please try again later.</span>
     </div>
     <div *ngIf="showSubmit" id="footer">
-        <button 
+        <button
             [disabled]="form.invalid || isSubmitted"
             [style.background-color]="submitColor"
             (click)="submit()">{{ submitText }}
