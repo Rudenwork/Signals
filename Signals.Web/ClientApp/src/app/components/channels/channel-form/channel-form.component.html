@@ -1,0 +1,23 @@
+<!-- TODO: Change to togle -->
+<!-- <div class="input-container">
+    <label for="type">Type:</label>
+    <input id="type" type="text" [formControl]="type">
+</div> -->
+
+<select [formControl]="type">
+    <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+</select>
+
+<!-- <select [ngModel]="channel.type" (change)="changeChannelType(type.value)" #type>
+    <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+</select> -->
+
+<div class="input-container">
+    <label for="destination">Destination:</label>
+    <input id="destination" type="text" [formControl]="destination">
+</div>
+
+<div class="input-container">
+    <label for="description">Description:</label>
+    <input id="description" type="text" [formControl]="description">
+</div>

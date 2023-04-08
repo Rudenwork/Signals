@@ -11,19 +11,7 @@ import { ChannelsComponent } from './components/channels/channels.component';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ChannelItemComponent } from './components/channels/channel-item/channel-item.component';
-import { ChannelItemTelegramComponent } from './components/channels/channel-item/channel-item-telegram/channel-item-telegram.component';
-import { ChannelItemEmailComponent } from './components/channels/channel-item/channel-item-email/channel-item-email.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { ChannelCreateComponent } from './components/channels/channel-create/channel-create.component';
-import { ChannelCreateTelegramComponent } from './components/channels/channel-create/channel-create-telegram/channel-create-telegram.component';
-import { ChannelCreateEmailComponent } from './components/channels/channel-create/channel-create-email/channel-create-email.component';
-import { ChannelUpdateComponent } from './components/channels/channel-update/channel-update.component';
-import { ChannelUpdateEmailComponent } from './components/channels/channel-update/channel-update-email/channel-update-email.component';
-import { ChannelUpdateTelegramComponent } from './components/channels/channel-update/channel-update-telegram/channel-update-telegram.component';
-import { ChannelVerifyComponent } from './components/channels/channel-verify/channel-verify.component';
-import { ChannelVerifyTelegramComponent } from './components/channels/channel-verify/channel-verify-telegram/channel-verify-telegram.component';
-import { ChannelVerifyEmailComponent } from './components/channels/channel-verify/channel-verify-email/channel-verify-email.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { SignalItemComponent } from './components/signals/signal-item/signal-item.component';
 import { SignalComponent } from './components/signals/signal/signal.component';
@@ -37,6 +25,10 @@ import { UserFormComponent } from './components/users/user-form/user-form.compon
 import { SignalFormComponent } from './components/signals/signal-form/signal-form.component';
 import { UserPreviewComponent } from './components/users/user-preview/user-preview.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { ChannelComponent } from './components/channels/channel/channel.component';
+import { ChannelPreviewComponent } from './components/channels/channel-preview/channel-preview.component';
+import { ChannelFormComponent } from './components/channels/channel-form/channel-form.component';
+import { ChannelFormVerifyComponent } from './components/channels/channel-form-verify/channel-form-verify.component';
 
 @NgModule({
     declarations: [
@@ -46,19 +38,7 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
         LogoutComponent,
         MenuComponent,
         ChannelsComponent,
-        ChannelItemComponent,
-        ChannelItemTelegramComponent,
-        ChannelItemEmailComponent,
         ModalComponent,
-        ChannelCreateComponent,
-        ChannelCreateTelegramComponent,
-        ChannelCreateEmailComponent,
-        ChannelUpdateComponent,
-        ChannelUpdateEmailComponent,
-        ChannelUpdateTelegramComponent,
-        ChannelVerifyComponent,
-        ChannelVerifyTelegramComponent,
-        ChannelVerifyEmailComponent,
         SignalsComponent,
         SignalItemComponent,
         SignalComponent,
@@ -71,7 +51,11 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
         UserFormComponent,
         SignalFormComponent,
         UserPreviewComponent,
-        LoginFormComponent
+        LoginFormComponent,
+        ChannelComponent,
+        ChannelPreviewComponent,
+        ChannelFormComponent,
+        ChannelFormVerifyComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

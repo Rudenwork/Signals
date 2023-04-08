@@ -1,9 +1,9 @@
-<button (click)="modalCreate.open()">Create</button>
-<ul>
-    <li *ngFor="let channel of channels">
-        <app-channel-item [channel]="channel" (changed)="getChannels()"/>
-    </li>
-</ul>
-<app-modal title="Create Channel" #modalCreate >
-    <app-channel-create *ngIf="modalCreate.isOpened" (created)="modalCreate.close(); getChannels()"/>
+<button class="large" (click)="modalCreate.open()">Create</button>
+
+<div class="cards-container">
+    <app-channel *ngFor="let channel of channels; let index = index" [channel]="channel" (deleted)="remove(index)"></app-channel>
+</div>
+
+<app-modal title="Create Channel" submitText="Create" submitColor="var(--color-good)" #modalCreate >
+    <app-channel-form *ngIf="modalCreate.isOpened" (submitted)="create($event)"></app-channel-form>
 </app-modal>

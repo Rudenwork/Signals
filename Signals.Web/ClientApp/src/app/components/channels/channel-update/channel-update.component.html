@@ -1,9 +1,0 @@
-<select [ngModel]="channel.$type" (change)="changeChannelType(type.value)" #type>
-    <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
-</select>
-<input type="text" [formControl]="description" placeholder="Description">
-<div [ngSwitch]="channel.$type">
-    <app-channel-update-telegram *ngSwitchCase="ChannelType.Telegram" [channel]="castChannel()" (formInitialized)="setChildForm($event)" />
-    <app-channel-update-email *ngSwitchCase="ChannelType.Email" [channel]="castChannel()" (formInitialized)="setChildForm($event)" />
-</div>
-<button [disabled]="form.invalid || isUpdating" (click)="update()">Update</button>

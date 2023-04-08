@@ -1,0 +1,33 @@
+:host {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    #card {
+        background: var(--color-background-secondary);
+        box-shadow: 0px 0px 10px 0px var(--color-shadow);
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        width: 100%;
+        transition: .3s;
+        will-change: transform;
+
+        @media(hover: hover) and (pointer: fine) {
+            max-width: 400px;
+
+            &:hover {
+                transform: scale(105%);
+            }
+        }
+    }
+
+    #actions-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Channel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
     selector: 'app-channels',
@@ -10,14 +11,35 @@ import { DataService } from 'src/app/services/data.service';
 export class ChannelsComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
+    @HostBinding('class.page') isPage: boolean = true;
+    @HostBinding('class.loading') isLoading: boolean = true;
+
+    @ViewChild('modalCreate') modalCreate!: ModalComponent;
+
     channels!: Channel[];
 
     ngOnInit() {
-        this.getChannels();
+        this.dataService.getChannels()
+            .subscribe(channels => {
+                this.channels = channels;
+                this.isLoading = false;
+            });
     }
 
-    getChannels() {
-        this.dataService.getChannels()
-            .subscribe(channels => this.channels = channels);
+    create(channel: Channel) {
+        this.dataService.createChannel(channel)
+            .subscribe({
+                next: channel => {
+                    this.channels.push(channel);
+                    this.modalCreate.close();
+                },
+                error: () => {
+                    this.modalCreate.error();
+                }
+            });
+    }
+
+    remove(index: number) {
+        this.channels.splice(index, 1);
     }
 }

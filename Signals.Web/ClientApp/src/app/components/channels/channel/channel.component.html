@@ -1,0 +1,20 @@
+<div id="card">
+    <app-channel-preview [channel]="channel" />
+    <div id="actions-container">
+        <button *ngIf="!channel.isVerified" (click)="modalVerify.open()">Verify</button>
+        <button (click)="modalUpdate.open()">U</button>
+        <button (click)="modalDelete.open()">D</button>
+    </div>
+</div>
+
+<app-modal title="Update Channel" submitText="Update" submitColor="var(--color-warning)" #modalUpdate>
+    <app-channel-form *ngIf="modalUpdate.isOpened" [channel]="channel" (submitted)="update($event)" #channelForm></app-channel-form>
+</app-modal>
+
+<app-modal title="Delete Channel" submitText="Delete" submitColor="var(--color-bad)" (submitted)="del()" #modalDelete>
+    <app-channel-preview [channel]="channel" />
+</app-modal>
+
+<app-modal title="Verify Channel" submitText="Verify" submitColor="var(--color-neutral)" #modalVerify>
+    <app-channel-form-verify *ngIf="modalVerify.isOpened" [channel]="channel" (submitted)="verify($event)" #channelFormVerify></app-channel-form-verify>
+</app-modal>
