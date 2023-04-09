@@ -1,3 +1,5 @@
-<span class="icon fa-user">{{user.username}}</span>
-<span *ngIf="user.isAdmin" title="Admin" class="tag admin icon fa-user-secret"></span>
-<span *ngIf="user.isDisabled" title="Disabled" class="tag disabled icon fa-ban"></span>
+<div class="username icon fa-user">{{user.username}}</div>
+<div class="tags-container">
+    <div *ngIf="user.isAdmin" title="Admin" class="tag admin icon fa-user-secret"></div>
+    <div *ngIf="user.isDisabled" title="Disabled" class="tag disabled icon fa-ban"></div>
+</div>

@@ -1,10 +1,10 @@
 <div id="card">
     <app-user-preview [user]="user" />
     <div id="actions-container">
-        <button *ngIf="user.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
-        <button *ngIf="!user.isDisabled" class="disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button>
-        <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
-        <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
+        <button *ngIf="user.isDisabled" class="action icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
+        <button *ngIf="!user.isDisabled" class="action disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button>
+        <button class="action warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        <button class="action bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
     </div>
 </div>
 

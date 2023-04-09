@@ -127,6 +127,12 @@ button {
         color: var(--color-disabled);
     }
 
+    &.action {
+        height: 30px;
+        width: 30px;
+        padding: 0px;
+    }
+
     &.large {
         padding: 10px 25px 10px 25px;
         font-size: x-large;
