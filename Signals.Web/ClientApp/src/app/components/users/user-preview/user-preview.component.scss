@@ -6,17 +6,11 @@
     word-break: break-all;
 
     .tag {
-        border-radius: 3px;
-        box-shadow: 0px 0px 3px 0px var(--color-shadow);
-        padding: 2px 6px 5px 6px;
+        opacity: 80%;
+        min-width: 35px;
+        min-height: 20px;
+        border-radius: 20px;
+        padding: 3px;
         cursor: default;
-
-        &.admin {
-            background: var(--color-warning);
-        }
-
-        &.disabled {
-            background: var(--color-disabled);
-        }
     }
 }

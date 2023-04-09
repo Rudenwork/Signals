@@ -1,7 +1,7 @@
 <div id="window">
     <div id="header" [style.justify-content]="showClose? 'space-between' : 'center'">
         <span id="title">{{title}}</span>
-        <button *ngIf="showClose" id="close" (click)="close()">X</button>
+        <button class="icon fa-xmark" *ngIf="showClose" id="close" (click)="close()"></button>
     </div>
     <div id="content" [class.loading]="isSubmitted && !isError">
         <ng-content *ngIf="!isError"/>
@@ -10,7 +10,7 @@
     <div *ngIf="showSubmit" id="footer">
         <button
             [disabled]="form.invalid || isSubmitted"
-            [style.background-color]="submitColor"
+            class="{{submitClass}}"
             (click)="submit()">{{ submitText }}
         </button>
     </div>

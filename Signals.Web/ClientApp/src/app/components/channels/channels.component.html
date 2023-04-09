@@ -4,6 +4,6 @@
     <app-channel *ngFor="let channel of channels; let index = index" [channel]="channel" (deleted)="remove(index)"></app-channel>
 </div>
 
-<app-modal title="Create Channel" submitText="Create" submitColor="var(--color-good)" #modalCreate >
+<app-modal title="Create Channel" submitText="Create" submitClass="good" #modalCreate >
     <app-channel-form *ngIf="modalCreate.isOpened" (submitted)="create($event)"></app-channel-form>
 </app-modal>

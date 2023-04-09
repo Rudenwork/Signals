@@ -5,6 +5,6 @@
     <app-stage [stage]="stage" (submitted)="modalUpdate.close(); updated.emit($event)"></app-stage>
 </app-modal>
 
-<app-modal title="Delete Stage" submitText="Delete" submitColor="var(--color-bad)" (submitted)="deleted.emit()" #modalDelete>
+<app-modal title="Delete Stage" submitText="Delete" submitClass="bad" (submitted)="deleted.emit()" #modalDelete>
     Do you want to delete?
 </app-modal>

@@ -10,6 +10,7 @@
     --color-bad: red;
     --color-neutral: #1177bb;
     --color-warning: orange;
+    --color-admin: tomato;
     --color-disabled: grey;
     --color-font-primary: white;
     --color-font-secondary: grey;
@@ -50,6 +51,46 @@ body {
     color: var(--color-font-primary);
     font: var(--font-main);
     overflow-x: hidden;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    &:before {
+        font: var(--fa-font-solid);
+        display: inline-block;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    &.brand {
+        &:before {
+            font: var(--fa-font-brands);
+        }
+    }
+}
+
+.good {
+    background: var(--color-good);
+}
+
+.warning {
+    background: var(--color-warning);
+}
+
+.bad {
+    background: var(--color-bad);
+}
+
+.disabled {
+    background: var(--color-disabled);
+}
+
+.admin {
+    background: var(--color-admin);
 }
 
 button {
@@ -184,7 +225,7 @@ input[type="checkbox"].toggle {
     align-items: center;
     gap: 40px;
     height: 100%;
-    
+
     &.loading {
         &>* {
             display: none;
