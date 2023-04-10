@@ -1,3 +1,3 @@
-<app-modal [isOpened]="true" [showClose]="false" title="Signals" submitText="Login" (closed)="modalLogin.open()" #modalLogin>
+<app-modal [isOpened]="true" [showClose]="false" title="Signals" submitText="Login" submitClass="neutral icon fa-right-to-bracket" (closed)="modalLogin.open()" #modalLogin>
     <app-login-form *ngIf="modalLogin.isOpened" (submitted)="login($event)" />
 </app-modal>

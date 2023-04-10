@@ -1,19 +1,19 @@
 <div class="input-container">
-    <label for="username">Username:</label>
-    <input id="username" type="text" [formControl]="username">
+    <label for="username" class="icon fa-user"></label>
+    <input id="username" type="text" placeholder="Username" [formControl]="username">
 </div>
 
 <div class="input-container">
-    <label for="password">Password:</label>
-    <input id="password" type="password" name="-" autocomplete="new-password" [formControl]="password">
+    <label for="password" class="icon fa-lock"></label>
+    <input id="password" type="password" placeholder="Password" name="-" autocomplete="new-password" [formControl]="password">
 </div>
 
 <div class="input-container borderless">
-    <label for="isAdmin">Is Admin:</label>
+    <label for="isAdmin" class="icon fa-user-secret">Admin</label>
     <input id="isAdmin" type="checkbox" class="toggle" [formControl]="isAdmin">
 </div>
 
 <div *ngIf="isCreating" class="input-container borderless">
-    <label for="isDisabled">Is Disabled:</label>
+    <label for="isDisabled" class="icon fa-ban">Disabled</label>
     <input id="isDisabled" type="checkbox" class="toggle" [formControl]="isDisabled">
 </div>
