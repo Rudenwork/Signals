@@ -68,8 +68,8 @@ namespace Signals.App.Controllers.Models
         {
             public static class Username
             {
-                public const string Regex = @"^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{1,50}$";
-                public const string ErrorMessage = "May only contain Roman letters (a-z, A-Z), digits (0-9), and some special characters (._). Max length 50 symbols. Cannot begin with a period.";
+                public const string Regex = @"^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{1,25}$";
+                public const string ErrorMessage = "May only contain Roman letters (a-z, A-Z), digits (0-9), and some special characters (._). Max length 25 symbols. Cannot begin with a period.";
             }
         }
     }
