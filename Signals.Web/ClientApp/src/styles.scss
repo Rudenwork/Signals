@@ -167,6 +167,17 @@ input:-webkit-autofill:active {
         border-color: var(--color-bad);
     }
 
+    select {
+        background: var(--color-background-primary);
+        color: var(--color-font-primary);
+        font: var(--font-main);
+        border: none;
+        outline: none;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+    }
+
     input {
         color: var(--color-font-primary);
         font: var(--font-main);
