@@ -1,6 +1,7 @@
-<div id="card">
+<div class="card">
     <app-user-preview [user]="user" />
-    <div id="actions-container">
+    <hr class="divider">
+    <div class="actions">
         <button *ngIf="user.isDisabled" class="action icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
         <button *ngIf="!user.isDisabled" class="action disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button>
         <button class="action warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>

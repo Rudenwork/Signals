@@ -309,4 +309,38 @@ input[type="checkbox"].toggle {
     gap: 20px;
     height: 100%;
     width: 100%;
+
+    .card {
+        background: var(--color-background-secondary);
+        box-shadow: 0px 0px 10px 0px var(--color-shadow);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        width: 100%;
+        transition: .3s;
+        will-change: transform;
+
+        @media(hover: hover) and (pointer: fine) {
+            max-width: 400px;
+
+            &:hover {
+                transform: scale(105%);
+            }
+        }
+
+        .divider {
+            width: 100%;
+            margin: 0px;
+            border: 1px solid var(--color-background-primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 20px;
+            //flex-wrap: wrap;
+        }
+    }
 }
