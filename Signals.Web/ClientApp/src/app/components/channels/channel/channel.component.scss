@@ -9,7 +9,6 @@
         border-radius: 10px;
         display: flex;
         justify-content: space-between;
-        flex-wrap: wrap;
         gap: 20px;
         padding: 20px;
         width: 100%;
@@ -27,6 +26,7 @@
 
     #actions-container {
         display: flex;
+        justify-content: end;
         flex-wrap: wrap;
         gap: 10px;
     }

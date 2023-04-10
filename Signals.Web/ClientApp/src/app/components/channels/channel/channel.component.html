@@ -1,20 +1,20 @@
 <div id="card">
     <app-channel-preview [channel]="channel" />
     <div id="actions-container">
-        <button *ngIf="!channel.isVerified" (click)="modalVerify.open()">Verify</button>
-        <button (click)="modalUpdate.open()">U</button>
-        <button (click)="modalDelete.open()">D</button>
+        <button *ngIf="!channel.isVerified" class="action icon fa-check" title="Verify" (click)="modalVerify.open()"></button>
+        <button class="action warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        <button class="action bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
     </div>
 </div>
 
-<app-modal title="Update Channel" submitText="Update" submitClass="warning" #modalUpdate>
+<app-modal title="Update Channel" submitText="Update" submitClass="warning icon fa-pen-to-square" #modalUpdate>
     <app-channel-form *ngIf="modalUpdate.isOpened" [channel]="channel" (submitted)="update($event)" #channelForm></app-channel-form>
 </app-modal>
 
-<app-modal title="Delete Channel" submitText="Delete" submitClass="bad" (submitted)="del()" #modalDelete>
+<app-modal title="Delete Channel" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>
     <app-channel-preview [channel]="channel" />
 </app-modal>
 
-<app-modal title="Verify Channel" submitText="Verify" submitClass="neutral" #modalVerify>
+<app-modal title="Verify Channel" submitText="Verify" submitClass="neutral icon fa-check" #modalVerify>
     <app-channel-form-verify *ngIf="modalVerify.isOpened" [channel]="channel" (submitted)="verify($event)" #channelFormVerify></app-channel-form-verify>
 </app-modal>
