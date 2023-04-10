@@ -1,4 +1,4 @@
-<div [title]="channel.description" class="destination icon {{channel.type == 'Email' ? 'fa-envelope' : 'fa-paper-plane'}}">{{channel.destination}}</div>
+<div [title]="channel.description" class="icon {{channel.type == 'Email' ? 'fa-envelope' : 'fa-paper-plane'}}">{{channel.destination}}</div>
 <div class="tags-container">
     <div title="Not verified" *ngIf="!channel.isVerified" class="tag warning icon fa-exclamation"></div>
 </div>

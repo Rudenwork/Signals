@@ -1,16 +1,16 @@
 <div class="input-container">
-    <label for="type">Type:</label>
+    <label for="type" class="icon fa-list"></label>
     <select id="type" [formControl]="type">
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
 <div class="input-container">
-    <label for="destination">Destination:</label>
-    <input id="destination" type="text" [formControl]="destination">
+    <label for="destination" class="icon fa-location"></label>
+    <input id="destination" type="text" placeholder="Destination" [formControl]="destination">
 </div>
 
 <div class="input-container">
-    <label for="description">Description:</label>
-    <input id="description" type="text" [formControl]="description">
+    <label for="description" class="icon fa-circle-info"></label>
+    <input id="description" type="text" placeholder="Description" [formControl]="description">
 </div>
