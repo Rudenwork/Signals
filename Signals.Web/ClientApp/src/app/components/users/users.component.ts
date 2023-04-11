@@ -16,14 +16,19 @@ export class UsersComponent implements OnInit {
     
     @ViewChild('modalCreate') modalCreate!: ModalComponent;
     
-    users!: User[];
+    users: User[] = [];
 
     ngOnInit() {
         this.dataService.getUsers()
             .subscribe(users => {
                 this.users = users;
+                this.sort();
                 this.isLoading = false;
             });
+    }
+
+    sort() {
+        this.users = this.users.sort((a, b) => a.username!.localeCompare(b!.username ?? ''));
     }
 
     create(user: User) {
@@ -31,6 +36,7 @@ export class UsersComponent implements OnInit {
             .subscribe({
                 next: user => {
                     this.users.push(user);
+                    this.sort();
                     this.modalCreate.close();
                 },
                 error: () => {
@@ -41,5 +47,6 @@ export class UsersComponent implements OnInit {
 
     remove(index: number) {
         this.users.splice(index, 1);
+        this.sort();
     }
 }

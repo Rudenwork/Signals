@@ -16,14 +16,27 @@ export class ChannelsComponent implements OnInit {
 
     @ViewChild('modalCreate') modalCreate!: ModalComponent;
 
-    channels!: Channel[];
+    channels: Channel[] = [];
 
     ngOnInit() {
         this.dataService.getChannels()
             .subscribe(channels => {
                 this.channels = channels;
+                this.sort();
                 this.isLoading = false;
             });
+    }
+
+    sort() {
+        this.channels = this.channels.sort((a, b) => {
+            let typeResult = b.type!.localeCompare(a!.type ?? '');
+
+            if (typeResult == 0) {
+                return a.destination!.localeCompare(b!.destination ?? '');
+            }
+            
+            return typeResult;
+        });
     }
 
     create(channel: Channel) {
@@ -31,6 +44,7 @@ export class ChannelsComponent implements OnInit {
             .subscribe({
                 next: channel => {
                     this.channels.push(channel);
+                    this.sort();
                     this.modalCreate.close();
                 },
                 error: () => {
@@ -41,5 +55,6 @@ export class ChannelsComponent implements OnInit {
 
     remove(index: number) {
         this.channels.splice(index, 1);
+        this.sort();
     }
 }
