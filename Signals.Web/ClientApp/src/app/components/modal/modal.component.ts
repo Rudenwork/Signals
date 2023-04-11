@@ -107,7 +107,7 @@ export class ModalComponent implements OnInit {
 
     onPopstate() {
         ModalComponent.modals.pop();
-        
+
         this.isOpened = false;
         this.isSubmitted = false;
         this.isError = false;

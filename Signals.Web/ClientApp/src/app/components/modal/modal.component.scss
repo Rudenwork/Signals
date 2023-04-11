@@ -49,6 +49,11 @@
     #header {
         display: flex;
         gap: 10px;
+        justify-content: center;
+
+        &:has(#close) {
+            justify-content: space-between;
+        }
 
         #title {
             font-size: large;
