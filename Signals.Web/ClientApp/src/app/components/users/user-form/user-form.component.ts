@@ -35,7 +35,7 @@ export class UserFormComponent implements OnInit {
 
         this.username = new FormControl(this.user.username, [
             Validators.required,
-            Validators.pattern(/^(?!\.)[a-zA-Z0-9._]{1,25}$/)
+            Validators.pattern(/^(?!\.)[a-zA-Z0-9._]{1,20}$/)
         ]);
 
         this.password = new FormControl(this.user.password);
