@@ -1,9 +1,10 @@
-<div id="card">
-    <app-channel-preview [channel]="channel" />
-    <div id="actions-container">
-        <button *ngIf="!channel.isVerified" class="action icon fa-check" title="Verify" (click)="modalVerify.open()"></button>
-        <button class="action warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
-        <button class="action bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
+<div class="card" (click)="checkbox.checked = !checkbox.checked">
+    <input type="checkbox" class="flag" #checkbox>
+    <app-channel-preview class="wide" [channel]="channel" />
+    <div class="actions">
+        <button *ngIf="!channel.isVerified" class="icon fa-check" title="Verify" (click)="modalVerify.open()"></button>
+        <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
     </div>
 </div>
 
