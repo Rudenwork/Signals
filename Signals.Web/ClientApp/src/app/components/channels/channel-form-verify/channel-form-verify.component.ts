@@ -37,6 +37,6 @@ export class ChannelFormVerifyComponent implements OnInit {
             return;
         }
 
-        this.submitted.emit(this.code.value);
+        this.submitted.emit(this.code.value.toString());
     }
 }
