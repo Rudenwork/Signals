@@ -82,20 +82,21 @@
         transition: 1s;
 
         &.loading {
-            filter: blur(2px);
+            filter: blur(1px);
             pointer-events: none;
 
             &:after {
+                $spinner-border-size: 15px;
+
                 content: "";
-                filter: blur(10px);
                 position: absolute;
-                height: 50%;
+                height: calc((100% - $spinner-border-size * 2) * .5);
                 aspect-ratio: 1/1;
                 border-radius: 50%;
-                border-top: 20px solid $color-good;
-                border-right: 20px solid $color-warning;
-                border-bottom: 20px solid $color-bad;
-                border-left: 20px solid $color-neutral;
+                border-top: $spinner-border-size solid $color-good;
+                border-right: $spinner-border-size solid $color-warning;
+                border-bottom: $spinner-border-size solid $color-bad;
+                border-left: $spinner-border-size solid $color-neutral;
                 animation: spin 1s linear infinite;
 
                 @keyframes spin {
