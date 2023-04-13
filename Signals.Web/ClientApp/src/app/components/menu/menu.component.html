@@ -1,15 +1,15 @@
-<a class="menu-item" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{exact:true}" >
-    Home
+<a class="menu-item icon fa-house" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{exact:true}" >
+    <div class="text">Home</div>
 </a>
-<a class="menu-item" routerLink="/signals" routerLinkActive="active" ariaCurrentWhenActive="page">
-    Signals
+<a class="menu-item icon fa-traffic-light" routerLink="/signals" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="text">Signals</div>
 </a>
-<a class="menu-item" routerLink="/channels" routerLinkActive="active" ariaCurrentWhenActive="page">
-    Channels
+<a class="menu-item icon fa-bell" routerLink="/channels" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="text">Channels</div>
 </a>
-<a *ngIf="isAdmin" class="menu-item" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">
-    Users
+<a *ngIf="isAdmin" class="menu-item icon fa-user" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="text">Users</div>
 </a>
-<a class="menu-item" routerLink="/logout" routerLinkActive="active" ariaCurrentWhenActive="page">
-    Logout
+<a class="menu-item icon fa-right-from-bracket" routerLink="/logout" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="text">Logout</div>
 </a>
