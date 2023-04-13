@@ -1,7 +1,6 @@
-<div class="card" (click)="checkbox.checked = !checkbox.checked">
-    <input type="checkbox" class="flag" #checkbox>
+<div class="card" tabindex="0">
     <app-channel-preview class="wide" [channel]="channel" />
-    <div class="actions">
+    <div class="actions" tabindex="1">
         <button *ngIf="!channel.isVerified" class="icon fa-check" title="Verify" (click)="modalVerify.open()"></button>
         <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
         <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>

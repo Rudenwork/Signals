@@ -318,6 +318,8 @@ input[type="checkbox"].toggle {
         will-change: transform;
 
         .actions {
+            $color-background-secondary: #35363a;
+
             position: absolute;
             left: 0px;
             top: 0px;
@@ -328,7 +330,8 @@ input[type="checkbox"].toggle {
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-            background: inherit;
+            background: rgba($color-background-secondary, 75%);
+            backdrop-filter: blur(1px);
             border-radius: inherit;
             opacity: 0%;
             transition: inherit;
@@ -342,14 +345,10 @@ input[type="checkbox"].toggle {
             }
         }
 
-        .flag {
-            display: none;
-
-            &:checked {
-                &~.actions {
-                    opacity: 100%;
-                    pointer-events: all;
-                }
+        &:focus-within {
+            .actions:not(:focus) {
+                opacity: 100%;
+                pointer-events: all;
             }
         }
 
@@ -358,6 +357,11 @@ input[type="checkbox"].toggle {
 
             &:hover {
                 transform: scale(105%);
+
+                .actions {
+                    opacity: 100%;
+                    pointer-events: all;
+                }
             }
         }
     }
