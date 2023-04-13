@@ -1,27 +1,29 @@
+@import "../../../variables.scss";
+
 :host {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 15px;
     padding: 15px;
-    background: var(--color-background-secondary);
-    box-shadow: 0px 0px 10px 0px var(--color-shadow);
+    background: $color-background-secondary;
+    box-shadow: 0px 0px 10px 0px $color-shadow;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 
     .menu-item {
         text-align: center;
-        color: var(--color-font-primary);
+        color: $color-font-primary;
         -webkit-tap-highlight-color: transparent;
         text-decoration: none;
         font-size: large;
         font-weight: bold;
-        text-shadow: 2px 2px 3px var(--color-shadow);
+        text-shadow: 2px 2px 3px $color-shadow;
         transition: .3s;
         will-change: transform;
 
         &.active {
-            color: var(--color-warning);
+            color: $color-warning;
             transform: brigtness(180%);
         }
 

@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 @font-face {
     font-family: "Comic Sans MS";
     src: local("Comic Sans MS"), local("ComicSansMS"), url("./assets/fonts/ComicSansMS.woff") format("woff");
@@ -5,39 +7,22 @@
     font-style: normal;
 }
 
-:root {
-    --color-good: green;
-    --color-bad: red;
-    --color-neutral: #1177bb;
-    --color-warning: orange;
-    --color-admin: tomato;
-    --color-disabled: grey;
-    --color-font-primary: white;
-    --color-font-secondary: grey;
-    --color-shadow: black;
-    --color-background-primary: #202124;
-    --color-background-secondary: #35363a;
-    --color-background-middle: #2b2c2f;
-
-    --font-main: 100% "Comic Sans MS";
-}
-
 ::-webkit-scrollbar {
     width: 10px;
-    background-color: var(--color-background-secondary);
+    background-color: $color-background-secondary;
 
     @media only screen and (max-width: 860px) {
-        background-color: var(--color-background-primary);
+        background-color: $color-background-primary;
     }
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--color-background-primary);
+    background-color: $color-background-primary;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 
     @media only screen and (max-width: 860px) {
-        background-color: var(--color-background-secondary);
+        background-color: $color-background-secondary;
     }
 
     &:hover {
@@ -47,9 +32,9 @@
 
 body {
     margin: 0px;
-    background-color: var(--color-background-secondary);
-    color: var(--color-font-primary);
-    font: var(--font-main);
+    background-color: $color-background-secondary;
+    color: $color-font-primary;
+    font: $font-main;
     overflow-x: hidden;
 }
 
@@ -74,34 +59,34 @@ body {
 }
 
 .good {
-    background: var(--color-good);
+    background: $color-good;
 }
 
 .warning {
-    background: var(--color-warning);
+    background: $color-warning;
 }
 
 .bad {
-    background: var(--color-bad);
+    background: $color-bad;
 }
 
 .disabled {
-    background: var(--color-disabled);
+    background: $color-disabled;
 }
 
 .admin {
-    background: var(--color-admin);
+    background: $color-admin;
 }
 
 button {
-    color: var(--color-font-primary);
-    font: var(--font-main);
+    color: $color-font-primary;
+    font: $font-main;
     padding: 10px 10px 10px 10px;
-    background: var(--color-neutral);
+    background: $color-neutral;
     -webkit-tap-highlight-color: transparent;
     border-style: none;
     border-radius: 3px;
-    box-shadow: 0px 0px 3px 0px var(--color-shadow);
+    box-shadow: 0px 0px 3px 0px $color-shadow;
     transition: .3s;
     will-change: transform;
 
@@ -115,7 +100,7 @@ button {
                 &:active {
                     filter: brightness(80%);
                     transform: scale(100%);
-                    box-shadow: 0px 0px 1px 0px var(--color-shadow);
+                    box-shadow: 0px 0px 1px 0px $color-shadow;
                 }
             }
         }
@@ -123,13 +108,13 @@ button {
 
     &:disabled {
         filter: saturate(0%);
-        color: var(--color-disabled);
+        color: $color-disabled;
     }
 
     &.large {
         padding: 10px 25px 10px 25px;
         font-size: x-large;
-        box-shadow: 0px 0px 10px 0px var(--color-shadow);
+        box-shadow: 0px 0px 10px 0px $color-shadow;
         border-radius: 10px;
     }
 }
@@ -139,9 +124,9 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: 0s;
-    box-shadow: inset 0px 0px 0px 100px var(--color-background-primary);
-    caret-color: var(--color-font-primary);
-    -webkit-text-fill-color: var(--color-font-primary);
+    box-shadow: inset 0px 0px 0px 100px $color-background-primary;
+    caret-color: $color-font-primary;
+    -webkit-text-fill-color: $color-font-primary;
 }
 
 .input-container {
@@ -149,7 +134,7 @@ input:-webkit-autofill:active {
     display: flex;
     gap: 10px;
     align-items: center;
-    border-bottom: 1px solid var(--color-font-secondary);
+    border-bottom: 1px solid $color-font-secondary;
     transition: .5s;
 
     &.borderless {
@@ -157,13 +142,13 @@ input:-webkit-autofill:active {
     }
 
     &:has(input.ng-invalid.ng-touched) {
-        border-color: var(--color-bad);
+        border-color: $color-bad;
     }
 
     select {
-        background: var(--color-background-primary);
-        color: var(--color-font-primary);
-        font: var(--font-main);
+        background: $color-background-primary;
+        color: $color-font-primary;
+        font: $font-main;
         border: none;
         outline: none;
         width: 100%;
@@ -173,8 +158,8 @@ input:-webkit-autofill:active {
     }
 
     input {
-        color: var(--color-font-primary);
-        font: var(--font-main);
+        color: $color-font-primary;
+        font: $font-main;
         outline: none;
         background: transparent;
         border: none;
@@ -183,7 +168,7 @@ input:-webkit-autofill:active {
     }
 
     label {
-        color: var(--color-font-secondary);
+        color: $color-font-secondary;
         cursor: pointer;
     }
 }
@@ -207,8 +192,8 @@ input[type="checkbox"].toggle {
     width: 44px;
     border-radius: 20px;
     -webkit-tap-highlight-color: transparent;
-    background: var(--color-font-secondary);
-    box-shadow: 0px 0px 3px 0px var(--color-shadow);
+    background: $color-font-secondary;
+    box-shadow: 0px 0px 3px 0px $color-shadow;
     transition: .3s;
     will-change: transform;
     cursor: pointer;
@@ -218,12 +203,12 @@ input[type="checkbox"].toggle {
         border-radius: 50%;
         height: 100%;
         aspect-ratio: 1/1;
-        background: var(--color-font-primary);
+        background: $color-font-primary;
         transition: .3s;
     }
 
     &:checked {
-        background: var(--color-neutral);
+        background: $color-neutral;
 
         &:before {
             transform: translateX(100%);
@@ -238,7 +223,7 @@ input[type="checkbox"].toggle {
 }
 
 .ng-invalid.ng-touched {
-    border-color: var(--color-bad);
+    border-color: $color-bad;
 }
 
 .page {
@@ -267,10 +252,10 @@ input[type="checkbox"].toggle {
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            border-top: 20px solid var(--color-good);
-            border-right: 20px solid var(--color-warning);
-            border-bottom: 20px solid var(--color-bad);
-            border-left: 20px solid var(--color-neutral);
+            border-top: 20px solid $color-good;
+            border-right: 20px solid $color-warning;
+            border-bottom: 20px solid $color-bad;
+            border-left: 20px solid $color-neutral;
             animation: fade-out 1s .2s forwards, spin 2s linear infinite;
 
             @keyframes fade-out {
@@ -306,8 +291,8 @@ input[type="checkbox"].toggle {
     width: 100%;
 
     .card {
-        background: var(--color-background-secondary);
-        box-shadow: 0px 0px 10px 0px var(--color-shadow);
+        background: $color-background-secondary;
+        box-shadow: 0px 0px 10px 0px $color-shadow;
         border-radius: 10px;
         display: flex;
         justify-content: center;
@@ -318,8 +303,6 @@ input[type="checkbox"].toggle {
         will-change: transform;
 
         .actions {
-            $color-background-secondary: #35363a;
-
             position: absolute;
             left: 0px;
             top: 0px;

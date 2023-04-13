@@ -1,3 +1,5 @@
+@import "../../../variables.scss";
+
 :host {
     z-index: 1;
     position: fixed;
@@ -30,9 +32,9 @@
         gap: 20px;
         width: 260px;
         padding: 20px;
-        background: var(--color-background-secondary);
+        background: $color-background-secondary;
         border-radius: 10px;
-        box-shadow: 0px 0px 20px 0px var(--color-shadow);
+        box-shadow: 0px 0px 20px 0px $color-shadow;
         animation: fade-out 1s forwards;
 
         @keyframes fade-out {
@@ -63,7 +65,7 @@
             height: 25px;
             width: 25px;
             padding: 0px;
-            background: var(--color-bad);
+            background: $color-bad;
         }
     }
 
@@ -75,8 +77,8 @@
         gap: 5px;
         padding: 25px;
         border-radius: 5px;
-        background: var(--color-background-primary);
-        box-shadow: inset 0px 0px 10px 0px var(--color-shadow);
+        background: $color-background-primary;
+        box-shadow: inset 0px 0px 10px 0px $color-shadow;
         transition: 1s;
 
         &.loading {
@@ -90,10 +92,10 @@
                 height: 50%;
                 aspect-ratio: 1/1;
                 border-radius: 50%;
-                border-top: 20px solid var(--color-good);
-                border-right: 20px solid var(--color-warning);
-                border-bottom: 20px solid var(--color-bad);
-                border-left: 20px solid var(--color-neutral);
+                border-top: 20px solid $color-good;
+                border-right: 20px solid $color-warning;
+                border-bottom: 20px solid $color-bad;
+                border-left: 20px solid $color-neutral;
                 animation: spin 1s linear infinite;
 
                 @keyframes spin {
@@ -109,7 +111,7 @@
         }
 
         #error {
-            color: var(--color-warning);
+            color: $color-warning;
         }
     }
 
