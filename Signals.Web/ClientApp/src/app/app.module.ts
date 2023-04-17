@@ -13,7 +13,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
 import { SignalsComponent } from './components/signals/signals.component';
-import { SignalItemComponent } from './components/signals/signal-item/signal-item.component';
 import { SignalComponent } from './components/signals/signal/signal.component';
 import { StageComponent } from './components/signals/stage/stage.component';
 import { BlockComponent } from './components/signals/block/block.component';
@@ -40,7 +39,6 @@ import { ChannelFormVerifyComponent } from './components/channels/channel-form-v
         ChannelsComponent,
         ModalComponent,
         SignalsComponent,
-        SignalItemComponent,
         SignalComponent,
         StageComponent,
         BlockComponent,

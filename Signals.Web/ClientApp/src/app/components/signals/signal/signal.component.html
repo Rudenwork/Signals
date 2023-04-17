@@ -1,14 +1,26 @@
-<input type="text" [formControl]="name" placeholder="Name">
-<input type="text" [formControl]="schedule" placeholder="Schedule">
-
-<div id="stages-container">
-    <button (click)="modalCreate.open()">Create</button>
-    <app-stage-item *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/>
+<div class="card" tabindex="0">
+    {{signal.name}} ({{signal.stages?.length}})
+    <!-- <app-user-preview class="wide" [user]="user"/> -->
+    <div class="actions" tabindex="1">
+        <!-- <button *ngIf="user.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
+        <button *ngIf="!user.isDisabled" class="disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button> -->
+        <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        <!-- <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button> -->
+    </div>
 </div>
 
-<button *ngIf="!signal.id" [disabled]="form.invalid" (click)="create()">Create</button>
-<button *ngIf="signal.id" [disabled]="form.invalid" (click)="update()">Update</button>
-
-<app-modal title="Create Stage" #modalCreate >
-    <app-stage *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); createStage($event)"/>
+<app-modal title="Update Signal" submitText="Update" submitClass="warning icon fa-pen-to-square" (opened)="changing.emit()" (closed)="changed.emit()" #modalUpdate>
+    <app-signal-form *ngIf="modalUpdate.isOpened" [signal]="signal" />
 </app-modal>
+
+<!-- <app-modal title="Delete User" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>
+    <app-user-preview [user]="user" />
+</app-modal>
+
+<app-modal title="Enable User" submitText="Enable" submitClass="neutral icon fa-heart-pulse" (submitted)="enable()" #modalEnable>
+    <app-user-preview [user]="user" />
+</app-modal>
+
+<app-modal title="Disable User" submitText="Disable" submitClass="disabled icon fa-ban" (submitted)="disable()" #modalDisable>
+    <app-user-preview [user]="user" />
+</app-modal> -->

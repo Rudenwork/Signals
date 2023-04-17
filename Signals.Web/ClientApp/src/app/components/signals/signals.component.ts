@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Signal } from 'src/app/models/signal.model';
 import { DataService } from 'src/app/services/data.service';
 
@@ -10,12 +10,16 @@ import { DataService } from 'src/app/services/data.service';
 export class SignalsComponent implements OnInit, OnDestroy {
     constructor(private dataService: DataService) { }
 
-    signals!: Signal[];
+    @HostBinding('class.page') isPage: boolean = true;
+    @HostBinding('class.loading') isLoading: boolean = true;
+
+    signals: Signal[] = [];
     
     private interval!: any;
     private fetchInterval: number = 1 * 60 * 1000;
 
     ngOnInit() {
+        this.isLoading = false;
         this.startFetching();
     }
 

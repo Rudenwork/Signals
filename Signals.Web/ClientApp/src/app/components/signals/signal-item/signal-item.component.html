@@ -1,6 +1,0 @@
-[{{signal.name}}] &nbsp; ({{signal.stages?.length}}) &nbsp; {{signal.execution?.stage?.name}}
-&nbsp; <button (click)="modalUpdate.open()">U</button>
-
-<app-modal title="Update Signal" (opened)="changing.emit()" (closed)="changed.emit()" #modalUpdate >
-    <app-signal *ngIf="modalUpdate.isOpened" [signal]="signal" (submitted)="modalUpdate.close()"/>
-</app-modal>

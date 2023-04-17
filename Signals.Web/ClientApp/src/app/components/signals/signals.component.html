@@ -1,11 +1,9 @@
-<button (click)="modalCreate.open()">Create</button>
+<button class="large good icon fa-traffic-light" (click)="modalCreate.open()">Create</button>
 
-<ul>
-    <li *ngFor="let signal of signals">
-        <app-signal-item [signal]="signal" (changing)="stopFetching()" (changed)="startFetching()"/>
-    </li>
-</ul>
+<div class="cards-container">
+    <app-signal *ngFor="let signal of signals; let index = index" [signal]="signal" (changing)="stopFetching()" (changed)="startFetching()"/>
+</div>
 
-<app-modal title="Create Signal" (opened)="stopFetching()" (closed)="startFetching()" #modalCreate >
-    <app-signal *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close()"/>
+<app-modal title="Create Signal" submitText="Create" submitClass="good icon fa-traffic-light" (opened)="stopFetching()" (closed)="startFetching()" #modalCreate >
+    <app-signal-form *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close()"/>
 </app-modal>

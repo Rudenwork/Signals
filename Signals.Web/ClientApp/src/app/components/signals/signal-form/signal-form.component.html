@@ -1,1 +1,24 @@
-<p>signal-form works!</p>
+<div class="input-container">
+    <label for="name" class="icon fa-id-card"></label>
+    <input id="name" type="text" placeholder="Name" [formControl]="name">
+</div>
+
+<div class="input-container">
+    <label for="schedule" class="icon fa-clock"></label>
+    <input id="schedule" type="text" placeholder="Schedule" [formControl]="schedule">
+</div>
+
+<div *ngIf="isCreating" class="input-container borderless">
+    <label for="isDisabled" class="icon fa-ban">Disabled</label>
+    <input id="isDisabled" type="checkbox" class="toggle" [formControl]="isDisabled">
+</div>
+
+<div id="stages-container">
+    <button class="icon fa-stairs" (click)="modalCreate.open()">Create</button>
+    <app-stage-item *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/>
+
+    <app-modal title="Create Stage" #modalCreate >
+        <!-- <app-stage *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); createStage($event)"/> -->
+        Create Stage Form
+    </app-modal>
+</div>
