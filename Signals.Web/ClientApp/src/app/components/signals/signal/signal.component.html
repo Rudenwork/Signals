@@ -1,26 +1,41 @@
 <div class="card" tabindex="0">
     {{signal.name}} ({{signal.stages?.length}})
-    <!-- <app-user-preview class="wide" [user]="user"/> -->
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
     <div class="actions" tabindex="1">
-        <!-- <button *ngIf="user.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
-        <button *ngIf="!user.isDisabled" class="disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button> -->
+        <button *ngIf="!signal.isDisabled && !signal.execution" class="neutral icon fa-play" title="Start" (click)="modalStart.open()"></button>
+        <button *ngIf="signal.execution" class="neutral icon fa-stop" title="Stop" (click)="modalStop.open()"></button>
+        <button *ngIf="signal.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
         <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
-        <!-- <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button> -->
+        <button *ngIf="!signal.isDisabled" class="disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button>
+        <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
     </div>
 </div>
 
-<app-modal title="Update Signal" submitText="Update" submitClass="warning icon fa-pen-to-square" (opened)="changing.emit()" (closed)="changed.emit()" #modalUpdate>
-    <app-signal-form *ngIf="modalUpdate.isOpened" [signal]="signal" />
+<app-modal title="Update Signal" submitText="Update" submitClass="warning icon fa-pen-to-square" #modalUpdate>
+    <app-signal-form *ngIf="modalUpdate.isOpened" [signal]="signal" (submitted)="update($event)" />
 </app-modal>
 
-<!-- <app-modal title="Delete User" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>
-    <app-user-preview [user]="user" />
+<app-modal title="Delete Signal" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>
+    {{signal.name}}
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
 </app-modal>
 
-<app-modal title="Enable User" submitText="Enable" submitClass="neutral icon fa-heart-pulse" (submitted)="enable()" #modalEnable>
-    <app-user-preview [user]="user" />
+<app-modal title="Enable Signal" submitText="Enable" submitClass="neutral icon fa-heart-pulse" (submitted)="enable()" #modalEnable>
+    {{signal.name}}
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
 </app-modal>
 
-<app-modal title="Disable User" submitText="Disable" submitClass="disabled icon fa-ban" (submitted)="disable()" #modalDisable>
-    <app-user-preview [user]="user" />
-</app-modal> -->
+<app-modal title="Disable Signal" submitText="Disable" submitClass="disabled icon fa-ban" (submitted)="disable()" #modalDisable>
+    {{signal.name}}
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+</app-modal>
+
+<app-modal title="Start Signal" submitText="Start" submitClass="neutral icon fa-play" (submitted)="start()" #modalStart>
+    {{signal.name}}
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+</app-modal>
+
+<app-modal title="Stop Signal" submitText="Stop" submitClass="neutral icon fa-stop" (submitted)="stop()" #modalStop>
+    {{signal.name}}
+    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+</app-modal>

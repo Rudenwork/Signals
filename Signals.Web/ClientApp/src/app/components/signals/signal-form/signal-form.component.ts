@@ -31,6 +31,11 @@ export class SignalFormComponent implements OnInit {
         else {
             this.signal = { ...this.signal };
             this.signal.stages = this.signal.stages?.slice();
+
+            delete this.signal.id;
+            delete this.signal.userId;
+            delete this.signal.isDisabled;
+            delete this.signal.execution;
         }
 
         this.name = new FormControl(this.signal.name, [

@@ -98,7 +98,7 @@ export class DataService {
         return this.post(`signals/${id}/start`);
     }
 
-    stopSignals(id: string): Observable<Signal> {
+    stopSignal(id: string): Observable<Signal> {
         return this.post(`signals/${id}/stop`);
     }
 
