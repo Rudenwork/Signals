@@ -1,9 +1,9 @@
 <button class="large good icon fa-traffic-light" (click)="modalCreate.open()">Create</button>
 
 <div class="cards-container">
-    <app-signal *ngFor="let signal of signals; let index = index" [signal]="signal" (changing)="stopFetching()" (changed)="startFetching()"/>
+    <app-signal *ngFor="let signal of signals; let index = index" [signal]="signal" (deleted)="remove(index)" />
 </div>
 
-<app-modal title="Create Signal" submitText="Create" submitClass="good icon fa-traffic-light" (opened)="stopFetching()" (closed)="startFetching()" #modalCreate >
-    <app-signal-form *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close()"/>
+<app-modal title="Create Signal" submitText="Create" submitClass="good icon fa-traffic-light" #modalCreate >
+    <app-signal-form *ngIf="modalCreate.isOpened" (submitted)="create($event)" />
 </app-modal>

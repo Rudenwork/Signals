@@ -70,6 +70,38 @@ export class DataService {
         return this.get<Signal[]>('signals');
     }
 
+    getSignal(id: string): Observable<Signal> {
+        return this.get<Signal>(`signals/${id}`);
+    }
+
+    createSignal(signal: Signal): Observable<Signal> {
+        return this.post<Signal>('signals', signal);
+    }
+
+    updateSignal(id: string, signal: Signal): Observable<Signal> {
+        return this.patch<Signal>(`signals/${id}`, signal);
+    }
+
+    deleteSignal(id: string): Observable<any> {
+        return this.delete(`signals/${id}`);
+    }
+
+    enableSignal(id: string): Observable<Signal> {
+        return this.post(`signals/${id}/enable`);
+    }
+
+    disableSignal(id: string): Observable<Signal> {
+        return this.post(`signals/${id}/disable`);
+    }
+
+    startSignal(id: string): Observable<Signal> {
+        return this.post(`signals/${id}/start`);
+    }
+
+    stopSignals(id: string): Observable<Signal> {
+        return this.post(`signals/${id}/stop`);
+    }
+
     //#endregion Signal
     //#region User
 

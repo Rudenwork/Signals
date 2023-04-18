@@ -1,44 +1,52 @@
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Signal } from 'src/app/models/signal.model';
 import { DataService } from 'src/app/services/data.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
     selector: 'app-signals',
     templateUrl: './signals.component.html',
     styleUrls: ['./signals.component.scss']
 })
-export class SignalsComponent implements OnInit, OnDestroy {
+export class SignalsComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     @HostBinding('class.page') isPage: boolean = true;
     @HostBinding('class.loading') isLoading: boolean = true;
 
+    @ViewChild('modalCreate') modalCreate!: ModalComponent;
+
     signals: Signal[] = [];
-    
-    private interval!: any;
-    private fetchInterval: number = 1 * 60 * 1000;
 
     ngOnInit() {
-        this.isLoading = false;
-        this.startFetching();
-    }
-
-    ngOnDestroy() {
-        this.stopFetching();
-    }
-
-    startFetching() {
-        this.stopFetching();
-        this.getSignals();
-        this.interval = setInterval(() => this.getSignals(), this.fetchInterval);
-    }
-
-    stopFetching() {
-        clearInterval(this.interval);
-    }
-
-    getSignals() {
         this.dataService.getSignals()
-            .subscribe(signals => this.signals = signals);
+            .subscribe(signals => {
+                this.signals = signals;
+                this.sort();
+                this.isLoading = false;
+            });
+    }
+
+    sort() {
+        this.signals = this.signals.sort((a, b) => a.name!.localeCompare(b!.name ?? ''));
+    }
+
+    create(signal: Signal) {
+        this.dataService.createSignal(signal)
+            .subscribe({
+                next: signal => {
+                    this.signals.push(signal);
+                    this.sort();
+                    this.modalCreate.close();
+                },
+                error: () => {
+                    this.modalCreate.error();
+                }
+            });
+    }
+
+    remove(index: number) {
+        this.signals.splice(index, 1);
+        this.sort();
     }
 }
