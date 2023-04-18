@@ -342,11 +342,6 @@ input[type="checkbox"].toggle {
 
             &:hover {
                 transform: scale(105%);
-
-                .actions {
-                    opacity: 100%;
-                    pointer-events: all;
-                }
             }
         }
     }
