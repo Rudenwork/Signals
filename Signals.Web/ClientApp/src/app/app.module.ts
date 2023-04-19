@@ -14,10 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { SignalComponent } from './components/signals/signal/signal.component';
-import { StageComponent } from './components/signals/stage/stage.component';
-import { BlockComponent } from './components/signals/block/block.component';
-import { IndicatorComponent } from './components/signals/indicator/indicator.component';
-import { StageItemComponent } from './components/signals/stage-item/stage-item.component';
+import { StageComponent } from './components/signals/signal-form/stage/stage.component';
 import { UsersComponent } from './components/users/users.component';
 import { UserComponent } from './components/users/user/user.component';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
@@ -28,6 +25,9 @@ import { ChannelComponent } from './components/channels/channel/channel.componen
 import { ChannelPreviewComponent } from './components/channels/channel-preview/channel-preview.component';
 import { ChannelFormComponent } from './components/channels/channel-form/channel-form.component';
 import { ChannelFormVerifyComponent } from './components/channels/channel-form-verify/channel-form-verify.component';
+import { StageFormComponent } from './components/signals/signal-form/stage-form/stage-form.component';
+import { SignalPreviewComponent } from './components/signals/signal-preview/signal-preview.component';
+import { StagePreviewComponent } from './components/signals/signal-form/stage-preview/stage-preview.component';
 
 @NgModule({
     declarations: [
@@ -41,9 +41,6 @@ import { ChannelFormVerifyComponent } from './components/channels/channel-form-v
         SignalsComponent,
         SignalComponent,
         StageComponent,
-        BlockComponent,
-        IndicatorComponent,
-        StageItemComponent,
         UsersComponent,
         UserComponent,
         UserFormComponent,
@@ -53,7 +50,10 @@ import { ChannelFormVerifyComponent } from './components/channels/channel-form-v
         ChannelComponent,
         ChannelPreviewComponent,
         ChannelFormComponent,
-        ChannelFormVerifyComponent
+        ChannelFormVerifyComponent,
+        StageFormComponent,
+        SignalPreviewComponent,
+        StagePreviewComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

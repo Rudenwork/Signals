@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { Channel } from 'src/app/models/channel.model';
 
 @Component({
@@ -7,5 +7,7 @@ import { Channel } from 'src/app/models/channel.model';
     styleUrls: ['./channel-preview.component.scss']
 })
 export class ChannelPreviewComponent {
+    @HostBinding('class.preview') isPreview: boolean = true;
+
     @Input() channel!: Channel;
 }

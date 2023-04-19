@@ -1,6 +1,5 @@
 <div class="card" tabindex="0">
-    {{signal.name}} ({{signal.stages?.length}})
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview class="wide" [signal]="signal"/>
     <div class="actions" tabindex="1">
         <button *ngIf="!signal.isDisabled && !signal.execution" class="neutral icon fa-play" title="Start" (click)="modalStart.open()"></button>
         <button *ngIf="signal.execution" class="neutral icon fa-stop" title="Stop" (click)="modalStop.open()"></button>
@@ -16,26 +15,21 @@
 </app-modal>
 
 <app-modal title="Delete Signal" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>
-    {{signal.name}}
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview [signal]="signal"/>
 </app-modal>
 
 <app-modal title="Enable Signal" submitText="Enable" submitClass="neutral icon fa-heart-pulse" (submitted)="enable()" #modalEnable>
-    {{signal.name}}
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview [signal]="signal"/>
 </app-modal>
 
 <app-modal title="Disable Signal" submitText="Disable" submitClass="disabled icon fa-ban" (submitted)="disable()" #modalDisable>
-    {{signal.name}}
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview [signal]="signal"/>
 </app-modal>
 
 <app-modal title="Start Signal" submitText="Start" submitClass="neutral icon fa-play" (submitted)="start()" #modalStart>
-    {{signal.name}}
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview [signal]="signal"/>
 </app-modal>
 
 <app-modal title="Stop Signal" submitText="Stop" submitClass="neutral icon fa-stop" (submitted)="stop()" #modalStop>
-    {{signal.name}}
-    <!-- <app-signal-preview class="wide" [signal]="signal"/> -->
+    <app-signal-preview [signal]="signal"/>
 </app-modal>
