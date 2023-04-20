@@ -9,7 +9,7 @@
     </div>
     <div *ngIf="showSubmit" id="footer">
         <button
-            [disabled]="form.invalid || isSubmitted"
+            [disabled]="isSubmitDisabled()"
             class="{{submitClass}}"
             (click)="submit()">{{ submitText }}
         </button>

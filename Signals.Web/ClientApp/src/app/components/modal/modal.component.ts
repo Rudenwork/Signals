@@ -76,6 +76,10 @@ export class ModalComponent implements OnInit {
         this.isError = true;
     }
 
+    isSubmitDisabled(): boolean {
+        return (Object.keys(this.form.controls).length > 0 && this.form.pristine) || this.form.invalid || this.isSubmitted;
+    }
+
     submit() {
         if (!this.isSubmitted && this.form.valid) {
             this.isSubmitted = true;
