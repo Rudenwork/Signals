@@ -14,11 +14,10 @@
 </div>
 
 <div id="stages-container">
-    <button class="icon fa-stairs" (click)="modalCreate.open()">Create</button>
-    <!-- <app-stage-item *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/> -->
+    <button class="icon fa-shoe-prints" (click)="modalCreate.open()">Create</button>
+    <app-stage *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/>
 
-    <app-modal title="Create Stage" #modalCreate >
-        <!-- <app-stage *ngIf="modalCreate.isOpened" (submitted)="modalCreate.close(); createStage($event)"/> -->
-        Create Stage Form
+    <app-modal title="Create Stage" submitText="Create" submitClass="good icon fa-shoe-prints" [closeOnSubmit]="true" #modalCreate >
+        <app-stage-form *ngIf="modalCreate.isOpened" (submitted)="createStage($event)"/>
     </app-modal>
 </div>

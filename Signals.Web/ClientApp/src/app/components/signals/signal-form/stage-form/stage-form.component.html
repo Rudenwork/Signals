@@ -1,1 +1,11 @@
-<p>stage-form works!</p>
+<div class="input-container">
+    <label for="type" class="icon fa-list"></label>
+    <select id="type" [formControl]="type">
+        <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="name" class="icon fa-id-card"></label>
+    <input id="name" type="text" placeholder="Name" [formControl]="name">
+</div>

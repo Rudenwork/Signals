@@ -43,15 +43,16 @@ export class SignalFormComponent implements OnInit {
             Validators.maxLength(100)
         ]);
 
-        this.schedule = new FormControl(this.signal.schedule, [
+        this.schedule = new FormControl(this.signal.schedule ?? 'never', [
             Validators.required,
             Validators.maxLength(50)
         ]);
 
-        this.isDisabled = new FormControl(this.signal.isDisabled);
         this.stages = new FormControl(this.signal.stages, [
             Validators.required
         ]);
+
+        this.isDisabled = new FormControl(this.signal.isDisabled);
 
         this.name.valueChanges.subscribe(name => this.signal.name = name);
         this.schedule.valueChanges.subscribe(schedule => this.signal.schedule = schedule);
@@ -70,6 +71,8 @@ export class SignalFormComponent implements OnInit {
 
         this.modal.form.addControl('signal-form', this.form);
         this.modal.submitted.subscribe(() => this.submit());
+
+
     }
 
     createStage(stage: Stage) {
@@ -104,7 +107,7 @@ export class SignalFormComponent implements OnInit {
         if (this.stages.pristine) {
             delete this.signal.stages;
         }
-        
+
         this.submitted.emit(this.signal);
     }
 }

@@ -14,7 +14,12 @@ export class Execution {
 }
 
 export class Stage {
-    id?: string;
     name?: string;
-    type$?: string;
+    type$?: StageType;
+}
+
+export enum StageType {
+    Waiting = 'Waiting',
+    Condition = 'Condition',
+    Notification = 'Notification'
 }
