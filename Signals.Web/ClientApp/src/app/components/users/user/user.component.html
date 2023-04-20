@@ -1,8 +1,8 @@
 <div class="card" tabindex="0">
     <app-user-preview class="wide" [user]="user"/>
     <div class="actions" tabindex="1">
-        <button *ngIf="user.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
         <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        <button *ngIf="user.isDisabled" class="icon fa-heart-pulse" title="Enable" (click)="modalEnable.open()"></button>
         <button *ngIf="!user.isDisabled" class="disabled icon fa-ban" title="Disable" (click)="modalDisable.open()"></button>
         <button class="bad icon fa-trash" title="Delete" (click)="modalDelete.open()"></button>
     </div>
