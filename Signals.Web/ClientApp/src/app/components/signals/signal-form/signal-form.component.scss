@@ -6,11 +6,11 @@
     gap: 10px;
 }
 
-#stages-container {
-    display: flex;
-    flex-flow: column;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px dashed $color-font-primary;
+.create-stage {
+    box-sizing: border-box;
+    background: none;
+    box-shadow: none;
+    border: 1px solid $color-font-secondary;
+    color: $color-font-secondary;
+    font-size: x-large;
 }
