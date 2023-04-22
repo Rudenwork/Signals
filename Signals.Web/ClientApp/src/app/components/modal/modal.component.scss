@@ -5,8 +5,8 @@
     position: fixed;
     top: 0px;
     left: 0px;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,7 +30,10 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 260px;
+        width: 300px;
+        box-sizing: border-box;
+        max-height: 100%;
+        max-width: 100%;
         padding: 20px;
         background: $color-background-secondary;
         border-radius: 10px;
@@ -45,6 +48,10 @@
             to {
                 opacity: 1;
             }
+        }
+
+        &.wide {
+            width: 360px;
         }
     }
 
@@ -73,13 +80,17 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         gap: 5px;
         padding: 25px;
         border-radius: 5px;
         background: $color-background-primary;
         box-shadow: inset 0px 0px 10px 0px $color-shadow;
+        overflow-y: auto;
         transition: 1s;
+
+        &::-webkit-scrollbar {
+            width: 0px;
+        }
 
         &.loading {
             filter: blur(1px);

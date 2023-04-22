@@ -4,6 +4,6 @@
     <app-signal *ngFor="let signal of signals; let index = index" [signal]="signal" (deleted)="remove(index)" />
 </div>
 
-<app-modal title="Create Signal" submitText="Create" submitClass="good icon fa-traffic-light" #modalCreate >
+<app-modal [isWide]="true" title="Create Signal" submitText="Create" submitClass="good icon fa-traffic-light" #modalCreate >
     <app-signal-form *ngIf="modalCreate.isOpened" (submitted)="create($event)" />
 </app-modal>

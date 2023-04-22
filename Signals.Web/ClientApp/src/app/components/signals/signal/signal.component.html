@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<app-modal title="Update Signal" [isOpened]="true" submitText="Update" submitClass="warning icon fa-pen-to-square" #modalUpdate>
+<app-modal [isWide]="true" title="Update Signal" submitText="Update" submitClass="warning icon fa-pen-to-square" #modalUpdate>
     <app-signal-form *ngIf="modalUpdate.isOpened" [signal]="signal" (submitted)="update($event)" />
 </app-modal>
 

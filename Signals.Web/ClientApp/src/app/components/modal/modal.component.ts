@@ -51,6 +51,7 @@ export class ModalComponent implements OnInit {
     @Output() closed: EventEmitter<any> = new EventEmitter();
     @Output() submitted: EventEmitter<any> = new EventEmitter();
 
+    @Input() isWide: boolean = false;
     @Input() showClose: boolean = true;
     @Input() title: string = "";
 
