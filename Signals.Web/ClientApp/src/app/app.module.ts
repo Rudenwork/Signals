@@ -28,6 +28,9 @@ import { ChannelFormVerifyComponent } from './components/channels/channel-form-v
 import { StageFormComponent } from './components/signals/signal-form/stage-form/stage-form.component';
 import { SignalPreviewComponent } from './components/signals/signal-preview/signal-preview.component';
 import { StagePreviewComponent } from './components/signals/signal-form/stage-preview/stage-preview.component';
+import { WaitingPartComponent } from './components/signals/signal-form/stage-form/waiting-part/waiting-part.component';
+import { NotificationPartComponent } from './components/signals/signal-form/stage-form/notification-part/notification-part.component';
+import { ConditionPartComponent } from './components/signals/signal-form/stage-form/condition-part/condition-part.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +56,10 @@ import { StagePreviewComponent } from './components/signals/signal-form/stage-pr
         ChannelFormVerifyComponent,
         StageFormComponent,
         SignalPreviewComponent,
-        StagePreviewComponent
+        StagePreviewComponent,
+        WaitingPartComponent,
+        NotificationPartComponent,
+        ConditionPartComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

@@ -1,0 +1,19 @@
+<div class="input-container">
+    <label for="retryCount" class="icon fa-repeat"></label>
+    <input id="retryCount" type="number" placeholder="retryCount" [formControl]="retryCount">
+</div>
+
+<div class="input-container">
+    <label for="delayUnit" class="icon fa-clock"></label>
+    <select id="delayUnit" [formControl]="delayUnit">
+        <option *ngFor="let timeUnit of getUnitOptions()" [value]="timeUnit">{{timeUnit}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="delayAmount" class="icon fa-hashtag"></label>
+    <input id="delayAmount" type="number" placeholder="delayAmount" [formControl]="delayAmount">
+</div>
+
+<!-- switch -->
+<!-- <app-block-preview [block]="stage.block" /> -->

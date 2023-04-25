@@ -1,0 +1,11 @@
+<div class="input-container">
+    <label for="channelId" class="icon fa-bell"></label>
+    <select id="channelId" [formControl]="channelId">
+        <option *ngFor="let channel of channels" [value]="channel.id">{{channel.destination}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="text" class="icon fa-message"></label>
+    <input id="text" type="text" placeholder="Text" [formControl]="text">
+</div>
