@@ -9,16 +9,11 @@ namespace Signals.App.Controllers.Models
     public abstract class StageModel
     {
         public Guid? Id { get; set; }
-        public string? Name { get; set; }
 
         public class Validator : AbstractValidator<StageModel> 
         {
             public Validator(Condition.Validator condition, Waiting.Validator waiting, Notification.Validator notification)
             {
-                RuleFor(x => x.Name)
-                    .NotEmpty()
-                    .MaximumLength(Constants.Name.MaxLength);
-
                 RuleFor(x => x.Id)
                     .Null();
 
@@ -91,11 +86,6 @@ namespace Signals.App.Controllers.Models
 
         private static class Constants
         {
-            public static class Name
-            {
-                public const int MaxLength = 100;
-            }
-
             public static class Condition
             {
                 public static class RetryCount

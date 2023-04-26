@@ -41,9 +41,14 @@ namespace Signals.App.Core.Stage
                 var signal = SignalsContext.Signals.Find(stage.SignalId);
                 var channel = SignalsContext.Channels.Find(stage.ChannelId);
 
-                ///TODO: Handle not verified channel scenario
+                if (!channel.IsVerified)
+                {
+                    Logger.LogInformation($"Channel {channel.Id} is not verified, stopping execution");
+                    await context.Publish(new Stop.Message { ExecutionId = context.Message.ExecutionId });
+                    return;
+                }
 
-                var topic = $"{signal.Name} - {stage.Name}";
+                var topic = signal.Name;
                 var text = stage.Text;
 
                 object request = channel.Type switch

@@ -12,7 +12,7 @@ using Signals.App.Database;
 namespace Signals.App.Database.Migrations
 {
     [DbContext(typeof(SignalsContext))]
-    [Migration("20230406204130_Initial")]
+    [Migration("20230426165823_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -162,10 +162,6 @@ namespace Signals.App.Database.Migrations
 
                     b.Property<int>("Index")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<Guid>("SignalId")
                         .HasColumnType("uuid");
