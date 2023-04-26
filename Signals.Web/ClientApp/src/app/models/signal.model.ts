@@ -50,7 +50,6 @@ export enum StageType {
 }
 
 export class Stage {
-    name?: string;
     type$?: StageType;
 }
 

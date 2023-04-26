@@ -14,7 +14,6 @@ export class StageFormComponent implements OnInit {
     @Input() stage!: Stage;
     @Output() submitted: EventEmitter<Stage> = new EventEmitter();
 
-    name!: FormControl;
     type!: FormControl;
 
     form!: FormGroup;
@@ -30,11 +29,6 @@ export class StageFormComponent implements OnInit {
             this.stage = { ...this.stage };
         }
 
-        this.name = new FormControl(this.stage.name, [
-            Validators.required,
-            Validators.maxLength(100)
-        ]);
-
         this.type = new FormControl(this.stage.type$, [
             Validators.required
         ]);
@@ -43,11 +37,9 @@ export class StageFormComponent implements OnInit {
             this.type.markAsDirty();
         }
 
-        this.name.valueChanges.subscribe(name => this.stage.name = name);
         this.type.valueChanges.subscribe(type => this.stage.type$ = type);
 
         this.form = new FormGroup([
-            this.name,
             this.type
         ]);
 
