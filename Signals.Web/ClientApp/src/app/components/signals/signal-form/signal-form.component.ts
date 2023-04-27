@@ -32,6 +32,8 @@ export class SignalFormComponent implements OnInit {
             this.signal = { ...this.signal };
             this.signal.stages = this.signal.stages?.slice();
 
+            this.signal.stages?.forEach(stage => delete stage.id);
+
             delete this.signal.id;
             delete this.signal.userId;
             delete this.signal.isDisabled;
@@ -49,7 +51,7 @@ export class SignalFormComponent implements OnInit {
         ]);
 
         this.stages = new FormControl(this.signal.stages, [
-            Validators.required
+            Validators.minLength(1)
         ]);
 
         this.isDisabled = new FormControl(this.signal.isDisabled);
@@ -71,20 +73,21 @@ export class SignalFormComponent implements OnInit {
 
         this.modal.form.addControl('signal-form', this.form);
         this.modal.submitted.subscribe(() => this.submit());
-
-
     }
 
     createStage(stage: Stage) {
         this.stages.value.push(stage);
+        this.stages.markAsDirty();
     }
 
     updateStage(index: number, stage: Stage) {
         this.stages.value[index] = stage;
+        this.stages.markAsDirty();
     }
 
     deleteStage(index: number) {
         this.stages.value.splice(index, 1);
+        this.stages.markAsDirty();
     }
 
     submit() {
