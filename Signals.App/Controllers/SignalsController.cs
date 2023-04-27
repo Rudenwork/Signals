@@ -235,7 +235,7 @@ namespace Signals.App.Controllers
                 stages = model.Stages
                     .Select((x, i) =>
                     {
-                        var stage = x.Adapt<StageEntity>();
+                        var stage = x.Adapt<StageModel, StageEntity>();
 
                         stage.SignalId = entity.Id;
                         stage.Index = i;
