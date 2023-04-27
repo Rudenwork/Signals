@@ -10,23 +10,25 @@
 
     static class TimeUnitExtensions
     {
-        public static TimeSpan GetTimeSpan(this TimeUnit? timeUnit, int? length = 1)
+        public static TimeSpan GetTimeSpan(this TimeUnit? timeUnit, int? length)
         {
-            int lengthValue = length ?? 0;
-
-            return timeUnit switch
+            if (timeUnit is null || length is null)
             {
-                TimeUnit.Second => TimeSpan.FromSeconds(lengthValue),
-                TimeUnit.Minute => TimeSpan.FromMinutes(lengthValue),
-                TimeUnit.Hour => TimeSpan.FromHours(lengthValue),
-                TimeUnit.Day => TimeSpan.FromDays(lengthValue),
-                _ => TimeSpan.Zero
-            };
+                return TimeSpan.Zero;
+            }
+
+            return timeUnit.Value.GetTimeSpan(length.Value);
         }
 
-        public static TimeSpan GetTimeSpan(this TimeUnit timeUnit, int? length = 1)
+        public static TimeSpan GetTimeSpan(this TimeUnit timeUnit, int length)
         {
-            return timeUnit.GetTimeSpan(length);
+            return timeUnit switch
+            {
+                TimeUnit.Second => TimeSpan.FromSeconds(length),
+                TimeUnit.Minute => TimeSpan.FromMinutes(length),
+                TimeUnit.Hour => TimeSpan.FromHours(length),
+                TimeUnit.Day => TimeSpan.FromDays(length)
+            };
         }
     }
 }
