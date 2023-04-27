@@ -211,8 +211,12 @@ namespace Signals.App.Database.Migrations
                         .IsRequired()
                         .HasColumnType("varchar");
 
-                    b.Property<TimeSpan>("Period")
-                        .HasColumnType("interval");
+                    b.Property<int>("PeriodLength")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PeriodUnit")
+                        .IsRequired()
+                        .HasColumnType("varchar");
 
                     b.Property<decimal>("Target")
                         .HasColumnType("numeric");
@@ -324,8 +328,11 @@ namespace Signals.App.Database.Migrations
                     b.Property<int?>("RetryCount")
                         .HasColumnType("integer");
 
-                    b.Property<TimeSpan?>("RetryDelay")
-                        .HasColumnType("interval");
+                    b.Property<int?>("RetryDelayLength")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RetryDelayUnit")
+                        .HasColumnType("varchar");
 
                     b.HasIndex("BlockId")
                         .IsUnique();
@@ -353,8 +360,12 @@ namespace Signals.App.Database.Migrations
                 {
                     b.HasBaseType("Signals.App.Database.Entities.StageEntity");
 
-                    b.Property<TimeSpan>("Period")
-                        .HasColumnType("interval");
+                    b.Property<int>("Length")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("varchar");
 
                     b.ToTable("Stages-Waiting", (string)null);
                 });

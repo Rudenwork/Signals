@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Signals.App.Common;
 using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
@@ -30,7 +31,8 @@ namespace Signals.App.Controllers.Models
         public class Condition : StageModel
         {
             public int? RetryCount { get; set; }
-            public TimeSpan? RetryDelay { get; set; }
+            public TimeUnit? RetryDelayUnit { get; set; }
+            public int? RetryDelayLength { get; set; }
             public BlockModel? Block { get; set; }
 
             public new class Validator : AbstractValidator<Condition>
@@ -45,22 +47,31 @@ namespace Signals.App.Controllers.Models
                         .NotNull()
                         .InclusiveBetween(Constants.Condition.RetryCount.Min, Constants.Condition.RetryCount.Max);
 
-                    RuleFor(x => x.RetryDelay)
-                        .NotNull();
+                    When(x => x.RetryDelayUnit is not null, () =>
+                    {
+                        RuleFor(x => x.RetryDelayLength)
+                            .NotNull()
+                            .GreaterThan(0);
+                    });
                 }
             }
         }
 
         public class Waiting : StageModel
         {
-            public TimeSpan? Period { get; set; }
+            public TimeUnit? Unit { get; set; }
+            public int? Length { get; set; }
 
             public new class Validator : AbstractValidator<Waiting>
             {
                 public Validator()
                 {
-                    RuleFor(x => x.Period)
+                    RuleFor(x => x.Unit)
                         .NotNull();
+
+                    RuleFor(x => x.Length)
+                        .NotNull()
+                        .GreaterThan(0);
                 }
             }
         }

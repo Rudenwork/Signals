@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
+using Signals.App.Common;
 using Signals.App.Core.Indicators;
 using Signals.App.Database;
 using Signals.App.Database.Entities.Blocks;
@@ -37,7 +38,7 @@ namespace Signals.App.Core.Block
                 var oldResponse = await Mediator.SendRequest(new CalculateIndicator.Request 
                 { 
                     Indicator = indicator, 
-                    Time = DateTime.UtcNow - block.Period 
+                    Time = DateTime.UtcNow - block.PeriodUnit.GetTimeSpan(block.PeriodLength)
                 });
 
                 var newResponse = await Mediator.SendRequest(new CalculateIndicator.Request { Indicator = indicator });

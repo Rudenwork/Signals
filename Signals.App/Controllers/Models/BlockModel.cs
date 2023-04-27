@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Signals.App.Common;
 using System.Text.Json.Serialization;
 
 namespace Signals.App.Controllers.Models
@@ -92,7 +93,8 @@ namespace Signals.App.Controllers.Models
             public OperatorEnum? Operator { get; set; }
             public decimal? Target { get; set; }
             public bool? IsPercentage { get; set; }
-            public TimeSpan? Period { get; set; }
+            public TimeUnit? PeriodUnit { get; set; }
+            public int? PeriodLength { get; set; }
 
             public enum TypeEnum
             {
@@ -128,8 +130,12 @@ namespace Signals.App.Controllers.Models
                     RuleFor(x => x.IsPercentage)
                         .NotNull();
 
-                    RuleFor(x => x.Period)
+                    RuleFor(x => x.PeriodUnit)
                         .NotNull();
+
+                    RuleFor(x => x.PeriodLength)
+                        .NotNull()
+                        .GreaterThan(0);
                 }
             }
         }

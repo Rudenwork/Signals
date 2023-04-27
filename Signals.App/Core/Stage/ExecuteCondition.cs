@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using MassTransit.Mediator;
+using Signals.App.Common;
 using Signals.App.Core.Block;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
@@ -55,7 +56,7 @@ namespace Signals.App.Core.Stage
                 else if (message.RetryAttempt < message.Stage.RetryCount)
                 {
                     message.RetryAttempt++;
-                    await Scheduler.Publish(message, DateTime.UtcNow + (message.Stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
+                    await Scheduler.Publish(message, DateTime.UtcNow + message.Stage.RetryDelayUnit.GetTimeSpan(message.Stage.RetryDelayLength), message.ExecutionId);
                 }
                 else
                 {
@@ -80,7 +81,7 @@ namespace Signals.App.Core.Stage
                 if (message.RetryAttempt < message.Stage.RetryCount)
                 {
                     message.RetryAttempt++;
-                    await Scheduler.Publish(message, DateTime.UtcNow + (message.Stage.RetryDelay ?? TimeSpan.Zero), message.ExecutionId);
+                    await Scheduler.Publish(message, DateTime.UtcNow + message.Stage.RetryDelayUnit.GetTimeSpan(message.Stage.RetryDelayLength), message.ExecutionId);
                 }
                 else
                 {

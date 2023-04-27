@@ -258,7 +258,8 @@ namespace Signals.App.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Period = table.Column<TimeSpan>(type: "interval", nullable: false)
+                    Unit = table.Column<string>(type: "varchar", nullable: false),
+                    Length = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,7 +295,8 @@ namespace Signals.App.Database.Migrations
                     Operator = table.Column<string>(type: "varchar", nullable: false),
                     Target = table.Column<decimal>(type: "numeric", nullable: false),
                     IsPercentage = table.Column<bool>(type: "boolean", nullable: false),
-                    Period = table.Column<TimeSpan>(type: "interval", nullable: false)
+                    PeriodUnit = table.Column<string>(type: "varchar", nullable: false),
+                    PeriodLength = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -366,7 +368,8 @@ namespace Signals.App.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RetryCount = table.Column<int>(type: "integer", nullable: true),
-                    RetryDelay = table.Column<TimeSpan>(type: "interval", nullable: true),
+                    RetryDelayUnit = table.Column<string>(type: "varchar", nullable: true),
+                    RetryDelayLength = table.Column<int>(type: "integer", nullable: true),
                     BlockId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

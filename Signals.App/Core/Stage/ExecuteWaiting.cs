@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Signals.App.Common;
 using Signals.App.Core.Execution;
 using Signals.App.Database;
 using Signals.App.Database.Entities.Stages;
@@ -39,7 +40,7 @@ namespace Signals.App.Core.Stage
                 if (execution is null)
                     return;
 
-                await Scheduler.Publish(new Next.Message { ExecutionId = execution.Id }, DateTime.UtcNow + context.Message.Stage.Period, execution.Id);
+                await Scheduler.Publish(new Next.Message { ExecutionId = execution.Id }, DateTime.UtcNow + context.Message.Stage.Unit.GetTimeSpan(context.Message.Stage.Length), execution.Id);
             }
         }
 
