@@ -25,7 +25,11 @@ export class NotificationPartComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.dataService.getChannels()
             .subscribe(channels => {
-                this.channels = channels.filter(x => x.isVerified)
+                this.channels = channels.filter(x => x.isVerified);
+
+                if (this.channels.length > 0) {
+                    this.channelId.setValue(channels[0].id);
+                }
             });
 
         this.channelId = new FormControl(this.stage.channelId, [

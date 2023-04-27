@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { Stage, StageType } from 'src/app/models/signal.model';
+import { ConditionStage, NotificationStage, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-stage-form',
@@ -13,23 +13,27 @@ export class StageFormComponent implements OnInit {
     
     @Input() stage!: Stage;
     @Output() submitted: EventEmitter<Stage> = new EventEmitter();
+    
+    StageType: typeof StageType = StageType;
 
     type!: FormControl;
-
     form!: FormGroup;
+
     isCreating: boolean = false;
 
     ngOnInit() {
         if (this.stage == undefined) {
-            this.stage = new Stage();
-            this.stage.type$ = StageType.Condition;
+            let stage = new ConditionStage();
+            stage.retryDelayUnit = TimeUnit.Minute;
+            
+            this.stage = stage;
             this.isCreating = true;
         }
         else {
             this.stage = { ...this.stage };
         }
 
-        this.type = new FormControl(this.stage.type$, [
+        this.type = new FormControl(this.stage.$type, [
             Validators.required
         ]);
 
@@ -37,7 +41,7 @@ export class StageFormComponent implements OnInit {
             this.type.markAsDirty();
         }
 
-        this.type.valueChanges.subscribe(type => this.stage.type$ = type);
+        this.type.valueChanges.subscribe(type => this.changeStage(type));
 
         this.form = new FormGroup([
             this.type
@@ -49,5 +53,29 @@ export class StageFormComponent implements OnInit {
 
     getTypeOptions(): string[] {
         return Object.keys(StageType);
+    }
+
+    castStage<T>(): T {
+        return this.stage as T;
+    }
+
+    changeStage(type: string) {
+        if (type == StageType.Condition) {
+            let conditionStage = new ConditionStage();
+            conditionStage.retryDelayUnit = TimeUnit.Minute;
+            
+            this.stage = conditionStage;
+        }
+        else if (type == StageType.Notification) {
+            let notificationStage = new NotificationStage();
+
+            this.stage = notificationStage;
+        }
+        else if (type == StageType.Waiting) {
+            let waitingStage = new WaitingStage();
+            waitingStage.unit = TimeUnit.Minute;
+
+            this.stage = waitingStage;
+        }
     }
 }

@@ -14,7 +14,7 @@ export class WaitingPartComponent implements OnInit, OnDestroy {
     @Input() stage!: WaitingStage;
 
     unit!: FormControl;
-    amount!: FormControl;
+    length!: FormControl;
 
     form!: FormGroup;
 
@@ -23,16 +23,18 @@ export class WaitingPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.amount = new FormControl(this.stage.amount, [
-            Validators.required
+        this.length = new FormControl(this.stage.length, [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(1000)
         ]);
 
         this.unit.valueChanges.subscribe(unit => this.stage.unit = unit);
-        this.amount.valueChanges.subscribe(amount => this.stage.amount = amount);
+        this.length.valueChanges.subscribe(length => this.stage.length = length);
 
         this.form = new FormGroup([
             this.unit,
-            this.amount
+            this.length
         ]);
 
         this.stageForm.form.addControl('waiting-part', this.form);

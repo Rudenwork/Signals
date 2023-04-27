@@ -17,10 +17,7 @@ export enum TimeUnit {
     Second = 'Second',
     Minute = 'Minute',
     Hour = 'Hour',
-    Day = 'Day',
-    Week = 'Week',
-    Month = 'Month',
-    Year = 'Year'
+    Day = 'Day'
 }
 
 export enum IntervalEnum
@@ -50,23 +47,27 @@ export enum StageType {
 }
 
 export class Stage {
-    type$?: StageType;
+    constructor(type: StageType) { this.$type = type; }
+    $type?: StageType;
 }
 
 export class WaitingStage extends Stage {
+    constructor() { super(StageType.Waiting); }
     unit?: TimeUnit
-    amount?: number
+    length?: number
 }
 
 export class NotificationStage extends Stage {
+    constructor() { super(StageType.Notification); }
     channelId?: string
     text?: string
 }
 
 export class ConditionStage extends Stage { 
+    constructor() { super(StageType.Condition); }
     retryCount?: number
-    delayUnit?: TimeUnit
-    delayAmount?: number
+    retryDelayUnit?: TimeUnit
+    retryDelayLength?: number
     block?: Block
 }
 
@@ -114,8 +115,8 @@ export class ChangeBlock extends Block {
     operator?: OperatorEnum
     target?: number
     isPercentage?: boolean
-    unit?: TimeUnit
-    amount?: number
+    periodUnit?: TimeUnit
+    periodLength?: number
 }
 
 export class Indicator {

@@ -4,3 +4,9 @@
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
+
+<div [ngSwitch]="stage.$type">
+    <app-condition-part *ngSwitchCase="StageType.Condition" [stage]="castStage()" />
+    <app-notification-part *ngSwitchCase="StageType.Notification" [stage]="castStage()" />
+    <app-waiting-part *ngSwitchCase="StageType.Waiting" [stage]="castStage()" />
+</div>
