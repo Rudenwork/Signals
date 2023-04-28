@@ -7,7 +7,7 @@
 </div>
 
 <app-modal title="Update Stage" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
-    <app-stage-form *ngIf="modalUpdate.isOpened" [stage]="stage" (submitted)="updated.emit($event)" #userForm />
+    <app-stage-form *ngIf="modalUpdate.isOpened" [stage]="stage" (submitted)="updated.emit($event)" />
 </app-modal>
 
 <app-modal title="Delete Stage" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="deleted.emit($event)" [closeOnSubmit]="true" #modalDelete>

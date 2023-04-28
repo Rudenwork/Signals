@@ -9,7 +9,7 @@
 </div>
 
 <app-modal title="Update User" submitText="Update" submitClass="warning icon fa-pen-to-square" #modalUpdate>
-    <app-user-form *ngIf="modalUpdate.isOpened" [user]="user" (submitted)="update($event)" #userForm></app-user-form>
+    <app-user-form *ngIf="modalUpdate.isOpened" [user]="user" (submitted)="update($event)"></app-user-form>
 </app-modal>
 
 <app-modal title="Delete User" submitText="Delete" submitClass="bad icon fa-trash" (submitted)="del()" #modalDelete>

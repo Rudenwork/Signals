@@ -31,6 +31,7 @@ import { StagePreviewComponent } from './components/signals/signal-form/stage-pr
 import { WaitingPartComponent } from './components/signals/signal-form/stage-form/waiting-part/waiting-part.component';
 import { NotificationPartComponent } from './components/signals/signal-form/stage-form/notification-part/notification-part.component';
 import { ConditionPartComponent } from './components/signals/signal-form/stage-form/condition-part/condition-part.component';
+import { BlockPreviewComponent } from './components/signals/signal-form/stage-form/block-preview/block-preview.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { ConditionPartComponent } from './components/signals/signal-form/stage-f
         StagePreviewComponent,
         WaitingPartComponent,
         NotificationPartComponent,
-        ConditionPartComponent
+        ConditionPartComponent,
+        BlockPreviewComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

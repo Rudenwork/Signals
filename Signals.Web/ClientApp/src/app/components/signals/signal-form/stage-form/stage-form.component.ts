@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { ConditionStage, NotificationStage, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
+import { ChangeBlock, ConditionStage, NotificationStage, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-stage-form',
@@ -22,11 +22,8 @@ export class StageFormComponent implements OnInit {
     isCreating: boolean = false;
 
     ngOnInit() {
-        if (this.stage == undefined) {
-            let stage = new ConditionStage();
-            stage.retryDelayUnit = TimeUnit.Minute;
-            
-            this.stage = stage;
+        if (this.stage == undefined) {            
+            this.stage = this.getDefaultConditionStage();
             this.isCreating = true;
         }
         else {
@@ -51,6 +48,26 @@ export class StageFormComponent implements OnInit {
         this.modal.submitted.subscribe(() => this.submitted.emit(this.stage));
     }
 
+    private getDefaultConditionStage() : ConditionStage {
+        let stage = new ConditionStage();
+        stage.block = new ChangeBlock();
+        stage.retryDelayUnit = TimeUnit.Minute;
+
+        return stage;
+    }
+
+    private getDefaultNotificationStage() : NotificationStage {
+        let notificationStage = new NotificationStage();
+        return notificationStage;
+    }
+
+    private getDefaultWaitingStage() : WaitingStage {
+        let waitingStage = new WaitingStage();
+        waitingStage.unit = TimeUnit.Minute;
+
+        return waitingStage
+    }
+
     getTypeOptions(): string[] {
         return Object.keys(StageType);
     }
@@ -60,22 +77,16 @@ export class StageFormComponent implements OnInit {
     }
 
     changeStage(type: string) {
-        if (type == StageType.Condition) {
-            let conditionStage = new ConditionStage();
-            conditionStage.retryDelayUnit = TimeUnit.Minute;
-            
-            this.stage = conditionStage;
+        if (type == StageType.Condition) {            
+            this.stage = this.getDefaultConditionStage();
         }
         else if (type == StageType.Notification) {
-            let notificationStage = new NotificationStage();
+            
 
-            this.stage = notificationStage;
+            this.stage = this.getDefaultNotificationStage();
         }
         else if (type == StageType.Waiting) {
-            let waitingStage = new WaitingStage();
-            waitingStage.unit = TimeUnit.Minute;
-
-            this.stage = waitingStage;
+            this.stage = this.getDefaultWaitingStage();
         }
     }
 }

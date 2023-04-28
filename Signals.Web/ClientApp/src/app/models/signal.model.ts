@@ -69,7 +69,7 @@ export class ConditionStage extends Stage {
     retryCount?: number
     retryDelayUnit?: TimeUnit
     retryDelayLength?: number
-    block?: Block
+    block!: Block
 }
 
 export enum BlockType {
@@ -79,7 +79,8 @@ export enum BlockType {
 }
 
 export class Block {
-    type$?: BlockType;
+    constructor(type: BlockType) { this.$type = type; }
+    $type?: BlockType;
 }
 
 export enum GroupBlockType {
@@ -88,6 +89,7 @@ export enum GroupBlockType {
 }
 
 export class GroupBlock extends Block {
+    constructor() { super(BlockType.Group); }
     type?: GroupBlockType
     children?: Block[]
 }
@@ -99,6 +101,7 @@ export enum OperatorEnum {
 }
 
 export class ValueBlock extends Block {
+    constructor() { super(BlockType.Value); }
     leftIndicator?: Indicator
     rightIndicator?: Indicator
     operator?: OperatorEnum
@@ -111,6 +114,7 @@ export enum ChangeBlockType {
 }
 
 export class ChangeBlock extends Block {
+    constructor() { super(BlockType.Change); }
     indicator?: Indicator
     type?: ChangeBlockType
     operator?: OperatorEnum
