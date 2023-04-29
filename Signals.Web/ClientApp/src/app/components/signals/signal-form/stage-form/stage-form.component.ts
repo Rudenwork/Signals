@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { ChangeBlock, ConditionStage, NotificationStage, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
+import { ChangeBlock, ChangeBlockType, ConditionStage, NotificationStage, OperatorEnum, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-stage-form',
@@ -44,13 +44,13 @@ export class StageFormComponent implements OnInit {
             this.type
         ]);
 
-        this.modal.form.addControl('user-form', this.form);
+        this.modal.form.addControl('stage-form', this.form);
         this.modal.submitted.subscribe(() => this.submitted.emit(this.stage));
     }
 
     private getDefaultConditionStage() : ConditionStage {
         let stage = new ConditionStage();
-        stage.block = new ChangeBlock();
+        stage.block = this.getDefaultChangeBlock();
         stage.retryDelayUnit = TimeUnit.Minute;
 
         return stage;
@@ -67,6 +67,15 @@ export class StageFormComponent implements OnInit {
 
         return waitingStage
     }
+    
+    private getDefaultChangeBlock() : ChangeBlock {
+        let changeBlock = new ChangeBlock();
+        changeBlock.type = ChangeBlockType.Increase;
+        changeBlock.operator = OperatorEnum.GreaterOrEqual;
+        changeBlock.periodUnit = TimeUnit.Minute; 
+        
+        return changeBlock;
+    }
 
     getTypeOptions(): string[] {
         return Object.keys(StageType);
@@ -81,8 +90,6 @@ export class StageFormComponent implements OnInit {
             this.stage = this.getDefaultConditionStage();
         }
         else if (type == StageType.Notification) {
-            
-
             this.stage = this.getDefaultNotificationStage();
         }
         else if (type == StageType.Waiting) {

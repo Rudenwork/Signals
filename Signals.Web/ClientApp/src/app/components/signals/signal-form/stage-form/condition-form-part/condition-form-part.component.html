@@ -20,4 +20,8 @@
     <input id="retryDelayLength" type="number" placeholder="Retry Delay Length" [formControl]="retryDelayLength">
 </div>
 
-<app-block-preview [block]="this.stage.block" /> 
+<app-block-preview [block]="stage.block" (click)="modalUpdate.open()"/> 
+
+<app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+    <app-block-form *ngIf="modalUpdate.isOpened" [block]="stage.block" (submitted)="stage.block = $event" #blockForm />
+</app-modal>

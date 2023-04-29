@@ -1,1 +1,13 @@
-<p>group-form-part works!</p>
+<div class="input-container">
+    <label for="type" class="icon fa-list"></label>
+    <select id="type" [formControl]="type">
+        <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+    </select>
+</div>
+
+<div *ngFor="let child of block.children; let index = index">
+    <span *ngIf="index != 0">{{block.type}}</span>
+    <app-block-preview [block]="child"></app-block-preview>
+</div>
+
+    

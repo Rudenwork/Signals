@@ -1,1 +1,37 @@
-<p>change-form-part works!</p>
+<app-indicator-preview [indicator]="block.indicator" />
+
+<div class="input-container">
+    <label for="type" class="icon fa-list"></label>
+    <select id="type" [formControl]="type">
+        <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="operator" class="icon fa-list"></label>
+    <select id="operator" [formControl]="operator">
+        <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="target" class="icon fa-target"></label>
+    <input id="target" type="number" placeholder="Target" [formControl]="target">
+</div>
+
+<div class="input-container borderless">
+    <label for="isPercentage" class="icon fa-list">Is Percentage</label>
+    <input id="isPercentage" type="checkbox" class="toggle" [(ngModel)]="block.isPercentage">
+</div>
+
+<div class="input-container">
+    <label for="periodUnit" class="icon fa-ruler"></label>
+    <select id="periodUnit" [formControl]="periodUnit">
+        <option *ngFor="let timeUnit of getUnitOptions()" [value]="timeUnit">{{timeUnit}}</option>
+    </select>
+</div>
+
+<div class="input-container">
+    <label for="periodLength" class="icon fa-hourglass-half"></label>
+    <input id="periodLength" type="number" placeholder="Period Length" [formControl]="periodLength">
+</div>

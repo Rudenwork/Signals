@@ -49,12 +49,12 @@ export enum StageType {
 export class Stage {
     constructor(type: StageType) { this.$type = type; }
     id?: number;
-    $type?: StageType;
+    $type!: StageType;
 }
 
 export class WaitingStage extends Stage {
     constructor() { super(StageType.Waiting); }
-    unit?: TimeUnit
+    unit!: TimeUnit
     length?: number
 }
 
@@ -67,7 +67,7 @@ export class NotificationStage extends Stage {
 export class ConditionStage extends Stage { 
     constructor() { super(StageType.Condition); }
     retryCount?: number
-    retryDelayUnit?: TimeUnit
+    retryDelayUnit!: TimeUnit
     retryDelayLength?: number
     block!: Block
 }
@@ -80,7 +80,7 @@ export enum BlockType {
 
 export class Block {
     constructor(type: BlockType) { this.$type = type; }
-    $type?: BlockType;
+    $type!: BlockType;
 }
 
 export enum GroupBlockType {
@@ -90,8 +90,8 @@ export enum GroupBlockType {
 
 export class GroupBlock extends Block {
     constructor() { super(BlockType.Group); }
-    type?: GroupBlockType
-    children?: Block[]
+    type!: GroupBlockType
+    children!: Block[]
 }
 
 export enum OperatorEnum {
@@ -102,9 +102,9 @@ export enum OperatorEnum {
 
 export class ValueBlock extends Block {
     constructor() { super(BlockType.Value); }
-    leftIndicator?: Indicator
-    rightIndicator?: Indicator
-    operator?: OperatorEnum
+    leftIndicator!: Indicator
+    rightIndicator!: Indicator
+    operator!: OperatorEnum
 }
 
 export enum ChangeBlockType {
@@ -115,12 +115,12 @@ export enum ChangeBlockType {
 
 export class ChangeBlock extends Block {
     constructor() { super(BlockType.Change); }
-    indicator?: Indicator
-    type?: ChangeBlockType
-    operator?: OperatorEnum
+    indicator!: Indicator
+    type!: ChangeBlockType
+    operator!: OperatorEnum
     target?: number
-    isPercentage?: boolean
-    periodUnit?: TimeUnit
+    isPercentage!: boolean
+    periodUnit!: TimeUnit
     periodLength?: number
 }
 
@@ -137,7 +137,7 @@ export enum BBIndicatorBandType {
 }
 
 export class BBIndicator extends Indicator {
-    bandType?: BBIndicatorBandType
+    bandType!: BBIndicatorBandType
 }
 
 export enum CandleIndicatorParameter {
@@ -150,7 +150,7 @@ export enum CandleIndicatorParameter {
 }
 
 export class CandleIndicator extends Indicator {
-    parameterType?: CandleIndicatorParameter
+    parameterType!: CandleIndicatorParameter
 }
 
 export class ConstantIndicator extends Indicator {

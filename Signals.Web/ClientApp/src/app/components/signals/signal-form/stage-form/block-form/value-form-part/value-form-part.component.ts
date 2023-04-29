@@ -1,10 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { BlockFormComponent } from '../block-form.component';
+import { OperatorEnum, ValueBlock } from 'src/app/models/signal.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-value-form-part',
+    selector: 'app-value-form-part[block]',
     templateUrl: './value-form-part.component.html',
     styleUrls: ['./value-form-part.component.scss']
 })
-export class ValueFormPartComponent {
+export class ValueFormPartComponent implements OnInit, OnDestroy {
+    constructor(private blockForm: BlockFormComponent) { }
 
+    @Input() block!: ValueBlock;
+
+    operator!: FormControl;
+
+    form!: FormGroup;
+
+    ngOnInit() {
+        this.operator = new FormControl(this.block.operator, [
+            Validators.required
+        ]);
+
+        this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
+
+        this.form = new FormGroup([
+            this.operator
+        ]);
+
+        this.blockForm.form.addControl('value-form-part', this.form);
+    }
+
+    ngOnDestroy() {
+        this.blockForm.form.removeControl('value-form-part');
+    }
+
+    getOperatorOptions(): string[] {
+        return Object.keys(OperatorEnum);
+    }
 }

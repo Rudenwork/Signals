@@ -3,12 +3,8 @@
 </div>
 <div class="card" tabindex="0">
     <div class="wide" [ngSwitch]="this.block.$type">
-        <p *ngSwitchCase="BlockType.Group"> Block-Group-Preview-Part </p>
-        <p *ngSwitchCase="BlockType.Value"> Block-Value-Preview-Part </p>
-        <p *ngSwitchCase="BlockType.Change"> Block-Change-Preview-Part </p>   
+        <app-group-preview *ngSwitchCase="BlockType.Group" />
+        <app-value-preview *ngSwitchCase="BlockType.Value" />
+        <app-change-preview *ngSwitchCase="BlockType.Change" />  
     </div>
 </div>
-
-<app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
-    <!-- <app-block-form *ngIf="modalUpdate.isOpened" [block]="castBlock()" (submitted)="updated.emit($event)" #blockForm /> -->
-</app-modal>
