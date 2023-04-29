@@ -32,6 +32,30 @@ import { WaitingFormPartComponent } from './components/signals/signal-form/stage
 import { NotificationFormPartComponent } from './components/signals/signal-form/stage-form/notification-form-part/notification-form-part.component';
 import { ConditionFormPartComponent } from './components/signals/signal-form/stage-form/condition-form-part/condition-form-part.component';
 import { BlockPreviewComponent } from './components/signals/signal-form/stage-form/block-preview/block-preview.component';
+import { ConditionPreviewComponent } from './components/signals/signal-form/stage-preview/condition-preview/condition-preview.component';
+import { NotificationPreviewComponent } from './components/signals/signal-form/stage-preview/notification-preview/notification-preview.component';
+import { WaitingPreviewComponent } from './components/signals/signal-form/stage-preview/waiting-preview/waiting-preview.component';
+import { GroupPreviewComponent } from './components/signals/signal-form/stage-form/block-preview/group-preview/group-preview.component';
+import { ValuePreviewComponent } from './components/signals/signal-form/stage-form/block-preview/value-preview/value-preview.component';
+import { ChangePreviewComponent } from './components/signals/signal-form/stage-form/block-preview/change-preview/change-preview.component';
+import { BlockFormComponent } from './components/signals/signal-form/stage-form/block-form/block-form.component';
+import { GroupFormPartComponent } from './components/signals/signal-form/stage-form/block-form/group-form-part/group-form-part.component';
+import { ValueFormPartComponent } from './components/signals/signal-form/stage-form/block-form/value-form-part/value-form-part.component';
+import { ChangeFormPartComponent } from './components/signals/signal-form/stage-form/block-form/change-form-part/change-form-part.component';
+import { IndicatorFormComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/indicator-form.component';
+import { IndicatorPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/indicator-preview.component';
+import { BbFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/bb-form-part/bb-form-part.component';
+import { CandleFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/candle-form-part/candle-form-part.component';
+import { ConstantFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/constant-form-part/constant-form-part.component';
+import { EmaFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/ema-form-part/ema-form-part.component';
+import { RsiFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/rsi-form-part/rsi-form-part.component';
+import { SmaFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/sma-form-part/sma-form-part.component';
+import { BbPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/bb-preview/bb-preview.component';
+import { CandlePreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/candle-preview/candle-preview.component';
+import { ConstantPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/constant-preview/constant-preview.component';
+import { EmaPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/ema-preview/ema-preview.component';
+import { RsiPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/rsi-preview/rsi-preview.component';
+import { SmaPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/sma-preview/sma-preview.component';
 
 @NgModule({
     declarations: [
@@ -61,7 +85,31 @@ import { BlockPreviewComponent } from './components/signals/signal-form/stage-fo
         WaitingFormPartComponent,
         NotificationFormPartComponent,
         ConditionFormPartComponent,
-        BlockPreviewComponent
+        BlockPreviewComponent,
+        ConditionPreviewComponent,
+        NotificationPreviewComponent,
+        WaitingPreviewComponent,
+        GroupPreviewComponent,
+        ValuePreviewComponent,
+        ChangePreviewComponent,
+        BlockFormComponent,
+        GroupFormPartComponent,
+        ValueFormPartComponent,
+        ChangeFormPartComponent,
+        IndicatorFormComponent,
+        IndicatorPreviewComponent,
+        BbFormPartComponent,
+        CandleFormPartComponent,
+        ConstantFormPartComponent,
+        EmaFormPartComponent,
+        RsiFormPartComponent,
+        SmaFormPartComponent,
+        BbPreviewComponent,
+        CandlePreviewComponent,
+        ConstantPreviewComponent,
+        EmaPreviewComponent,
+        RsiPreviewComponent,
+        SmaPreviewComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
