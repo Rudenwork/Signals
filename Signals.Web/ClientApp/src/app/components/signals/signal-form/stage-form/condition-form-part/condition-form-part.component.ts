@@ -4,11 +4,11 @@ import { StageFormComponent } from '../stage-form.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-condition-part[stage]',
-    templateUrl: './condition-part.component.html',
-    styleUrls: ['./condition-part.component.scss']
+    selector: 'app-condition-form-part[stage]',
+    templateUrl: './condition-form-part.component.html',
+    styleUrls: ['./condition-form-part.component.scss']
 })
-export class ConditionPartComponent implements OnInit, OnDestroy {
+export class ConditionFormPartComponent implements OnInit, OnDestroy {
     constructor(private stageForm: StageFormComponent) { }
     
     @Input() stage!: ConditionStage;
@@ -55,7 +55,7 @@ export class ConditionPartComponent implements OnInit, OnDestroy {
         
         this.shouldRetryChanged();
 
-        this.stageForm.form.addControl('condition-part', this.form);
+        this.stageForm.form.addControl('condition-form-part', this.form);
     }
 
     shouldRetryChanged() {
@@ -72,7 +72,7 @@ export class ConditionPartComponent implements OnInit, OnDestroy {
     } 
 
     ngOnDestroy() {
-        this.stageForm.form.removeControl('condition-part');
+        this.stageForm.form.removeControl('condition-form-part');
     }
 
     getUnitOptions(): string[] {

@@ -28,9 +28,9 @@ import { ChannelFormVerifyComponent } from './components/channels/channel-form-v
 import { StageFormComponent } from './components/signals/signal-form/stage-form/stage-form.component';
 import { SignalPreviewComponent } from './components/signals/signal-preview/signal-preview.component';
 import { StagePreviewComponent } from './components/signals/signal-form/stage-preview/stage-preview.component';
-import { WaitingPartComponent } from './components/signals/signal-form/stage-form/waiting-part/waiting-part.component';
-import { NotificationPartComponent } from './components/signals/signal-form/stage-form/notification-part/notification-part.component';
-import { ConditionPartComponent } from './components/signals/signal-form/stage-form/condition-part/condition-part.component';
+import { WaitingFormPartComponent } from './components/signals/signal-form/stage-form/waiting-form-part/waiting-form-part.component';
+import { NotificationFormPartComponent } from './components/signals/signal-form/stage-form/notification-form-part/notification-form-part.component';
+import { ConditionFormPartComponent } from './components/signals/signal-form/stage-form/condition-form-part/condition-form-part.component';
 import { BlockPreviewComponent } from './components/signals/signal-form/stage-form/block-preview/block-preview.component';
 
 @NgModule({
@@ -58,9 +58,9 @@ import { BlockPreviewComponent } from './components/signals/signal-form/stage-fo
         StageFormComponent,
         SignalPreviewComponent,
         StagePreviewComponent,
-        WaitingPartComponent,
-        NotificationPartComponent,
-        ConditionPartComponent,
+        WaitingFormPartComponent,
+        NotificationFormPartComponent,
+        ConditionFormPartComponent,
         BlockPreviewComponent
     ],
     providers: [],

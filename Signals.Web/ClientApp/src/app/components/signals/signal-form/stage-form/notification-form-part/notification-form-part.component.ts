@@ -6,11 +6,11 @@ import { DataService } from 'src/app/services/data.service';
 import { Channel } from 'src/app/models/channel.model';
 
 @Component({
-    selector: 'app-notification-part[stage]',
-    templateUrl: './notification-part.component.html',
-    styleUrls: ['./notification-part.component.scss']
+    selector: 'app-notification-form-part[stage]',
+    templateUrl: './notification-form-part.component.html',
+    styleUrls: ['./notification-form-part.component.scss']
 })
-export class NotificationPartComponent implements OnInit, OnDestroy {
+export class NotificationFormPartComponent implements OnInit, OnDestroy {
     constructor(private stageForm: StageFormComponent, private dataService: DataService) { }
     
     @Input() stage!: NotificationStage;
@@ -50,10 +50,10 @@ export class NotificationPartComponent implements OnInit, OnDestroy {
             this.text
         ]);
 
-        this.stageForm.form.addControl('notification-part', this.form);
+        this.stageForm.form.addControl('notification-form-part', this.form);
     }
 
     ngOnDestroy() {
-        this.stageForm.form.removeControl('notification-part');
+        this.stageForm.form.removeControl('notification-form-part');
     }
 }

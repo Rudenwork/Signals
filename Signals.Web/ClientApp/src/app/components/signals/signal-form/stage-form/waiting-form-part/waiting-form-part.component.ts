@@ -4,11 +4,11 @@ import { TimeUnit, WaitingStage } from 'src/app/models/signal.model';
 import { StageFormComponent } from '../stage-form.component';
 
 @Component({
-    selector: 'app-waiting-part[stage]',
-    templateUrl: './waiting-part.component.html',
-    styleUrls: ['./waiting-part.component.scss']
+    selector: 'app-waiting-form-part[stage]',
+    templateUrl: './waiting-form-part.component.html',
+    styleUrls: ['./waiting-form-part.component.scss']
 })
-export class WaitingPartComponent implements OnInit, OnDestroy {
+export class WaitingFormPartComponent implements OnInit, OnDestroy {
     constructor(private stageForm: StageFormComponent) { }
 
     @Input() stage!: WaitingStage;
@@ -37,11 +37,11 @@ export class WaitingPartComponent implements OnInit, OnDestroy {
             this.length
         ]);
 
-        this.stageForm.form.addControl('waiting-part', this.form);
+        this.stageForm.form.addControl('waiting-form-part', this.form);
     }
 
     ngOnDestroy() {
-        this.stageForm.form.removeControl('waiting-part');
+        this.stageForm.form.removeControl('waiting-form-part');
     }
 
     getUnitOptions(): string[] {

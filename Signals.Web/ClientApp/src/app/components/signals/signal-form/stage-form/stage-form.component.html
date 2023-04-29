@@ -6,7 +6,7 @@
 </div>
 
 <div [ngSwitch]="stage.$type">
-    <app-condition-part *ngSwitchCase="StageType.Condition" [stage]="castStage()" />
-    <app-notification-part *ngSwitchCase="StageType.Notification" [stage]="castStage()" />
-    <app-waiting-part *ngSwitchCase="StageType.Waiting" [stage]="castStage()" />
+    <app-condition-form-part *ngSwitchCase="StageType.Condition" [stage]="castStage()" />
+    <app-notification-form-part *ngSwitchCase="StageType.Notification" [stage]="castStage()" />
+    <app-waiting-form-part *ngSwitchCase="StageType.Waiting" [stage]="castStage()" />
 </div>
