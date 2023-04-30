@@ -38,6 +38,6 @@ export class ValueFormPartComponent implements OnInit, OnDestroy {
     }
 
     getOperatorOptions(): string[] {
-        return Object.keys(OperatorEnum);
+        return Object.keys(OperatorEnum).filter(x => x != OperatorEnum.Crossed);
     }
 }

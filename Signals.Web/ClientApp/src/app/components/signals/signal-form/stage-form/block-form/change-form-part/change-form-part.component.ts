@@ -47,8 +47,15 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.max(1000)
         ]);
 
-        this.type.valueChanges.subscribe(type => this.block.type = type);
         this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
+        this.type.valueChanges.subscribe(type => {
+            this.block.type = type
+            if(type == ChangeBlockType.Cross) {
+                this.operator.setValue(OperatorEnum.Crossed);
+            } else if (type != ChangeBlockType.Cross && this.block.operator == OperatorEnum.Crossed){
+                this.operator.setValue(OperatorEnum.GreaterOrEqual);
+            }
+        });
         this.target.valueChanges.subscribe(target => this.block.target = target);
         this.periodUnit.valueChanges.subscribe(periodUnit => this.block.periodUnit = periodUnit);
         this.periodLength.valueChanges.subscribe(periodLength => this.block.periodLength = periodLength);
@@ -73,7 +80,11 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
     }
 
     getOperatorOptions(): string[] {
-        return Object.keys(OperatorEnum);
+        if(this.type.value == ChangeBlockType.Cross) {
+            return [OperatorEnum.Crossed];
+        }
+
+        return Object.keys(OperatorEnum).filter(x => x != OperatorEnum.Crossed);
     }
 
     getUnitOptions(): string[] {

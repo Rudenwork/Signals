@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ConditionStage, TimeUnit } from 'src/app/models/signal.model';
 import { StageFormComponent } from '../stage-form.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
 
 @Component({
     selector: 'app-condition-form-part[stage]',

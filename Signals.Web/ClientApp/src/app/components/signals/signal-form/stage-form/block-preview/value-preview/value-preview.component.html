@@ -1,1 +1,8 @@
-<p>value-preview works!</p>
+<app-indicator-preview [indicator]="block.leftIndicator" />
+
+<div class="icon" [ngClass]="{'fa-greater-than-equal': block.operator == OperatorEnum.GreaterOrEqual,
+'fa-less-than-equal': block.operator == OperatorEnum.LessOrEqual,
+'fa-shuffle': block.operator == OperatorEnum.Crossed}">{{block.operator}}
+</div>
+
+<app-indicator-preview [indicator]="block.rightIndicator" />
