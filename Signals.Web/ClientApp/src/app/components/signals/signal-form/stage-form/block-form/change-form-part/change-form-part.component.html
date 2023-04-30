@@ -1,26 +1,30 @@
 <app-indicator-preview [indicator]="block.indicator" />
 
 <div class="input-container">
-    <label for="type" class="icon fa-list"></label>
+    <label for="type" class="icon" [ngClass]="{'fa-angle-up': type.value == ChangeBlockType.Increase,
+    'fa-arrow-down-up-across-line': type.value == ChangeBlockType.Cross,
+    'fa-angle-down': type.value == ChangeBlockType.Decrease}"></label>
     <select id="type" [formControl]="type">
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
 <div class="input-container">
-    <label for="operator" class="icon fa-list"></label>
+    <label for="operator" class="icon" [ngClass]="{'fa-greater-than-equal': operator.value == OperatorEnum.GreaterOrEqual,
+    'fa-less-than-equal': operator.value == OperatorEnum.LessOrEqual,
+    'fa-shuffle': operator.value == OperatorEnum.Crossed}"></label>
     <select id="operator" [formControl]="operator">
         <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
     </select>
 </div>
 
 <div class="input-container">
-    <label for="target" class="icon fa-target"></label>
+    <label for="target" class="icon fa-bullseye"></label>
     <input id="target" type="number" placeholder="Target" [formControl]="target">
 </div>
 
 <div class="input-container borderless">
-    <label for="isPercentage" class="icon fa-list">Is Percentage</label>
+    <label for="isPercentage" class="icon fa-percent">Is Percentage</label>
     <input id="isPercentage" type="checkbox" class="toggle" [(ngModel)]="block.isPercentage">
 </div>
 

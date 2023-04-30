@@ -1,13 +1,18 @@
 <div class="input-container">
-    <label for="type" class="icon fa-list"></label>
+    <label for="type" class="icon" [ngClass]="{'fa-xmark': type.value == GroupBlockType.And,
+    'fa-plus': type.value == GroupBlockType.Or}"></label>
     <select id="type" [formControl]="type">
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
-<div *ngFor="let child of block.children; let index = index">
-    <span *ngIf="index != 0">{{block.type}}</span>
-    <app-block-preview [block]="child"></app-block-preview>
+<div class="input-container borderless">
+    <label class="icon fa-cubes">Blocks</label>
 </div>
 
-    
+<!-- TODO: fix with scss -->
+<div class="cards-container" *ngFor="let child of block.children; let index = index">
+    <span *ngIf="index != 0">{{block.type}}</span>
+    <app-block-preview [block]="child"></app-block-preview>
+    <span *ngIf="index != block.children.length"></span>
+</div>

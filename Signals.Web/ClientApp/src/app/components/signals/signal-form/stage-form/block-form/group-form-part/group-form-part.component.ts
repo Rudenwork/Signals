@@ -11,6 +11,8 @@ import { BlockFormComponent } from '../block-form.component';
 export class GroupFormPartComponent implements OnInit, OnDestroy {
     constructor(private blockForm: BlockFormComponent) { }
 
+    GroupBlockType: typeof GroupBlockType = GroupBlockType;
+
     @Input() block!: GroupBlock;
 
     type!: FormControl;

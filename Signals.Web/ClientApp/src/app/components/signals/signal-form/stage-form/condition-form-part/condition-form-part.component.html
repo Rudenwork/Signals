@@ -20,6 +20,9 @@
     <input id="retryDelayLength" type="number" placeholder="Retry Delay Length" [formControl]="retryDelayLength">
 </div>
 
+<div class="input-container borderless">
+    <label class="icon fa-cube">Block</label>
+</div>
 <app-block-preview [block]="stage.block" (click)="modalUpdate.open()"/> 
 
 <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>

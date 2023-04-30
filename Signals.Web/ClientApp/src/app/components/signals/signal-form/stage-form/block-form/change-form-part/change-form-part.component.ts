@@ -11,6 +11,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ChangeFormPartComponent implements OnInit, OnDestroy {
     constructor(private blockForm: BlockFormComponent) { }
 
+    ChangeBlockType: typeof ChangeBlockType = ChangeBlockType;
+    OperatorEnum: typeof OperatorEnum = OperatorEnum;
+    
     @Input() block!: ChangeBlock;
 
     type!: FormControl;

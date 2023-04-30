@@ -11,6 +11,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ValueFormPartComponent implements OnInit, OnDestroy {
     constructor(private blockForm: BlockFormComponent) { }
 
+    OperatorEnum: typeof OperatorEnum = OperatorEnum;
+
     @Input() block!: ValueBlock;
 
     operator!: FormControl;

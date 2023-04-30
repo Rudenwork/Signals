@@ -1,7 +1,9 @@
 <app-indicator-preview [indicator]="block.leftIndicator" />
 
 <div class="input-container">
-    <label for="operator" class="icon fa-list"></label>
+    <label for="operator" class="icon" [ngClass]="{'fa-greater-than-equal': operator.value == OperatorEnum.GreaterOrEqual,
+    'fa-less-than-equal': operator.value == OperatorEnum.LessOrEqual,
+    'fa-shuffle': operator.value == OperatorEnum.Crossed}"></label>
     <select id="operator" [formControl]="operator">
         <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
     </select>
