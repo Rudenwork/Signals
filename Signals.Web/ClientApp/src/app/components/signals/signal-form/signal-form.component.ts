@@ -51,7 +51,7 @@ export class SignalFormComponent implements OnInit {
         ]);
 
         this.stages = new FormControl(this.signal.stages, [
-            Validators.minLength(1)
+            Validators.required
         ]);
 
         this.isDisabled = new FormControl(this.signal.isDisabled);
@@ -78,16 +78,19 @@ export class SignalFormComponent implements OnInit {
     createStage(stage: Stage) {
         this.stages.value.push(stage);
         this.stages.markAsDirty();
+        this.stages.updateValueAndValidity();
     }
 
     updateStage(index: number, stage: Stage) {
         this.stages.value[index] = stage;
         this.stages.markAsDirty();
+        this.stages.updateValueAndValidity();
     }
 
     deleteStage(index: number) {
         this.stages.value.splice(index, 1);
         this.stages.markAsDirty();
+        this.stages.updateValueAndValidity();
     }
 
     submit() {
