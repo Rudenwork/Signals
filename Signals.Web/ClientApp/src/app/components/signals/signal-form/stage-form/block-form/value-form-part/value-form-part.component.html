@@ -1,4 +1,7 @@
-<app-indicator-preview [indicator]="block.leftIndicator" />
+<div class="cards-container">
+    <div *ngIf="!block.leftIndicator" class="card add-indicator icon fa-plus" (click)="leftIndicatormodalUpdate.open()"></div>    
+    <app-indicator-preview *ngIf="block.leftIndicator" [indicator]="block.leftIndicator" /> 
+</div>
 
 <div class="input-container">
     <label for="operator" class="icon" [ngClass]="{'fa-greater-than-equal': operator.value == OperatorEnum.GreaterOrEqual,
@@ -9,4 +12,15 @@
     </select>
 </div>
 
-<app-indicator-preview [indicator]="block.rightIndicator" />
+<div class="cards-container">
+    <div *ngIf="!block.rightIndicator" class="card add-indicator icon fa-plus" (click)="rightIndicatorModalUpdate.open()"></div>
+    <app-indicator-preview *ngIf="block.rightIndicator" [indicator]="block.rightIndicator" /> 
+</div>
+
+<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #leftIndicatormodalUpdate>
+    <!-- <app-indicator-form *ngIf="leftIndicatorForm.isOpened" [indicator]="block.leftIndicator" (submitted)="block.leftIndicator= $event" #leftIndicatorForm /> -->
+</app-modal>
+
+<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #rightIndicatorModalUpdate>
+    <!-- <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="block.rightIndicator" (submitted)="block.rightIndicator= $event" #rightIndicatorForm /> -->
+</app-modal>

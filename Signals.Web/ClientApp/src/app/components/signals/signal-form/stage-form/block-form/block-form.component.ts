@@ -19,11 +19,14 @@ export class BlockFormComponent implements OnInit {
     type!: FormControl;
     form!: FormGroup;
 
-    isCreating: boolean = false;
-
     ngOnInit() {
-        this.block = { ...this.block };
-
+        if (this.block == undefined) {            
+            this.block = this.getDefaultValueBlock();
+        }
+        else {
+            this.block = { ...this.block };
+        }
+        
         this.type = new FormControl(this.block.$type, [
             Validators.required
         ]);
@@ -57,7 +60,7 @@ export class BlockFormComponent implements OnInit {
     private getDefaultGroup() : GroupBlock {
         let groupBlock = new GroupBlock();
         groupBlock.type = GroupBlockType.And;
-        groupBlock.children = [this.getDefaultValueBlock()];
+        groupBlock.children = [];
 
         return groupBlock
     }

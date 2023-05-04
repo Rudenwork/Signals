@@ -13,6 +13,14 @@
 <!-- TODO: fix with scss -->
 <div class="cards-container" *ngFor="let child of block.children; let index = index">
     <span *ngIf="index != 0">{{block.type}}</span>
-    <app-block-preview [block]="child"></app-block-preview>
+    <app-block-preview [block]="child" (click)="modalUpdate.open()"></app-block-preview>
     <span *ngIf="index != block.children.length"></span>
+
+    <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+        <app-block-form *ngIf="modalUpdate.isOpened" [block]="child" (submitted)="updateBlock(index, $event)" (deleted)="deleteBlock(index)" />
+    </app-modal>
 </div>
+<div class="card add-block icon fa-plus" (click)="modalCreate.open()"></div>
+<app-modal title="Create Block" submitText="Create" submitClass="good icon fa-cube" [closeOnSubmit]="true" #modalCreate >
+    <app-block-form *ngIf="modalCreate.isOpened" (submitted)="createBlock($event)"/>
+</app-modal>

@@ -16,17 +16,31 @@ export class ValueFormPartComponent implements OnInit, OnDestroy {
     @Input() block!: ValueBlock;
 
     operator!: FormControl;
+    leftIndicator!: FormControl;
+    rightIndicator!: FormControl;
 
     form!: FormGroup;
 
     ngOnInit() {
+        this.leftIndicator = new FormControl(this.block.leftIndicator, [
+            Validators.required
+        ]);
+
+        this.rightIndicator = new FormControl(this.block.rightIndicator, [
+            Validators.required
+        ]);
+
         this.operator = new FormControl(this.block.operator, [
             Validators.required
         ]);
 
+        this.leftIndicator.valueChanges.subscribe(leftIndicator => this.block.leftIndicator = leftIndicator);
+        this.rightIndicator.valueChanges.subscribe(rightIndicator => this.block.rightIndicator = rightIndicator);
         this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
 
         this.form = new FormGroup([
+            this.leftIndicator,
+            this.rightIndicator,
             this.operator
         ]);
 

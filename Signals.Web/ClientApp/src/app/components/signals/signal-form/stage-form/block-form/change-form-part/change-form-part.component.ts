@@ -16,6 +16,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
     
     @Input() block!: ChangeBlock;
 
+    indicator!: FormControl;
     type!: FormControl;
     operator!: FormControl;
     target!: FormControl;
@@ -25,6 +26,10 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
     form!: FormGroup;
 
     ngOnInit() {
+        this.indicator = new FormControl(this.block.indicator, [
+            Validators.required
+        ]);
+
         this.type = new FormControl(this.block.type, [
             Validators.required
         ]);
@@ -47,6 +52,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.max(1000)
         ]);
 
+        this.indicator.valueChanges.subscribe(indicator => this.block.indicator = indicator);
         this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
         this.type.valueChanges.subscribe(type => {
             this.block.type = type
@@ -61,6 +67,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
         this.periodLength.valueChanges.subscribe(periodLength => this.block.periodLength = periodLength);
 
         this.form = new FormGroup([
+            this.indicator,
             this.type,
             this.operator,
             this.target,

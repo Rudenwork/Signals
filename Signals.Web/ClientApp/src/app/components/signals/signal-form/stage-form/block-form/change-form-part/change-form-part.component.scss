@@ -1,0 +1,16 @@
+@import "../../../../../../../variables.scss";
+
+:host{
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
+.add-indicator {
+    box-sizing: border-box;
+    background: none;
+    box-shadow: none;
+    border: 1px solid $color-font-secondary;
+    color: $color-font-secondary;
+    font-size: x-large;
+}

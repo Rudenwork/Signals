@@ -50,7 +50,6 @@ export class StageFormComponent implements OnInit {
 
     private getDefaultConditionStage() : ConditionStage {
         let stage = new ConditionStage();
-        stage.block = this.getDefaultChangeBlock();
         stage.retryDelayUnit = TimeUnit.Minute;
 
         return stage;
@@ -66,15 +65,6 @@ export class StageFormComponent implements OnInit {
         waitingStage.unit = TimeUnit.Minute;
 
         return waitingStage
-    }
-    
-    private getDefaultChangeBlock() : ChangeBlock {
-        let changeBlock = new ChangeBlock();
-        changeBlock.type = ChangeBlockType.Increase;
-        changeBlock.operator = OperatorEnum.GreaterOrEqual;
-        changeBlock.periodUnit = TimeUnit.Minute; 
-        
-        return changeBlock;
     }
 
     getTypeOptions(): string[] {

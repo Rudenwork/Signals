@@ -1,4 +1,12 @@
-<app-indicator-preview [indicator]="block.indicator" />
+<div class="cards-container">
+    <div *ngIf="!block.indicator" class="card add-indicator icon fa-plus" (click)="modalUpdate.open()"></div>
+    
+    <app-indicator-preview *ngIf="block.indicator" [indicator]="block.indicator" /> 
+
+    <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+        <!-- <app-indicator-form *ngIf="indicatorForm.isOpened" [indicator]="block.indicator" (submitted)="block.indicator= $event" #indicatorForm /> -->
+    </app-modal>
+</div>
 
 <div class="input-container">
     <label for="type" class="icon" [ngClass]="{'fa-angle-up': type.value == ChangeBlockType.Increase,
