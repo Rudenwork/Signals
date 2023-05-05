@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { Block, BlockType, ChangeBlock, ChangeBlockType, ConstantIndicator, GroupBlock, GroupBlockType, OperatorEnum, TimeUnit, ValueBlock } from 'src/app/models/signal.model';
+import { Block, BlockType, ChangeBlock, ChangeBlockType, GroupBlock, GroupBlockType, OperatorEnum, TimeUnit, ValueBlock } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-block-form',

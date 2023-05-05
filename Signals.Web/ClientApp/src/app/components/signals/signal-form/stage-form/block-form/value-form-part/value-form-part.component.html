@@ -18,9 +18,9 @@
 </div>
 
 <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #leftIndicatormodalUpdate>
-    <!-- <app-indicator-form *ngIf="leftIndicatorForm.isOpened" [indicator]="block.leftIndicator" (submitted)="block.leftIndicator= $event" #leftIndicatorForm /> -->
+    <app-indicator-form *ngIf="leftIndicatormodalUpdate.isOpened" [indicator]="block.leftIndicator" (submitted)="block.leftIndicator= $event" #leftIndicatorForm />
 </app-modal>
 
 <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #rightIndicatorModalUpdate>
-    <!-- <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="block.rightIndicator" (submitted)="block.rightIndicator= $event" #rightIndicatorForm /> -->
+    <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="block.rightIndicator" (submitted)="block.rightIndicator= $event" #rightIndicatorForm />
 </app-modal>

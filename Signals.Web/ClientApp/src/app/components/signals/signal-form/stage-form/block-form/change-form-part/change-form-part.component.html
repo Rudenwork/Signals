@@ -4,7 +4,7 @@
     <app-indicator-preview *ngIf="block.indicator" [indicator]="block.indicator" /> 
 
     <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
-        <!-- <app-indicator-form *ngIf="indicatorForm.isOpened" [indicator]="block.indicator" (submitted)="block.indicator= $event" #indicatorForm /> -->
+        <app-indicator-form *ngIf="modalUpdate.isOpened" [indicator]="block.indicator" (submitted)="block.indicator= $event" #indicatorForm />
     </app-modal>
 </div>
 
