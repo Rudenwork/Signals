@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BBIndicator, BBIndicatorBandType, CandleIndicator, CandleIndicatorParameter, ConstantIndicator, EMAIndicator, Indicator, IndicatorType, IntervalEnum, RSIIndicator, SMAIndicator } from 'src/app/models/signal.model';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
+import { IndicatorFormHelperService } from 'src/app/services/indicator-form-helper.service';
 
 @Component({
     selector: 'app-indicator-form',
@@ -9,11 +10,9 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
     styleUrls: ['./indicator-form.component.scss']
 })
 export class IndicatorFormComponent implements OnInit {
-    constructor(private modal: ModalComponent) { }
+    constructor(public formHelper : IndicatorFormHelperService, private modal: ModalComponent) { }
     @Input() indicator!: Indicator;
     @Output() submitted: EventEmitter<Indicator> = new EventEmitter();
-
-    IndicatorType: typeof IndicatorType = IndicatorType;
 
     type!: FormControl;
     form!: FormGroup;
@@ -26,11 +25,14 @@ export class IndicatorFormComponent implements OnInit {
             this.indicator = { ...this.indicator };
         }
         
-        this.type = new FormControl(this.indicator.$type, [
+        this.type = new FormControl(this.formHelper.convertIndicatorTypeEnumToOption(this.indicator.$type), [
             Validators.required
         ]);
 
-        this.type.valueChanges.subscribe(type => this.changeIndicator(type));
+        this.type.valueChanges.subscribe(type => {
+            let value = this.formHelper.convertIndicatorTypeOptionToEnumValue(type);
+            this.changeIndicator(value)
+        });
 
         this.form = new FormGroup([
             this.type
@@ -49,7 +51,7 @@ export class IndicatorFormComponent implements OnInit {
     }
 
     changeIndicator(type: string) {
-        if (type == IndicatorType.BB) {            
+        if (type == IndicatorType.BollingerBands) {            
             this.indicator = this.getDefaultBBIndicator();
         }
         else if (type == IndicatorType.Candle) {            
@@ -58,13 +60,13 @@ export class IndicatorFormComponent implements OnInit {
         else if (type == IndicatorType.Constant) {            
             this.indicator = this.getDefaultConstantIndicator();
         }
-        else if (type == IndicatorType.EMA) {            
+        else if (type == IndicatorType.ExponentialMovingAverage) {            
             this.indicator = this.getDefaultEMAIndicator();
         }
-        else if (type == IndicatorType.RSI) {            
+        else if (type == IndicatorType.RelativeStrengthIndex) {            
             this.indicator = this.getDefaultRSIIndicator();
         }
-        else if (type == IndicatorType.SMA) {            
+        else if (type == IndicatorType.SimpleMovingAverage) {            
             this.indicator = this.getDefaultSMAIndicator();
         }
     }

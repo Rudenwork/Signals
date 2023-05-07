@@ -125,12 +125,12 @@ export class ChangeBlock extends Block {
 }
 
 export enum IndicatorType {
-    BB = 'BollingerBands',
+    BollingerBands = 'BollingerBands',
     Candle = 'Candle',
     Constant = 'Constant',
-    EMA = 'ExponentialMovingAverage',
-    RSI = 'RelativeStrengthIndex',
-    SMA = 'SimpleMovingAverage',
+    ExponentialMovingAverage = 'ExponentialMovingAverage',
+    RelativeStrengthIndex = 'RelativeStrengthIndex',
+    SimpleMovingAverage = 'SimpleMovingAverage',
 }
 
 export class Indicator {
@@ -148,7 +148,7 @@ export enum BBIndicatorBandType {
 }
 
 export class BBIndicator extends Indicator {
-    constructor() { super(IndicatorType.BB); }
+    constructor() { super(IndicatorType.BollingerBands); }
     bandType!: BBIndicatorBandType
 }
 
@@ -172,15 +172,15 @@ export class ConstantIndicator extends Indicator {
 }
 
 export class EMAIndicator extends Indicator {
-    constructor() { super(IndicatorType.EMA); }
+    constructor() { super(IndicatorType.ExponentialMovingAverage); }
 }
 
 export class RSIIndicator extends Indicator {
-    constructor() { super(IndicatorType.RSI); }
+    constructor() { super(IndicatorType.RelativeStrengthIndex); }
 }
 
 export class SMAIndicator extends Indicator {
-    constructor() { super(IndicatorType.SMA); }
+    constructor() { super(IndicatorType.SimpleMovingAverage); }
 }
 
 export enum SymbolEnum {

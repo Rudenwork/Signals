@@ -2,21 +2,21 @@
     <label for="interval" class="icon fa-clock"></label>
     <select id="interval" [formControl]="interval">
         <option value="" disabled selected>Select Interval</option>
-        <option *ngFor="let interval of getIntervalOptions()" [value]="interval">{{interval}}</option>
+        <option *ngFor="let interval of formHelper.getIntervalOptions()" [value]="interval">{{interval}}</option>
     </select>
 </div>
 
 <div class="input-container">
     <label for="parameterType" class="icon" [ngClass]="{'fa-circle-question': parameterType.value == '',
-    'fa-unlock': parameterType.value == ParameterTypeEnum.Open,
-    'fa-lock': parameterType.value == ParameterTypeEnum.Close,
-    'fa-square-caret-down': parameterType.value == ParameterTypeEnum.Low,
-    'fa-square-caret-up': parameterType.value == ParameterTypeEnum.High,
-    'fa-square-caret-right': parameterType.value == ParameterTypeEnum.Average,
-    'fa-square-poll-vertical': parameterType.value == ParameterTypeEnum.Volume}"></label>
+    'fa-unlock': parameterType.value == formHelper.ParameterTypeEnum.Open,
+    'fa-lock': parameterType.value == formHelper.ParameterTypeEnum.Close,
+    'fa-square-caret-down': parameterType.value == formHelper.ParameterTypeEnum.Low,
+    'fa-square-caret-up': parameterType.value == formHelper.ParameterTypeEnum.High,
+    'fa-square-caret-right': parameterType.value == formHelper.ParameterTypeEnum.Average,
+    'fa-square-poll-vertical': parameterType.value == formHelper.ParameterTypeEnum.Volume}"></label>
     <select id="parameterType" [formControl]="parameterType">
         <option value="" disabled selected>Select Parameter</option>
-        <option *ngFor="let parameter of getParameterOptions()" [value]="parameter">{{parameter}}</option>
+        <option *ngFor="let parameter of formHelper.getParameterTypeOptions()" [value]="parameter">{{parameter}}</option>
     </select>
 </div>
 
@@ -24,6 +24,6 @@
     <label for="symbol" class="icon fa-coins"></label>
     <select id="symbol" [formControl]="symbol">
         <option value="" disabled selected>Select Coin</option>
-        <option *ngFor="let option of getSymbolOptions()" [value]="option">{{option}}</option>
+        <option *ngFor="let option of formHelper.getSymbolOptions()" [value]="option">{{option}}</option>
     </select>
 </div>

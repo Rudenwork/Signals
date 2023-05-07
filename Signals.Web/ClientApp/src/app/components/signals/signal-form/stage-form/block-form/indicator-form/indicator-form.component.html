@@ -1,16 +1,16 @@
 <div class="input-container">
     <label for="type" class="icon fa-list"></label>
     <select id="type" [formControl]="type">
-        <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
+        <option *ngFor="let type of formHelper.getIndicatorTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
 <div [ngSwitch]="indicator.$type">
-    <!-- <app-bb-form-part *ngSwitchCase="IndicatorType.BB" [indicator]="castIndicator()" /> -->
-    <app-candle-form-part *ngSwitchCase="IndicatorType.Candle" [indicator]="castIndicator()" />
-    <app-constant-form-part *ngSwitchCase="IndicatorType.Constant" [indicator]="castIndicator()" />
-    <!-- <app-ema-form-part *ngSwitchCase="IndicatorType.EMA" [indicator]="castIndicator()" /> -->
-    <!-- <app-rsi-form-part *ngSwitchCase="IndicatorType.RSI" [indicator]="castIndicator()" /> -->
-    <!-- <app-sma-form-part *ngSwitchCase="IndicatorType.SMA" [indicator]="castIndicator()" /> -->
+    <app-bb-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.BollingerBands" [indicator]="castIndicator()" />
+    <app-candle-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.Candle" [indicator]="castIndicator()" />
+    <app-constant-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.Constant" [indicator]="castIndicator()" />
+    <!-- <app-ema-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.ExponentialMovingAverage" [indicator]="castIndicator()" /> -->
+    <!-- <app-rsi-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.RelativeStrengthIndex" [indicator]="castIndicator()" /> -->
+    <!-- <app-sma-form-part *ngSwitchCase="formHelper.IndicatorTypeEnum.SimpleMovingAverage" [indicator]="castIndicator()" /> -->
 </div>
 
