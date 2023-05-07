@@ -230,3 +230,24 @@ export class BbIndicatorFormHelperService extends IndicatorFormHelperService {
         return Object.keys(BBIndicatorBandType);
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+export class EmaIndicatorFormHelperService extends IndicatorFormHelperService {
+    
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class RsiIndicatorFormHelperService extends IndicatorFormHelperService {
+    
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SmaIndicatorFormHelperService extends IndicatorFormHelperService {
+    
+}

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BBIndicator, BBIndicatorBandType, CandleIndicator, CandleIndicatorParameter, ConstantIndicator, EMAIndicator, Indicator, IndicatorType, IntervalEnum, RSIIndicator, SMAIndicator } from 'src/app/models/signal.model';
+import { BBIndicator, CandleIndicator, ConstantIndicator, EMAIndicator, Indicator, IndicatorType, IntervalEnum, RSIIndicator, SMAIndicator } from 'src/app/models/signal.model';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { IndicatorFormHelperService } from 'src/app/services/indicator-form-helper.service';
 
