@@ -25,11 +25,16 @@
 </div>
 
 <div class="cards-container">
-    <div *ngIf="!stage.block" class="card add-block icon fa-plus" (click)="modalUpdate.open()"></div>
-    
-    <app-block-preview *ngIf="stage.block" [block]="stage.block" (click)="modalUpdate.open()"/> 
+    <div *ngIf="!block.value" class="card add-block icon fa-plus" (click)="modalUpdate.open()"></div>
+
+    <div *ngIf="block.value" class="card" tabindex="0">
+        <app-block-preview class="preview wide" [block]="block.value" (click)="modalUpdate.open()" />
+        <div class="actions" tabindex="1">
+            <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        </div>
+    </div> 
 
     <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
-        <app-block-form *ngIf="modalUpdate.isOpened" [block]="stage.block" (submitted)="stage.block = $event" #blockForm />
+        <app-block-form *ngIf="modalUpdate.isOpened" [block]="block.value" (submitted)="block.setValue($event)" #blockForm />
     </app-modal>
 </div>

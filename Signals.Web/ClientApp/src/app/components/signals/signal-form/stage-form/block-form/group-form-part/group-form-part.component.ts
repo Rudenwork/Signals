@@ -23,7 +23,7 @@ export class GroupFormPartComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.block.children = this.block.children?.slice();
 
-        this.type = new FormControl(this.block.type, [
+        this.type = new FormControl(this.block.type || '', [
             Validators.required
         ]);
 
@@ -31,8 +31,19 @@ export class GroupFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.type.valueChanges.subscribe(type => this.block.type = type);
-        this.children.valueChanges.subscribe(children => this.block.children = children);
+        if(this.type.value != '') {
+            this.type.markAsDirty();
+        }
+
+        this.type.valueChanges.subscribe(type => {
+            this.block.type = type;
+            this.type.markAsDirty();
+        });
+
+        this.children.valueChanges.subscribe(children => {
+            this.block.children = children;
+            this.type.markAsDirty();
+        } );
 
         this.form = new FormGroup([
             this.type,

@@ -1,6 +1,6 @@
 <div class="cards-container">
-    <div *ngIf="!block.leftIndicator" class="card add-indicator icon fa-plus" (click)="leftIndicatormodalUpdate.open()"></div>    
-    <app-indicator-preview *ngIf="block.leftIndicator" [indicator]="block.leftIndicator" /> 
+    <div *ngIf="!leftIndicator.value" class="card add-indicator icon fa-plus" (click)="leftIndicatormodalUpdate.open()"></div>    
+    <app-indicator-preview *ngIf="leftIndicator.value" [indicator]="leftIndicator.value" (click)="leftIndicatormodalUpdate.open()" /> 
 </div>
 
 <div class="input-container">
@@ -8,19 +8,20 @@
     'fa-less-than-equal': operator.value == OperatorEnum.LessOrEqual,
     'fa-shuffle': operator.value == OperatorEnum.Crossed}"></label>
     <select id="operator" [formControl]="operator">
+        <option value="" disabled selected>Select Operator</option>
         <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
     </select>
 </div>
 
 <div class="cards-container">
-    <div *ngIf="!block.rightIndicator" class="card add-indicator icon fa-plus" (click)="rightIndicatorModalUpdate.open()"></div>
-    <app-indicator-preview *ngIf="block.rightIndicator" [indicator]="block.rightIndicator" /> 
+    <div *ngIf="!rightIndicator.value" class="card add-indicator icon fa-plus" (click)="rightIndicatorModalUpdate.open()"></div>
+    <app-indicator-preview *ngIf="rightIndicator.value" [indicator]="rightIndicator.value" (click)="rightIndicatorModalUpdate.open()" /> 
 </div>
 
 <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #leftIndicatormodalUpdate>
-    <app-indicator-form *ngIf="leftIndicatormodalUpdate.isOpened" [indicator]="block.leftIndicator" (submitted)="block.leftIndicator= $event" #leftIndicatorForm />
+    <app-indicator-form *ngIf="leftIndicatormodalUpdate.isOpened" [indicator]="leftIndicator.value" (submitted)="leftIndicator.setValue($event)" #leftIndicatorForm />
 </app-modal>
 
 <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #rightIndicatorModalUpdate>
-    <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="block.rightIndicator" (submitted)="block.rightIndicator= $event" #rightIndicatorForm />
+    <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="rightIndicator.value" (submitted)="rightIndicator.setValue($event)" #rightIndicatorForm />
 </app-modal>

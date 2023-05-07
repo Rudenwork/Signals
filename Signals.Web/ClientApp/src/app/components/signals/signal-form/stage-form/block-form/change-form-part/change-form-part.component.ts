@@ -20,6 +20,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
     type!: FormControl;
     operator!: FormControl;
     target!: FormControl;
+    isPercentage!: FormControl;
     periodUnit!: FormControl;
     periodLength!: FormControl;
 
@@ -30,11 +31,11 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.type = new FormControl(this.block.type, [
+        this.type = new FormControl(this.block.type || '', [
             Validators.required
         ]);
 
-        this.operator = new FormControl(this.block.operator, [
+        this.operator = new FormControl(this.block.operator || '', [
             Validators.required
         ]);
 
@@ -42,7 +43,9 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.periodUnit = new FormControl(this.block.periodUnit, [
+        this.isPercentage = new FormControl(this.block.isPercentage || false, []);
+
+        this.periodUnit = new FormControl(this.block.periodUnit || '', [
             Validators.required
         ]);
 
@@ -52,18 +55,44 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.max(1000)
         ]);
 
-        this.indicator.valueChanges.subscribe(indicator => this.block.indicator = indicator);
-        this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
+        if(this.type.value != '') {
+            this.type.markAsDirty();
+        }
+
+        if(this.operator.value != '') {
+            this.operator.markAsDirty();
+        }
+
+        if(this.periodUnit.value != '') {
+            this.periodUnit.markAsDirty();
+        }
+
+        this.indicator.valueChanges.subscribe(indicator => {
+            this.block.indicator = indicator
+            this.indicator.markAsDirty();
+        });
+        this.operator.valueChanges.subscribe(operator => { 
+            this.block.operator = operator; 
+            this.operator.markAsDirty();
+        });
         this.type.valueChanges.subscribe(type => {
-            this.block.type = type
+            this.block.type = type;
             if(type == ChangeBlockType.Cross) {
                 this.operator.setValue(OperatorEnum.Crossed);
             } else if (type != ChangeBlockType.Cross && this.block.operator == OperatorEnum.Crossed){
                 this.operator.setValue(OperatorEnum.GreaterOrEqual);
             }
+            this.type.markAsDirty();
         });
         this.target.valueChanges.subscribe(target => this.block.target = target);
-        this.periodUnit.valueChanges.subscribe(periodUnit => this.block.periodUnit = periodUnit);
+        this.isPercentage.valueChanges.subscribe(isPercentage => {
+            this.block.isPercentage = isPercentage
+            this.isPercentage.markAsDirty();
+        });
+        this.periodUnit.valueChanges.subscribe(periodUnit => {
+            this.block.periodUnit = periodUnit;
+            this.periodUnit.markAsDirty();
+        });
         this.periodLength.valueChanges.subscribe(periodLength => this.block.periodLength = periodLength);
 
         this.form = new FormGroup([
@@ -71,6 +100,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             this.type,
             this.operator,
             this.target,
+            this.isPercentage,
             this.periodUnit,
             this.periodLength
         ]);

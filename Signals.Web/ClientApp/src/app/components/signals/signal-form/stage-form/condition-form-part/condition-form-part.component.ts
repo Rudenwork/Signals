@@ -23,7 +23,6 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
     form!: FormGroup;
 
     ngOnInit() {
-
         this.shouldRetry = this.stage.retryCount != undefined;
 
         this.retryCount = new FormControl(this.stage.retryCount, [
@@ -47,9 +46,15 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
         ]);
 
         this.retryCount.valueChanges.subscribe(retryCount => this.stage.retryCount = retryCount);
-        this.retryDelayUnit.valueChanges.subscribe(retryDelayUnit => this.stage.retryDelayUnit = retryDelayUnit);
+        this.retryDelayUnit.valueChanges.subscribe(retryDelayUnit => {
+            this.stage.retryDelayUnit = retryDelayUnit;
+            this.retryDelayUnit.markAsDirty();
+        });
         this.retryDelayLength.valueChanges.subscribe(retryDelayLength => this.stage.retryDelayLength = retryDelayLength);
-        this.block.valueChanges.subscribe(block => this.stage.block = block);
+        this.block.valueChanges.subscribe(block => {
+            this.stage.block = block;
+            this.block.markAsDirty();
+        });
         
         this.form = new FormGroup([this.block]);
         

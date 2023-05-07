@@ -30,12 +30,23 @@ export class ValueFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.operator = new FormControl(this.block.operator, [
+        this.operator = new FormControl(this.block.operator || '', [
             Validators.required
         ]);
 
-        this.leftIndicator.valueChanges.subscribe(leftIndicator => this.block.leftIndicator = leftIndicator);
-        this.rightIndicator.valueChanges.subscribe(rightIndicator => this.block.rightIndicator = rightIndicator);
+        if(this.operator.value != '') {
+            this.operator.markAsDirty();
+        }
+
+        this.leftIndicator.valueChanges.subscribe(leftIndicator => {
+            this.block.leftIndicator = leftIndicator
+            this.leftIndicator.markAsDirty();
+
+        });
+        this.rightIndicator.valueChanges.subscribe(rightIndicator => {
+            this.block.rightIndicator = rightIndicator
+            this.rightIndicator.markAsDirty();
+        });
         this.operator.valueChanges.subscribe(operator => this.block.operator = operator);
 
         this.form = new FormGroup([

@@ -1,7 +1,5 @@
-<div class="card" tabindex="0">
-    <div class="wide" [ngSwitch]="this.block.$type">
-        <app-group-preview *ngSwitchCase="BlockType.Group" [block]="castBlock()" />
-        <app-value-preview *ngSwitchCase="BlockType.Value" [block]="castBlock()" />
-        <app-change-preview *ngSwitchCase="BlockType.Change" [block]="castBlock()"/>  
-    </div>
+<div [ngSwitch]="block.$type">
+    <app-group-preview *ngSwitchCase="BlockType.Group" [block]="castBlock()" />
+    <app-value-preview *ngSwitchCase="BlockType.Value" [block]="castBlock()" />
+    <app-change-preview *ngSwitchCase="BlockType.Change" [block]="castBlock()"/>  
 </div>

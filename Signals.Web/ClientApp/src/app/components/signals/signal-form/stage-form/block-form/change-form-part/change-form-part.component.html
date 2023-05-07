@@ -1,10 +1,10 @@
 <div class="cards-container">
-    <div *ngIf="!block.indicator" class="card add-indicator icon fa-plus" (click)="modalUpdate.open()"></div>
+    <div *ngIf="!indicator.value" class="card add-indicator icon fa-plus" (click)="modalUpdate.open()"></div>
     
-    <app-indicator-preview *ngIf="block.indicator" [indicator]="block.indicator" /> 
+    <app-indicator-preview *ngIf="indicator.value" [indicator]="indicator.value" /> 
 
     <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
-        <app-indicator-form *ngIf="modalUpdate.isOpened" [indicator]="block.indicator" (submitted)="block.indicator= $event" #indicatorForm />
+        <app-indicator-form *ngIf="modalUpdate.isOpened" [indicator]="indicator.value" (submitted)="indicator.setValue($event)" #indicatorForm />
     </app-modal>
 </div>
 
@@ -13,6 +13,7 @@
     'fa-arrow-down-up-across-line': type.value == ChangeBlockType.Cross,
     'fa-angle-down': type.value == ChangeBlockType.Decrease}"></label>
     <select id="type" [formControl]="type">
+        <option value="" disabled selected>Select Type</option>
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
@@ -22,6 +23,7 @@
     'fa-less-than-equal': operator.value == OperatorEnum.LessOrEqual,
     'fa-shuffle': operator.value == OperatorEnum.Crossed}"></label>
     <select id="operator" [formControl]="operator">
+        <option value="" disabled selected>Select Operator</option>
         <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
     </select>
 </div>
@@ -33,7 +35,7 @@
 
 <div class="input-container borderless">
     <label for="isPercentage" class="icon fa-percent">Is Percentage</label>
-    <input id="isPercentage" type="checkbox" class="toggle" [(ngModel)]="block.isPercentage">
+    <input id="isPercentage" type="checkbox" class="toggle" [formControl]="isPercentage">
 </div>
 
 <div class="input-container">
