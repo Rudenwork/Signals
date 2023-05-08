@@ -155,6 +155,18 @@ input:-webkit-autofill:active {
         padding: 0px;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+
+        &:required:invalid {
+            color: $color-font-secondary;
+        }
+
+        option {
+            color: $color-font-primary;
+
+            &[value=""] {
+                color: $color-font-secondary;
+            }
+        }
     }
 
     input {

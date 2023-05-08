@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { ChangeBlock, ChangeBlockType, ConditionStage, NotificationStage, OperatorEnum, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
+import { ConditionStage, NotificationStage, Stage, StageType, TimeUnit, WaitingStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-stage-form',
@@ -50,8 +50,6 @@ export class StageFormComponent implements OnInit {
 
     private getDefaultConditionStage() : ConditionStage {
         let stage = new ConditionStage();
-        stage.retryDelayUnit = TimeUnit.Minute;
-
         return stage;
     }
 

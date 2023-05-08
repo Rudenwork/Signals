@@ -31,7 +31,7 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
             Validators.max(100)
         ]);
 
-        this.retryDelayUnit = new FormControl(this.stage.retryDelayUnit, [
+        this.retryDelayUnit = new FormControl(this.stage.retryDelayUnit || '', [
             Validators.required
         ]);
 
@@ -47,7 +47,7 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
 
         this.retryCount.valueChanges.subscribe(retryCount => this.stage.retryCount = retryCount);
         this.retryDelayUnit.valueChanges.subscribe(retryDelayUnit => {
-            this.stage.retryDelayUnit = retryDelayUnit;
+            this.stage.retryDelayUnit = retryDelayUnit == '' ? undefined : retryDelayUnit;
             this.retryDelayUnit.markAsDirty();
         });
         this.retryDelayLength.valueChanges.subscribe(retryDelayLength => this.stage.retryDelayLength = retryDelayLength);
@@ -70,6 +70,10 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
             this.form.addControl('retryDelayLength', this.retryDelayLength);
         }
         else {
+            this.retryCount.setValue(undefined);
+            this.retryDelayUnit.setValue('');
+            this.retryDelayLength.setValue(undefined);
+
             this.form.removeControl('retryCount');
             this.form.removeControl('retryDelayUnit');
             this.form.removeControl('retryDelayLength');

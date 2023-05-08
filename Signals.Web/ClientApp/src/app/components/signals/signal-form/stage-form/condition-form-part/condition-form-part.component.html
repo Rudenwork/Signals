@@ -1,6 +1,6 @@
 <div class="input-container borderless">
     <label for="shouldRetry" class="icon fa-repeat">Should Retry</label>
-    <input id="shouldRetry" type="checkbox" class="toggle" [(ngModel)]="shouldRetry">
+    <input id="shouldRetry" type="checkbox" class="toggle" [(ngModel)]="shouldRetry" (change)="shouldRetryChanged()">
 </div>
 
 <div *ngIf="shouldRetry" class="input-container">
@@ -10,7 +10,8 @@
 
 <div *ngIf="shouldRetry" class="input-container">
     <label for="retryDelayUnit" class="icon fa-ruler"></label>
-    <select id="retryDelayUnit" [formControl]="retryDelayUnit">
+    <select required id="retryDelayUnit" [formControl]="retryDelayUnit">
+        <option value="" disabled selected>Retry Delay Unit</option>
         <option *ngFor="let timeUnit of getUnitOptions()" [value]="timeUnit">{{timeUnit}}</option>
     </select>
 </div>
