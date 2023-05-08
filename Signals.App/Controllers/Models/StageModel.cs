@@ -44,7 +44,6 @@ namespace Signals.App.Controllers.Models
                         .SetValidator(block);
 
                     RuleFor(x => x.RetryCount)
-                        .NotNull()
                         .InclusiveBetween(Constants.Condition.RetryCount.Min, Constants.Condition.RetryCount.Max);
 
                     When(x => x.RetryDelayUnit is not null, () =>
@@ -102,7 +101,7 @@ namespace Signals.App.Controllers.Models
                 public static class RetryCount
                 {
                     public const int Max = 100;
-                    public const int Min = 0;
+                    public const int Min = 1;
                 }
             }
 
