@@ -31,7 +31,7 @@ export class ConditionFormPartComponent implements OnInit, OnDestroy {
             Validators.max(100)
         ]);
 
-        this.retryDelayUnit = new FormControl(this.stage.retryDelayUnit || '', [
+        this.retryDelayUnit = new FormControl(this.stage.retryDelayUnit ?? '', [
             Validators.required
         ]);
 

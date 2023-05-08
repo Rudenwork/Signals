@@ -20,7 +20,7 @@
     <app-stage *ngFor="let stage of signal.stages; let index = index" [stage]="stage" (updated)="updateStage(index, $event)" (deleted)="deleteStage(index)"/>
     <div class="card create-stage icon fa-plus" (click)="modalCreate.open()"></div>
 
-    <app-modal title="Create Stage" submitText="Create" submitClass="good icon fa-shoe-prints" [closeOnSubmit]="true" #modalCreate >
+    <app-modal [isWide]="true" title="Create Stage" submitText="Create" submitClass="good icon fa-shoe-prints" [closeOnSubmit]="true" #modalCreate >
         <app-stage-form *ngIf="modalCreate.isOpened" (submitted)="createStage($event)"/>
     </app-modal>
 </div>

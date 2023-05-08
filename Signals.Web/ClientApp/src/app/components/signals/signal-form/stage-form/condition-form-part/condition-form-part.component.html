@@ -11,7 +11,7 @@
 <div *ngIf="shouldRetry" class="input-container">
     <label for="retryDelayUnit" class="icon fa-ruler"></label>
     <select required id="retryDelayUnit" [formControl]="retryDelayUnit">
-        <option value="" disabled selected>Retry Delay Unit</option>
+        <option value="" disabled selected hidden>Retry Delay Unit</option>
         <option *ngFor="let timeUnit of getUnitOptions()" [value]="timeUnit">{{timeUnit}}</option>
     </select>
 </div>

@@ -19,7 +19,7 @@ export class WaitingFormPartComponent implements OnInit, OnDestroy {
     form!: FormGroup;
 
     ngOnInit() {
-        this.unit = new FormControl(this.stage.unit, [
+        this.unit = new FormControl(this.stage.unit ?? '', [
             Validators.required
         ]);
 

@@ -1,11 +1,12 @@
 <div class="input-container">
     <label for="type" class="icon fa-list"></label>
-    <select id="type" [formControl]="type">
+    <select required id="type" [formControl]="type">
+        <option value="" disabled selected hidden>Type</option>
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
-<div [ngSwitch]="stage.$type">
+<div *ngIf="stage" [ngSwitch]="stage.$type">
     <app-condition-form-part *ngSwitchCase="StageType.Condition" [stage]="castStage()" />
     <app-notification-form-part *ngSwitchCase="StageType.Notification" [stage]="castStage()" />
     <app-waiting-form-part *ngSwitchCase="StageType.Waiting" [stage]="castStage()" />

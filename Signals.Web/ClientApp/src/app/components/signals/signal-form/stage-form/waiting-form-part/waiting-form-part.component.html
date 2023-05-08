@@ -1,11 +1,12 @@
 <div class="input-container">
     <label for="unit" class="icon fa-ruler"></label>
-    <select id="unit" [formControl]="unit">
-        <option *ngFor="let timeUnit of getUnitOptions()" [value]="timeUnit">{{timeUnit}}</option>
+    <select required id="unit" [formControl]="unit">
+        <option value="" disabled selected hidden>Unit</option>
+        <option *ngFor="let unitOption of getUnitOptions()" [value]="unitOption">{{unitOption}}</option>
     </select>
 </div>
 
 <div class="input-container">
-    <label for="amount" class="icon fa-hourglass-half"></label>
-    <input id="amount" type="number" placeholder="Length" [formControl]="length">
+    <label for="length" class="icon fa-hourglass-half"></label>
+    <input id="length" type="number" placeholder="Length" [formControl]="length">
 </div>

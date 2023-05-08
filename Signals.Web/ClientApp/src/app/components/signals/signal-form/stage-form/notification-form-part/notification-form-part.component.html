@@ -1,6 +1,7 @@
 <div class="input-container">
     <label for="channelId" class="icon fa-bell"></label>
-    <select id="channelId" [formControl]="channelId">
+    <select required id="channelId" [formControl]="channelId">
+        <option value="" disabled selected hidden>Channel</option>
         <option *ngFor="let channel of channels" [value]="channel.id">{{channel.destination}}</option>
     </select>
 </div>

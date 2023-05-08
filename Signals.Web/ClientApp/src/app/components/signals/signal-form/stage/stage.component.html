@@ -6,7 +6,7 @@
     </div>
 </div>
 
-<app-modal title="Update Stage" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+<app-modal [isWide]="true" title="Update Stage" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
     <app-stage-form *ngIf="modalUpdate.isOpened" [stage]="stage" (submitted)="updated.emit($event)" />
 </app-modal>
 

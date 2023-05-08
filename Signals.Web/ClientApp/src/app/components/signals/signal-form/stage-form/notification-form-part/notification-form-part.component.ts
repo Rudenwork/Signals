@@ -26,13 +26,9 @@ export class NotificationFormPartComponent implements OnInit, OnDestroy {
         this.dataService.getChannels()
             .subscribe(channels => {
                 this.channels = channels.filter(x => x.isVerified);
-
-                if (this.channels.length > 0) {
-                    this.channelId.setValue(channels[0].id);
-                }
             });
 
-        this.channelId = new FormControl(this.stage.channelId, [
+        this.channelId = new FormControl(this.stage.channelId ?? '', [
             Validators.required
         ]);
         

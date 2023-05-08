@@ -22,15 +22,14 @@ export class StageFormComponent implements OnInit {
     isCreating: boolean = false;
 
     ngOnInit() {
-        if (this.stage == undefined) {            
-            this.stage = this.getDefaultConditionStage();
+        if (this.stage == undefined) {
             this.isCreating = true;
         }
         else {
             this.stage = { ...this.stage };
         }
 
-        this.type = new FormControl(this.stage.$type, [
+        this.type = new FormControl(this.stage?.$type ?? '', [
             Validators.required
         ]);
 
@@ -48,23 +47,6 @@ export class StageFormComponent implements OnInit {
         this.modal.submitted.subscribe(() => this.submitted.emit(this.stage));
     }
 
-    private getDefaultConditionStage() : ConditionStage {
-        let stage = new ConditionStage();
-        return stage;
-    }
-
-    private getDefaultNotificationStage() : NotificationStage {
-        let notificationStage = new NotificationStage();
-        return notificationStage;
-    }
-
-    private getDefaultWaitingStage() : WaitingStage {
-        let waitingStage = new WaitingStage();
-        waitingStage.unit = TimeUnit.Minute;
-
-        return waitingStage
-    }
-
     getTypeOptions(): string[] {
         return Object.keys(StageType);
     }
@@ -75,13 +57,13 @@ export class StageFormComponent implements OnInit {
 
     changeStage(type: string) {
         if (type == StageType.Condition) {            
-            this.stage = this.getDefaultConditionStage();
+            this.stage = new ConditionStage();
         }
         else if (type == StageType.Notification) {
-            this.stage = this.getDefaultNotificationStage();
+            this.stage = new NotificationStage();
         }
         else if (type == StageType.Waiting) {
-            this.stage = this.getDefaultWaitingStage();
+            this.stage = new WaitingStage();
         }
     }
 }
