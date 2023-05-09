@@ -86,7 +86,7 @@ namespace Signals.App.Controllers
                 query = query.Where(x => x.IsDisabled == filter.IsDisabled);
 
             if (filter.HasSchedule is not null)
-                query = query.Where(x => (x.Schedule != null) == filter.HasSchedule);
+                query = query.Where(x => (x.Schedule != ScheduleConstants.Never) == filter.HasSchedule);
 
             if (filter.HasExecution is not null)
                 query = query.Where(x => (x.Execution != null) == filter.HasExecution);
@@ -174,7 +174,7 @@ namespace Signals.App.Controllers
             SignalsContext.Signals.Add(entity);
             await SignalsContext.SaveChangesAsync();
 
-            if(!entity.IsDisabled && entity.Schedule is not null)
+            if(!entity.IsDisabled && entity.Schedule != ScheduleConstants.Never)
             {
                 await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
             }
@@ -202,14 +202,14 @@ namespace Signals.App.Controllers
 
             if (model.Schedule is not null)
             {
-                if (!entity.IsDisabled && entity.Schedule is not null)
+                if (!entity.IsDisabled && entity.Schedule != ScheduleConstants.Never)
                 {
                     await Scheduler.CancelPublish(entity.Id);
                 }
 
-                entity.Schedule = model.Schedule == "never" ? null : model.Schedule;
+                entity.Schedule = model.Schedule;
 
-                if (!entity.IsDisabled && entity.Schedule is not null)
+                if (!entity.IsDisabled && entity.Schedule != ScheduleConstants.Never)
                 {
                     await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
                 }
@@ -276,7 +276,7 @@ namespace Signals.App.Controllers
             if (!User.IsAdmin() && entity.UserId != User.GetId())
                 return Forbid();
 
-            if (!entity.IsDisabled && entity.Schedule is not null)
+            if (!entity.IsDisabled && entity.Schedule != ScheduleConstants.Never)
             {
                 await Scheduler.CancelPublish(entity.Id);
             }
@@ -311,7 +311,7 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            if (entity.Schedule is not null) 
+            if (entity.Schedule != ScheduleConstants.Never) 
             {
                 await Scheduler.RecurringPublish(new Start.Message { SignalId = entity.Id }, entity.Schedule, entity.Id);
             }
@@ -344,7 +344,7 @@ namespace Signals.App.Controllers
                 return ValidationProblem();
             }
 
-            if (entity.Schedule is not null)
+            if (entity.Schedule != ScheduleConstants.Never)
             {
                 await Scheduler.CancelPublish(entity.Id);
             }

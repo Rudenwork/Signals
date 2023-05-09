@@ -17,4 +17,9 @@ namespace Signals.App.Database.Entities
         public List<StageEntity> Stages { get; set; }
         public ExecutionEntity? Execution { get; set; }
     }
+
+    public static class ScheduleConstants
+    {
+        public const string Never = "never";
+    }
 }

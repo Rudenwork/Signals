@@ -48,6 +48,9 @@ namespace Signals.App.Controllers.Models
                     RuleFor(x => x.Name)
                         .NotEmpty();
 
+                    RuleFor(x => x.Schedule)
+                        .NotEmpty();
+
                     RuleFor(x => x.Stages)
                         .NotEmpty();
                 }

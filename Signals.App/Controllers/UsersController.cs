@@ -191,7 +191,7 @@ namespace Signals.App.Controllers
 
             foreach (var signal in signals)
             {
-                if (signal.Schedule is not null)
+                if (signal.Schedule != ScheduleConstants.Never)
                 {
                     await Scheduler.CancelPublish(signal.Id);
                 }
