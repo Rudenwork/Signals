@@ -9,8 +9,6 @@ namespace Signals.App.Controllers.Models
     [JsonDerivedType(typeof(Change), nameof(Change))]
     public abstract class BlockModel
     {
-        public Guid? Id { get; set; }
-
         public class Validator : AbstractValidator<BlockModel>
         {
             public Validator(Group.Validator group, Value.Validator value, Change.Validator change)
@@ -22,9 +20,6 @@ namespace Signals.App.Controllers.Models
                         x.Add(value);
                         x.Add(change);
                     });
-
-                RuleFor(x => x.Id)
-                    .Null();
             }
         }
 

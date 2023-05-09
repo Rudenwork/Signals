@@ -32,8 +32,6 @@ export class SignalFormComponent implements OnInit {
             this.signal = { ...this.signal };
             this.signal.stages = this.signal.stages?.slice();
 
-            this.signal.stages?.forEach(stage => delete stage.id);
-
             delete this.signal.id;
             delete this.signal.userId;
             delete this.signal.isDisabled;

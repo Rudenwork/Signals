@@ -9,15 +9,10 @@ namespace Signals.App.Controllers.Models
     [JsonDerivedType(typeof(Notification), nameof(Notification))]
     public abstract class StageModel
     {
-        public Guid? Id { get; set; }
-
         public class Validator : AbstractValidator<StageModel> 
         {
             public Validator(Condition.Validator condition, Waiting.Validator waiting, Notification.Validator notification)
             {
-                RuleFor(x => x.Id)
-                    .Null();
-
                 RuleFor(x => x)
                     .SetInheritanceValidator(x => 
                     {

@@ -11,7 +11,6 @@ namespace Signals.App.Controllers.Models
     [JsonDerivedType(typeof(SimpleMovingAverage), nameof(SimpleMovingAverage))]
     public class IndicatorModel
     {
-        public Guid? Id { get; set; }
         public IntervalEnum? Interval { get; set; }
         public int? LoopbackPeriod { get; set; }
         public string? Symbol { get; set; }
@@ -47,9 +46,6 @@ namespace Signals.App.Controllers.Models
                         x.Add(candle);
                         x.Add(constant);
                     });
-
-                RuleFor(x => x.Id)
-                    .Null();
 
                 When(x => x is Constant, () =>
                 {

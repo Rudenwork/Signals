@@ -48,7 +48,6 @@ export enum StageType {
 
 export class Stage {
     constructor(type: StageType) { this.$type = type; }
-    id?: number;
     $type!: StageType;
 }
 
