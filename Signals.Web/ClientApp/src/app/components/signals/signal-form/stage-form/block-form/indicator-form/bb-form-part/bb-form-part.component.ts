@@ -22,7 +22,7 @@ export class BbFormPartComponent implements OnInit, OnDestroy {
     form!: FormGroup;
 
     ngOnInit() {
-        this.interval = new FormControl(this.formHelper.convertIntervalEnumToOption(this.indicator.interval) || '', [
+        this.interval = new FormControl(this.formHelper.convertIntervalEnumToOption(this.indicator.interval), [
             Validators.required
         ]);
 
@@ -30,11 +30,11 @@ export class BbFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.symbol = new FormControl(this.indicator.symbol || '', [
+        this.symbol = new FormControl(this.indicator.symbol ?? '', [
             Validators.required
         ]);
 
-        this.bandType = new FormControl(this.indicator.bandType || '', [
+        this.bandType = new FormControl(this.indicator.bandType ?? '', [
             Validators.required
         ]);
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { Block, BlockType, ChangeBlock, ChangeBlockType, GroupBlock, GroupBlockType, OperatorEnum, TimeUnit, ValueBlock } from 'src/app/models/signal.model';
+import { Block, BlockType, ChangeBlock, GroupBlock,ValueBlock } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-block-form',
@@ -20,14 +20,11 @@ export class BlockFormComponent implements OnInit {
     form!: FormGroup;
 
     ngOnInit() {
-        if (this.block == undefined) {            
-            this.block = this.getDefaultValueBlock();
-        }
-        else {
+        if (this.block != undefined) {                   
             this.block = { ...this.block };
         }
         
-        this.type = new FormControl(this.block.$type, [
+        this.type = new FormControl(this.block?.$type ?? '', [
             Validators.required
         ]);
 
@@ -41,30 +38,6 @@ export class BlockFormComponent implements OnInit {
         this.modal.submitted.subscribe(() => this.submitted.emit(this.block));
     }
 
-    private getDefaultChangeBlock() : ChangeBlock {
-        let changeBlock = new ChangeBlock();
-        changeBlock.type = ChangeBlockType.Increase;
-        changeBlock.operator = OperatorEnum.GreaterOrEqual;
-        changeBlock.periodUnit = TimeUnit.Minute; 
-        
-        return changeBlock;
-    }
-
-    private getDefaultValueBlock() : ValueBlock {
-        let valueBlock = new ValueBlock();
-        valueBlock.operator = OperatorEnum.GreaterOrEqual;
-
-        return valueBlock;
-    }
-
-    private getDefaultGroup() : GroupBlock {
-        let groupBlock = new GroupBlock();
-        groupBlock.type = GroupBlockType.And;
-        groupBlock.children = [];
-
-        return groupBlock
-    }
-
     getTypeOptions(): string[] {
         return Object.keys(BlockType);
     }
@@ -75,13 +48,13 @@ export class BlockFormComponent implements OnInit {
 
     changeBlock(type: string) {
         if (type == BlockType.Value) {            
-            this.block = this.getDefaultValueBlock();
+            this.block = new ValueBlock();
         }
         else if (type == BlockType.Change) {
-            this.block = this.getDefaultChangeBlock();
+            this.block = new ChangeBlock();
         }
         else if (type == BlockType.Group) {
-            this.block = this.getDefaultGroup();
+            this.block = new GroupBlock();
         }
     }
 }

@@ -23,7 +23,7 @@ export class GroupFormPartComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.block.children = this.block.children?.slice();
 
-        this.type = new FormControl(this.block.type || '', [
+        this.type = new FormControl(this.block?.type ?? '', [
             Validators.required
         ]);
 

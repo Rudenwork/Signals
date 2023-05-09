@@ -5,7 +5,10 @@
 
 <div class="input-container">
     <label for="schedule" class="icon fa-clock"></label>
-    <input id="schedule" type="text" placeholder="Schedule" [formControl]="schedule">
+    <select required id="schedule" [formControl]="schedule">
+        <option value="" disabled selected hidden>Schedule</option>
+        <option *ngFor="let option of getScheduleOptions()" [value]="option">{{option}}</option>
+    </select>
 </div>
 
 <div *ngIf="isCreating" class="input-container borderless">

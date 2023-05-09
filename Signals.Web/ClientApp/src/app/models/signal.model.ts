@@ -40,6 +40,19 @@ export enum IntervalEnum
     OneMonth = 'OneMonth'
 }
 
+export enum Crons
+{
+    Never = 'never',
+    EveryMinute = '0 * * * * ?',
+    EveryFiveMinutes = '0 0/5 * * * ?',
+    EveryTenMinutes = '0 0/10 * * * ?',
+    EveryFifteenMinutes = '0 0/15 * * * ?',
+    EveryThirtyMinutes = '0 0/30 * * * ?',
+    EveryHour = '0 0 * * * ?',
+    EveryDay = '0 0 0 * * ?',
+    EveryMonth = '0 0 0 0 * ?'
+}
+
 export enum StageType {
     Waiting = 'Waiting',
     Condition = 'Condition',

@@ -30,7 +30,7 @@ export class ValueFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.operator = new FormControl(this.block.operator || '', [
+        this.operator = new FormControl(this.block.operator ?? '', [
             Validators.required
         ]);
 

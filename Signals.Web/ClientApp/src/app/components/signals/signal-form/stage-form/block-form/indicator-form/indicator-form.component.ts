@@ -18,14 +18,11 @@ export class IndicatorFormComponent implements OnInit {
     form!: FormGroup;
 
     ngOnInit() {
-        if (this.indicator == undefined) {            
-            this.indicator = this.getDefaultConstantIndicator();
-        }
-        else {
+        if (this.indicator != undefined) {            
             this.indicator = { ...this.indicator };
         }
         
-        this.type = new FormControl(this.formHelper.convertIndicatorTypeEnumToOption(this.indicator.$type), [
+        this.type = new FormControl(this.formHelper.convertIndicatorTypeEnumToOption(this.indicator?.$type), [
             Validators.required
         ]);
 
@@ -52,54 +49,22 @@ export class IndicatorFormComponent implements OnInit {
 
     changeIndicator(type: string) {
         if (type == IndicatorType.BollingerBands) {            
-            this.indicator = this.getDefaultBBIndicator();
+            this.indicator = new BBIndicator();
         }
         else if (type == IndicatorType.Candle) {            
-            this.indicator = this.getDefaultCandleIndicator();
+            this.indicator = new CandleIndicator();
         }
         else if (type == IndicatorType.Constant) {            
-            this.indicator = this.getDefaultConstantIndicator();
+            this.indicator = new ConstantIndicator();
         }
         else if (type == IndicatorType.ExponentialMovingAverage) {            
-            this.indicator = this.getDefaultEMAIndicator();
+            this.indicator = new EMAIndicator();
         }
         else if (type == IndicatorType.RelativeStrengthIndex) {            
-            this.indicator = this.getDefaultRSIIndicator();
+            this.indicator = new RSIIndicator();
         }
         else if (type == IndicatorType.SimpleMovingAverage) {            
-            this.indicator = this.getDefaultSMAIndicator();
+            this.indicator = new SMAIndicator();
         }
-    }
-
-    private getDefaultBBIndicator() : BBIndicator {
-        let bbIndicator = new BBIndicator();
-        bbIndicator.loopbackPeriod = 14;
-        return bbIndicator;
-    }
-
-    private getDefaultCandleIndicator() : CandleIndicator {
-        let candleIndicator = new CandleIndicator();
-        candleIndicator.loopbackPeriod = 14;
-        return candleIndicator;
-    }
-
-    private getDefaultConstantIndicator() : ConstantIndicator {
-        let constantIndicator = new ConstantIndicator();
-        return constantIndicator;
-    }
-
-    private getDefaultEMAIndicator() : EMAIndicator {
-        let emaIndicator = new EMAIndicator();
-        return emaIndicator;
-    }
-
-    private getDefaultRSIIndicator() : RSIIndicator {
-        let rsiIndicator = new RSIIndicator();
-        return rsiIndicator;
-    }
-
-    private getDefaultSMAIndicator() : SMAIndicator {
-        let smaIndicator = new SMAIndicator();
-        return smaIndicator;
     }
 }

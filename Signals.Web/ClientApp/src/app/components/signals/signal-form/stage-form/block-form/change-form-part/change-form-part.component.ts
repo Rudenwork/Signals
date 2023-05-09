@@ -31,11 +31,11 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.type = new FormControl(this.block.type || '', [
+        this.type = new FormControl(this.block?.type ?? '', [
             Validators.required
         ]);
 
-        this.operator = new FormControl(this.block.operator || '', [
+        this.operator = new FormControl(this.block?.operator ?? '', [
             Validators.required
         ]);
 
@@ -45,7 +45,7 @@ export class ChangeFormPartComponent implements OnInit, OnDestroy {
 
         this.isPercentage = new FormControl(this.block.isPercentage || false, []);
 
-        this.periodUnit = new FormControl(this.block.periodUnit || '', [
+        this.periodUnit = new FormControl(this.block?.periodUnit ?? '', [
             Validators.required
         ]);
 

@@ -4,11 +4,12 @@
 </div>
 
 <div class="input-container">
-    <label for="operator" class="icon" [ngClass]="{'fa-greater-than-equal': operator.value == OperatorEnum.GreaterOrEqual,
+    <label for="operator" class="icon" [ngClass]="{'fa-calculator': operator.value == '',
+    'fa-greater-than-equal': operator.value == OperatorEnum.GreaterOrEqual,
     'fa-less-than-equal': operator.value == OperatorEnum.LessOrEqual,
     'fa-shuffle': operator.value == OperatorEnum.Crossed}"></label>
-    <select id="operator" [formControl]="operator">
-        <option value="" disabled selected>Select Operator</option>
+    <select required id="operator" [formControl]="operator">
+        <option value="" disabled selected hidden>Operator</option>
         <option *ngFor="let operator of getOperatorOptions()" [value]="operator">{{operator}}</option>
     </select>
 </div>

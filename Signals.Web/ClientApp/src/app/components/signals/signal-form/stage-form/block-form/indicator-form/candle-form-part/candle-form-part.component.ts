@@ -21,15 +21,15 @@ export class CandleFormPartComponent implements OnInit, OnDestroy {
     form!: FormGroup;
 
     ngOnInit() {
-        this.interval = new FormControl(this.formHelper.convertIntervalEnumToOption(this.indicator.interval) || '', [
+        this.interval = new FormControl(this.formHelper.convertIntervalEnumToOption(this.indicator.interval), [
             Validators.required
         ]);
 
-        this.parameterType = new FormControl(this.indicator.parameterType || '', [
+        this.parameterType = new FormControl(this.indicator.parameterType ?? '', [
             Validators.required
         ]);
 
-        this.symbol = new FormControl(this.indicator.symbol || '', [
+        this.symbol = new FormControl(this.indicator.symbol ?? '', [
             Validators.required
         ]);
 

@@ -1,11 +1,12 @@
 <div class="input-container">
     <label for="type" class="icon fa-list"></label>
-    <select id="type" [formControl]="type">
+    <select required id="type" [formControl]="type">
+        <option value="" disabled selected hidden>Type</option>
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
 
-<div [ngSwitch]="block.$type">
+<div *ngIf="block" [ngSwitch]="block.$type">
     <app-group-form-part *ngSwitchCase="BlockType.Group" [block]="castBlock()" />
     <app-value-form-part *ngSwitchCase="BlockType.Value" [block]="castBlock()" />
     <app-change-form-part *ngSwitchCase="BlockType.Change" [block]="castBlock()" />

@@ -1,7 +1,7 @@
 <div class="input-container">
     <label for="interval" class="icon fa-clock"></label>
-    <select id="interval" [formControl]="interval">
-        <option value="" disabled selected>Select Interval</option>
+    <select required id="interval" [formControl]="interval">
+        <option value="" disabled selected hidden>Interval</option>
         <option *ngFor="let interval of formHelper.getIntervalOptions()" [value]="interval">{{interval}}</option>
     </select>
 </div>
@@ -13,8 +13,8 @@
 
 <div class="input-container">
     <label for="symbol" class="icon fa-coins"></label>
-    <select id="symbol" [formControl]="symbol">
-        <option value="" disabled selected>Select Coin</option>
+    <select required id="symbol" [formControl]="symbol">
+        <option value="" disabled selected hidden>Coin</option>
         <option *ngFor="let option of formHelper.getSymbolOptions()" [value]="option">{{option}}</option>
     </select>
 </div>

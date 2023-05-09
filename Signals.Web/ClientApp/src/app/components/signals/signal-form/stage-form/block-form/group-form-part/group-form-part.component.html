@@ -1,8 +1,9 @@
 <div class="input-container">
-    <label for="type" class="icon" [ngClass]="{'fa-xmark': type.value == GroupBlockType.And,
+    <label for="type" class="icon" [ngClass]="{'fa-plus-minus': type.value == '',
+    'fa-xmark': type.value == GroupBlockType.And,
     'fa-plus': type.value == GroupBlockType.Or}"></label>
-    <select id="type" [formControl]="type">
-        <option value="" disabled selected>Select Type</option>
+    <select required id="type" [formControl]="type">
+        <option value="" disabled selected hidden>Type</option>
         <option *ngFor="let type of getTypeOptions()" [value]="type">{{type}}</option>
     </select>
 </div>
