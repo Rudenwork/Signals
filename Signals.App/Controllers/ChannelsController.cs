@@ -118,6 +118,7 @@ namespace Signals.App.Controllers
             if (shouldReset)
             {
                 entity.IsVerified = false;
+                entity.ExternalId = null;
                 entity.Code = GenerateCode();
             }
 

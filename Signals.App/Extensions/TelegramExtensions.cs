@@ -44,15 +44,15 @@ namespace Signals.App.Extensions
                 return;
 
             var chatId = message.Chat.Id;
-
             var channel = SignalsContext.Channels.FirstOrDefault(x => EF.Functions.ILike(x.Destination, message.From.Username));
-            SignalsContext.Entry(channel).Reload();
 
             if (channel is null)
             {
                 await client.SendTextMessageAsync(chatId, $"Channel is not created for your username");
                 return;
             }
+
+            SignalsContext.Entry(channel).Reload();
 
             if (channel.ExternalId is null)
             {
@@ -62,7 +62,10 @@ namespace Signals.App.Extensions
             }
 
             if (channel.IsVerified)
+            {
+                await client.SendTextMessageAsync(chatId, $"Tssss");
                 return;
+            }
 
             await client.SendTextMessageAsync(chatId, $"Verification Code:\n{channel.Code}");
         }
