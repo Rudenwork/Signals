@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home/home-page/home-page.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginPageComponent } from './components/login/login-page/login-page.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ChannelsPageComponent } from './components/channels/channels-page/channels-page.component';
@@ -61,7 +61,7 @@ import { SmaPreviewComponent } from './components/signals/signal-form/stage-form
     declarations: [
         AppComponent,
         HomePageComponent,
-        LoginComponent,
+        LoginPageComponent,
         LogoutComponent,
         MenuComponent,
         ChannelsPageComponent,
