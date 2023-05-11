@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChannelsPageComponent } from './components/channels/channels-page/channels-page.component';
 import { HomePageComponent } from './components/home/home-page/home-page.component';
 import { LoginPageComponent } from './components/login/login-page/login-page.component';
-import { LogoutComponent } from './components/logout/logout.component';
+import { LogoutComponent } from './components/logout/logout-page/logout-page.component';
 import { SignalsComponent } from './components/signals/signals.component';
 import { UsersComponent } from './components/users/users.component';
 

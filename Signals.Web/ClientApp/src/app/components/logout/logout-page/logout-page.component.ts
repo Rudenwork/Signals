@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-logout',
-    templateUrl: './logout.component.html',
+    templateUrl: './logout-page.component.html',
 })
 export class LogoutComponent {
     constructor(private authService: AuthService) { }

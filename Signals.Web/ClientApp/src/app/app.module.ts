@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home/home-page/home-page.component';
 import { LoginPageComponent } from './components/login/login-page/login-page.component';
-import { LogoutComponent } from './components/logout/logout.component';
+import { LogoutComponent } from './components/logout/logout-page/logout-page.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ChannelsPageComponent } from './components/channels/channels-page/channels-page.component';
 import { HttpClientModule } from '@angular/common/http';
