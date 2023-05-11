@@ -1,1 +1,8 @@
-<p>indicator-preview works!</p>
+<div [ngSwitch]="indicator.$type">
+    <app-bb-preview *ngSwitchCase="IndicatorType.BollingerBands" [indicator]="castIndicator()" />
+    <app-candle-preview *ngSwitchCase="IndicatorType.Candle" [indicator]="castIndicator()" />
+    <app-constant-preview *ngSwitchCase="IndicatorType.Constant" [indicator]="castIndicator()" />
+    <app-ema-preview *ngSwitchCase="IndicatorType.ExponentialMovingAverage" [indicator]="castIndicator()" />
+    <app-rsi-preview *ngSwitchCase="IndicatorType.RelativeStrengthIndex" [indicator]="castIndicator()" />
+    <app-sma-preview *ngSwitchCase="IndicatorType.SimpleMovingAverage" [indicator]="castIndicator()" />
+</div>
