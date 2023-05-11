@@ -12,10 +12,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
-import { SignalsComponent } from './components/signals/signals.component';
+import { SignalsPageComponent } from './components/signals/signals-page/signals-page.component';
 import { SignalComponent } from './components/signals/signal/signal.component';
 import { StageComponent } from './components/signals/signal-form/stage/stage.component';
-import { UsersComponent } from './components/users/users.component';
+import { UsersPageComponent } from './components/users/users-page/users-page.component';
 import { UserComponent } from './components/users/user/user.component';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
 import { SignalFormComponent } from './components/signals/signal-form/signal-form.component';
@@ -66,10 +66,10 @@ import { SmaPreviewComponent } from './components/signals/signal-form/stage-form
         MenuComponent,
         ChannelsPageComponent,
         ModalComponent,
-        SignalsComponent,
+        SignalsPageComponent,
         SignalComponent,
         StageComponent,
-        UsersComponent,
+        UsersPageComponent,
         UserComponent,
         UserFormComponent,
         SignalFormComponent,

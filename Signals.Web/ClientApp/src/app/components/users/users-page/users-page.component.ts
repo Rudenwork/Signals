@@ -1,14 +1,14 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { DataService } from 'src/app/services/data.service';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
     selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.scss']
+    templateUrl: './users-page.component.html',
+    styleUrls: ['./users-page.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersPageComponent implements OnInit {
     constructor(private dataService: DataService) {}
 
     @HostBinding('class.page') isPage: boolean = true;

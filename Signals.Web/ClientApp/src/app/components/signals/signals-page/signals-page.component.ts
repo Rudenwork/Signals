@@ -1,14 +1,14 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Signal } from 'src/app/models/signal.model';
 import { DataService } from 'src/app/services/data.service';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
     selector: 'app-signals',
-    templateUrl: './signals.component.html',
-    styleUrls: ['./signals.component.scss']
+    templateUrl: './signals-page.component.html',
+    styleUrls: ['./signals-page.component.scss']
 })
-export class SignalsComponent implements OnInit {
+export class SignalsPageComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     @HostBinding('class.page') isPage: boolean = true;
