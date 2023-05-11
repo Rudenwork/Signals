@@ -7,7 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { ChannelsComponent } from './components/channels/channels.component';
+import { ChannelsPageComponent } from './components/channels/channels-page/channels-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -64,7 +64,7 @@ import { SmaPreviewComponent } from './components/signals/signal-form/stage-form
         LoginComponent,
         LogoutComponent,
         MenuComponent,
-        ChannelsComponent,
+        ChannelsPageComponent,
         ModalComponent,
         SignalsComponent,
         SignalComponent,

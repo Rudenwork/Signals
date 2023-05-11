@@ -1,14 +1,14 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Channel } from 'src/app/models/channel.model';
 import { DataService } from 'src/app/services/data.service';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
     selector: 'app-channels',
-    templateUrl: './channels.component.html',
-    styleUrls: ['./channels.component.scss']
+    templateUrl: './channels-page.component.html',
+    styleUrls: ['./channels-page.component.scss']
 })
-export class ChannelsComponent implements OnInit {
+export class ChannelsPageComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     @HostBinding('class.page') isPage: boolean = true;
