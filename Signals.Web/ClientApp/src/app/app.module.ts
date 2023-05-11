@@ -42,20 +42,20 @@ import { BlockFormComponent } from './components/blocks/block-form/block-form.co
 import { GroupFormPartComponent } from './components/blocks/block-form/group-form-part/group-form-part.component';
 import { ValueFormPartComponent } from './components/blocks/block-form/value-form-part/value-form-part.component';
 import { ChangeFormPartComponent } from './components/blocks/block-form/change-form-part/change-form-part.component';
-import { IndicatorFormComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/indicator-form.component';
-import { IndicatorPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/indicator-preview.component';
-import { BbFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/bb-form-part/bb-form-part.component';
-import { CandleFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/candle-form-part/candle-form-part.component';
-import { ConstantFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/constant-form-part/constant-form-part.component';
-import { EmaFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/ema-form-part/ema-form-part.component';
-import { RsiFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/rsi-form-part/rsi-form-part.component';
-import { SmaFormPartComponent } from './components/signals/signal-form/stage-form/block-form/indicator-form/sma-form-part/sma-form-part.component';
-import { BbPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/bb-preview/bb-preview.component';
-import { CandlePreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/candle-preview/candle-preview.component';
-import { ConstantPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/constant-preview/constant-preview.component';
-import { EmaPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/ema-preview/ema-preview.component';
-import { RsiPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/rsi-preview/rsi-preview.component';
-import { SmaPreviewComponent } from './components/signals/signal-form/stage-form/block-form/indicator-preview/sma-preview/sma-preview.component';
+import { IndicatorFormComponent } from './components/indicators/indicator-form/indicator-form.component';
+import { IndicatorPreviewComponent } from './components/indicators/indicator-preview/indicator-preview.component';
+import { BbFormPartComponent } from './components/indicators/indicator-form/bb-form-part/bb-form-part.component';
+import { CandleFormPartComponent } from './components/indicators/indicator-form/candle-form-part/candle-form-part.component';
+import { ConstantFormPartComponent } from './components/indicators/indicator-form/constant-form-part/constant-form-part.component';
+import { EmaFormPartComponent } from './components/indicators/indicator-form/ema-form-part/ema-form-part.component';
+import { RsiFormPartComponent } from './components/indicators/indicator-form/rsi-form-part/rsi-form-part.component';
+import { SmaFormPartComponent } from './components/indicators/indicator-form/sma-form-part/sma-form-part.component';
+import { BbPreviewComponent } from './components/indicators/indicator-preview/bb-preview/bb-preview.component';
+import { CandlePreviewComponent } from './components/indicators/indicator-preview/candle-preview/candle-preview.component';
+import { ConstantPreviewComponent } from './components/indicators/indicator-preview/constant-preview/constant-preview.component';
+import { EmaPreviewComponent } from './components/indicators/indicator-preview/ema-preview/ema-preview.component';
+import { RsiPreviewComponent } from './components/indicators/indicator-preview/rsi-preview/rsi-preview.component';
+import { SmaPreviewComponent } from './components/indicators/indicator-preview/sma-preview/sma-preview.component';
 
 @NgModule({
     declarations: [
