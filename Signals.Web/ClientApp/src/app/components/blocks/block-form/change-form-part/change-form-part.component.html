@@ -1,7 +1,11 @@
 <div class="cards-container">
     <div *ngIf="!indicator.value" class="card add-indicator icon fa-plus" (click)="modalUpdate.open()"></div>
-    
-    <app-indicator-preview *ngIf="indicator.value" [indicator]="indicator.value" /> 
+    <div class="card" tabindex="0">
+        <app-indicator-preview class="wide" *ngIf="indicator.value" [indicator]="indicator.value" /> 
+        <div class="actions" tabindex="1">
+            <button class="warning icon fa-pen-to-square" title="Update" (click)="modalUpdate.open()"></button>
+        </div>
+    </div>
 
     <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
         <app-indicator-form *ngIf="modalUpdate.isOpened" [indicator]="indicator.value" (submitted)="indicator.setValue($event)" #indicatorForm />

@@ -1,6 +1,12 @@
 <div class="cards-container">
     <div *ngIf="!leftIndicator.value" class="card add-indicator icon fa-plus" (click)="leftIndicatormodalUpdate.open()"></div>    
-    <app-indicator-preview *ngIf="leftIndicator.value" [indicator]="leftIndicator.value" (click)="leftIndicatormodalUpdate.open()" /> 
+    
+    <div *ngIf="leftIndicator.value" class="card" tabindex="0">
+        <app-indicator-preview class="wide" [indicator]="leftIndicator.value" />
+        <div class="actions" tabindex="1">
+            <button class="warning icon fa-pen-to-square" title="Update" (click)="leftIndicatormodalUpdate.open()"></button>
+        </div>
+    </div>
 </div>
 
 <div class="input-container">
@@ -16,7 +22,13 @@
 
 <div class="cards-container">
     <div *ngIf="!rightIndicator.value" class="card add-indicator icon fa-plus" (click)="rightIndicatorModalUpdate.open()"></div>
-    <app-indicator-preview *ngIf="rightIndicator.value" [indicator]="rightIndicator.value" (click)="rightIndicatorModalUpdate.open()" /> 
+
+    <div *ngIf="rightIndicator.value" class="card" tabindex="0">
+        <app-indicator-preview class="wide" [indicator]="rightIndicator.value" /> 
+        <div class="actions" tabindex="1">
+            <button class="warning icon fa-pen-to-square" title="Update" (click)="rightIndicatorModalUpdate.open()"></button>
+        </div>
+    </div>
 </div>
 
 <app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #leftIndicatormodalUpdate>
