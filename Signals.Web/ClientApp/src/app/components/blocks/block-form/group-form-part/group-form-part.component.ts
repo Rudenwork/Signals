@@ -27,7 +27,7 @@ export class GroupFormPartComponent implements OnInit, OnDestroy {
             Validators.required
         ]);
 
-        this.children = new FormControl(this.block.children, [
+        this.children = new FormControl(this.block.children ?? [], [
             Validators.required
         ]);
 
@@ -62,6 +62,8 @@ export class GroupFormPartComponent implements OnInit, OnDestroy {
     }
 
     createBlock(block: Block) {
+        console.log(block)
+        console.log(this.children)
         this.children.value.push(block);
         this.children.markAsDirty();
         this.children.updateValueAndValidity();

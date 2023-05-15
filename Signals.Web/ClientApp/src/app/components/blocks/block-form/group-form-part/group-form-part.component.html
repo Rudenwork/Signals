@@ -28,11 +28,11 @@
         <app-block-preview [block]="child"/>
     </app-modal>
 
-    <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+    <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" [isWide]="true" #modalUpdate>
         <app-block-form *ngIf="modalUpdate.isOpened" [block]="child" (submitted)="updateBlock(index, $event)" (deleted)="deleteBlock(index)" />
     </app-modal>
 </div>
 <div class="card add-block icon fa-plus" (click)="modalCreate.open()"></div>
-<app-modal title="Create Block" submitText="Create" submitClass="good icon fa-cube" [closeOnSubmit]="true" #modalCreate >
+<app-modal title="Create Block" submitText="Create" submitClass="good icon fa-cube" [closeOnSubmit]="true" [isWide]="true" #modalCreate >
     <app-block-form *ngIf="modalCreate.isOpened" (submitted)="createBlock($event)"/>
 </app-modal>

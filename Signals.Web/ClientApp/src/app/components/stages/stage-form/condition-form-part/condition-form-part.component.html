@@ -35,7 +35,7 @@
         </div>
     </div> 
 
-    <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #modalUpdate>
+    <app-modal title="Update Block" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" [isWide]="true" #modalUpdate>
         <app-block-form *ngIf="modalUpdate.isOpened" [block]="block.value" (submitted)="block.setValue($event)" #blockForm />
     </app-modal>
 </div>

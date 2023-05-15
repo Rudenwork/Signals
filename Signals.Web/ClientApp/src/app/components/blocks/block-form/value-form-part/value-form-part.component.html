@@ -31,10 +31,10 @@
     </div>
 </div>
 
-<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #leftIndicatormodalUpdate>
+<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" [isWide]="true" #leftIndicatormodalUpdate>
     <app-indicator-form *ngIf="leftIndicatormodalUpdate.isOpened" [indicator]="leftIndicator.value" (submitted)="leftIndicator.setValue($event)" #leftIndicatorForm />
 </app-modal>
 
-<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" #rightIndicatorModalUpdate>
+<app-modal title="Update Indicator" submitText="Update" submitClass="warning icon fa-pen-to-square" [closeOnSubmit]="true" [isWide]="true" #rightIndicatorModalUpdate>
     <app-indicator-form *ngIf="rightIndicatorModalUpdate.isOpened" [indicator]="rightIndicator.value" (submitted)="rightIndicator.setValue($event)" #rightIndicatorForm />
 </app-modal>

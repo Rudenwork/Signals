@@ -1,4 +1,4 @@
-<div [ngSwitch]="indicator.$type">
+<div *ngIf="indicator" [ngSwitch]="indicator.$type">
     <app-bb-preview *ngSwitchCase="IndicatorType.BollingerBands" [indicator]="castIndicator()" />
     <app-candle-preview *ngSwitchCase="IndicatorType.Candle" [indicator]="castIndicator()" />
     <app-constant-preview *ngSwitchCase="IndicatorType.Constant" [indicator]="castIndicator()" />
