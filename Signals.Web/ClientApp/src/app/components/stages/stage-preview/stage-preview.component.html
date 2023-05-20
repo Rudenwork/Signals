@@ -1,5 +1,7 @@
-<div [ngSwitch]="stage.$type">
-    <app-waiting-preview *ngSwitchCase="StageType.Waiting" [stage]="castBlock()" />
-    <app-condition-preview *ngSwitchCase="StageType.Condition" [stage]="castBlock()" />
-    <app-notification-preview *ngSwitchCase="StageType.Notification" [stage]="castBlock()"/>  
-</div>
+<span *ngIf="stage.$type == StageType.Waiting" class="icon fa-hourglass-half"></span>
+<span *ngIf="stage.$type == StageType.Condition" class="icon fa-scale-balanced"></span>
+<span *ngIf="stage.$type == StageType.Notification" class="icon fa-bell"></span>
+
+<app-waiting-preview *ngIf="stage.$type == StageType.Waiting" [stage]="castBlock()" />
+<app-condition-preview *ngIf="stage.$type == StageType.Condition" [stage]="castBlock()" />
+<app-notification-preview *ngIf="stage.$type == StageType.Notification" [stage]="castBlock()"/>
