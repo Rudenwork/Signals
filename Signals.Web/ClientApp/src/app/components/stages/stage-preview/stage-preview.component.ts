@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Stage, StageType } from 'src/app/models/signal.model';
 
 @Component({
@@ -7,7 +7,6 @@ import { Stage, StageType } from 'src/app/models/signal.model';
     styleUrls: ['./stage-preview.component.scss']
 })
 export class StagePreviewComponent {
-    // @HostBinding('class.preview') isPreview: boolean = true;
 
     @Input() stage!: Stage;
 

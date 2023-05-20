@@ -1,8 +1,7 @@
 <app-indicator-preview [indicator]="block.leftIndicator" />
 
-<div class="icon" [ngClass]="{'fa-greater-than-equal': block.operator == OperatorEnum.GreaterOrEqual,
-'fa-less-than-equal': block.operator == OperatorEnum.LessOrEqual,
-'fa-shuffle': block.operator == OperatorEnum.Crossed}">{{block.operator}}
-</div>
+<span *ngIf="block.operator == OperatorEnum.GreaterOrEqual" class="icon fa-greater-than-equal"></span>
+<span *ngIf="block.operator == OperatorEnum.LessOrEqual" class="icon fa-less-than-equal"></span>
+<span *ngIf="block.operator == OperatorEnum.Crossed" class="icon fa-shuffle"></span>
 
 <app-indicator-preview [indicator]="block.rightIndicator" />

@@ -1,5 +1,3 @@
-<div [ngSwitch]="block.$type">
-    <app-group-preview *ngSwitchCase="BlockType.Group" [block]="castBlock()" />
-    <app-value-preview *ngSwitchCase="BlockType.Value" [block]="castBlock()" />
-    <app-change-preview *ngSwitchCase="BlockType.Change" [block]="castBlock()"/>  
-</div>
+<app-group-preview *ngIf="block.$type == BlockType.Group" [block]="castBlock()" />
+<app-value-preview *ngIf="block.$type == BlockType.Value" [block]="castBlock()" />
+<app-change-preview *ngIf="block.$type == BlockType.Change" [block]="castBlock()"/> 

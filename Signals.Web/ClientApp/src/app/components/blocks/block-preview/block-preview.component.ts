@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Block, BlockType } from 'src/app/models/signal.model';
 
 @Component({
@@ -7,7 +7,6 @@ import { Block, BlockType } from 'src/app/models/signal.model';
     styleUrls: ['./block-preview.component.scss']
 })
 export class BlockPreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
 
     @Input() block!: Block;
 
