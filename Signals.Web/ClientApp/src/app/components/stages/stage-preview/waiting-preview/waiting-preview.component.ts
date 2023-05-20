@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { WaitingStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-waiting-preview',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./waiting-preview.component.scss']
 })
 export class WaitingPreviewComponent {
-
+    @Input() stage!: WaitingStage;
 }

@@ -1,1 +1,5 @@
-<div class="icon fa-shoes-prints">{{stage.$type}}</div>
+<div [ngSwitch]="stage.$type">
+    <app-waiting-preview *ngSwitchCase="StageType.Waiting" [stage]="castBlock()" />
+    <app-condition-preview *ngSwitchCase="StageType.Condition" [stage]="castBlock()" />
+    <app-notification-preview *ngSwitchCase="StageType.Notification" [stage]="castBlock()"/>  
+</div>

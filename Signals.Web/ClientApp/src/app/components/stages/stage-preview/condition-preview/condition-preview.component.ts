@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ConditionStage } from 'src/app/models/signal.model';
 
 @Component({
     selector: 'app-condition-preview',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./condition-preview.component.scss']
 })
 export class ConditionPreviewComponent {
-
+    @Input() stage!: ConditionStage;
 }
