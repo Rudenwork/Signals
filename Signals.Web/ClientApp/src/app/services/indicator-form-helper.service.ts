@@ -36,6 +36,28 @@ export class IndicatorFormHelperService {
         OneMonth: '1 Month',
     }
 
+    public getIntervalShort(interval?: IntervalEnum) {
+        switch (interval) {
+            case IntervalEnum.OneSecond: return '1s';
+            case IntervalEnum.OneMinute: return '1m';
+            case IntervalEnum.ThreeMinutes: return '3m';
+            case IntervalEnum.FiveMinutes: return '5m';
+            case IntervalEnum.FifteenMinutes: return '15m';
+            case IntervalEnum.ThirtyMinutes: return '30m';
+            case IntervalEnum.OneHour: return '1h';
+            case IntervalEnum.TwoHour: return '2h';
+            case IntervalEnum.FourHour: return '4h';
+            case IntervalEnum.SixHour: return '6h';
+            case IntervalEnum.EightHour: return '8h';
+            case IntervalEnum.TwelveHour: return '12h';
+            case IntervalEnum.OneDay: return '1D';
+            case IntervalEnum.ThreeDay: return '3D';
+            case IntervalEnum.OneWeek: return '1w';
+            case IntervalEnum.OneMonth: return '1M';
+            default: return ''
+        }
+    }
+
     public getIndicatorTypeOptions(): string[] {
         return Object.values(this.indicatorTypeOptions);
     }

@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ConstantIndicator } from 'src/app/models/signal.model';
 
 @Component({
@@ -7,7 +7,6 @@ import { ConstantIndicator } from 'src/app/models/signal.model';
     styleUrls: ['./constant-preview.component.scss']
 })
 export class ConstantPreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
 
     @Input() indicator!: ConstantIndicator;
 }

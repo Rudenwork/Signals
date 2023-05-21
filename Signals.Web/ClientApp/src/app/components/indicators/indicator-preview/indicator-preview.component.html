@@ -1,8 +1,6 @@
-<div *ngIf="indicator" [ngSwitch]="indicator.$type">
-    <app-bb-preview *ngSwitchCase="IndicatorType.BollingerBands" [indicator]="castIndicator()" />
-    <app-candle-preview *ngSwitchCase="IndicatorType.Candle" [indicator]="castIndicator()" />
-    <app-constant-preview *ngSwitchCase="IndicatorType.Constant" [indicator]="castIndicator()" />
-    <app-ema-preview *ngSwitchCase="IndicatorType.ExponentialMovingAverage" [indicator]="castIndicator()" />
-    <app-rsi-preview *ngSwitchCase="IndicatorType.RelativeStrengthIndex" [indicator]="castIndicator()" />
-    <app-sma-preview *ngSwitchCase="IndicatorType.SimpleMovingAverage" [indicator]="castIndicator()" />
-</div>
+<app-bb-preview *ngIf="indicator.$type == IndicatorType.BollingerBands" [indicator]="castIndicator()" />
+<app-candle-preview *ngIf="indicator.$type == IndicatorType.Candle" [indicator]="castIndicator()" />
+<app-constant-preview *ngIf="indicator.$type == IndicatorType.Constant" [indicator]="castIndicator()" />
+<app-ema-preview *ngIf="indicator.$type == IndicatorType.ExponentialMovingAverage" [indicator]="castIndicator()" />
+<app-rsi-preview *ngIf="indicator.$type == IndicatorType.RelativeStrengthIndex" [indicator]="castIndicator()" />
+<app-sma-preview *ngIf="indicator.$type == IndicatorType.SimpleMovingAverage" [indicator]="castIndicator()" />

@@ -1,5 +1,6 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BBIndicator } from 'src/app/models/signal.model';
+import { IndicatorFormHelperService } from 'src/app/services/indicator-form-helper.service';
 
 @Component({
     selector: 'app-bb-preview[indicator]',
@@ -7,7 +8,7 @@ import { BBIndicator } from 'src/app/models/signal.model';
     styleUrls: ['./bb-preview.component.scss']
 })
 export class BbPreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
+    constructor(public helper: IndicatorFormHelperService) { }
 
     @Input() indicator!: BBIndicator;
 }

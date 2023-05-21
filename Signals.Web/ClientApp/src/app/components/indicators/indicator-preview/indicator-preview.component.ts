@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Indicator, IndicatorType } from 'src/app/models/signal.model';
 
 @Component({
@@ -7,8 +7,6 @@ import { Indicator, IndicatorType } from 'src/app/models/signal.model';
     styleUrls: ['./indicator-preview.component.scss']
 })
 export class IndicatorPreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
-
     @Input() indicator!: Indicator;
 
     IndicatorType: typeof IndicatorType = IndicatorType;

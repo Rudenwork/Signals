@@ -1,5 +1,6 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SMAIndicator } from 'src/app/models/signal.model';
+import { IndicatorFormHelperService } from 'src/app/services/indicator-form-helper.service';
 
 @Component({
     selector: 'app-sma-preview[indicator]',
@@ -7,7 +8,7 @@ import { SMAIndicator } from 'src/app/models/signal.model';
     styleUrls: ['./sma-preview.component.scss']
 })
 export class SmaPreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
+    constructor(public helper: IndicatorFormHelperService) { }
 
     @Input() indicator!: SMAIndicator;
 }

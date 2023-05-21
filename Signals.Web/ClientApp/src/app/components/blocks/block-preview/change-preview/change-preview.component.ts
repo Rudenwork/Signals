@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChangeBlock, ChangeBlockType, OperatorEnum } from 'src/app/models/signal.model';
 
 @Component({
@@ -7,8 +7,6 @@ import { ChangeBlock, ChangeBlockType, OperatorEnum } from 'src/app/models/signa
     styleUrls: ['./change-preview.component.scss']
 })
 export class ChangePreviewComponent {
-    @HostBinding('class.preview') isPreview: boolean = true;
-
     ChangeBlockType: typeof ChangeBlockType = ChangeBlockType;
     OperatorEnum: typeof OperatorEnum = OperatorEnum;
 

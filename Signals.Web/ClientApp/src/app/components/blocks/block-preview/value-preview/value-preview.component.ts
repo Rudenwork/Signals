@@ -7,7 +7,6 @@ import { OperatorEnum, ValueBlock } from 'src/app/models/signal.model';
     styleUrls: ['./value-preview.component.scss']
 })
 export class ValuePreviewComponent {
-
     OperatorEnum: typeof OperatorEnum = OperatorEnum;
 
     @Input() block!: ValueBlock;
