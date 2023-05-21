@@ -1,16 +1,12 @@
-<app-indicator-preview [indicator]="block.indicator" />
-
-<div class="icon" [ngClass]="{'fa-angle-up': block.type == ChangeBlockType.Increase,
-'fa-arrow-down-up-across-line': block.type == ChangeBlockType.Cross,
-'fa-angle-down': block.type == ChangeBlockType.Decrease}">{{block.type}}
+<div class="change-left">
+    <app-indicator-preview [indicator]="block.indicator" />
+    <span>{{block.periodLength}}{{block.periodUnit[0].toLowerCase()}} {{block.type}}</span>
 </div>
 
-<div class="icon" [ngClass]="{'fa-greater-than-equal': block.operator == OperatorEnum.GreaterOrEqual,
-'fa-less-than-equal': block.operator == OperatorEnum.LessOrEqual,
-'fa-shuffle': block.operator == OperatorEnum.Crossed}">{{block.operator}}
+<span *ngIf="block.operator == OperatorEnum.GreaterOrEqual" class="icon fa-greater-than-equal"></span>
+<span *ngIf="block.operator == OperatorEnum.LessOrEqual" class="icon fa-less-than-equal"></span>
+<span *ngIf="block.operator == OperatorEnum.Crossed" class="icon fa-shuffle"></span>
+
+<div class="change-right">
+    {{block.target}}{{block.isPercentage ? '%' : ''}}
 </div>
-
-<div *ngIf="block.target" class="icon fa-bullseye">{{block.isPercentage ? block.target + "%" : block.target}}</div>
-
-<div>{{block.periodLength}} {{block.periodUnit}}</div>
-
